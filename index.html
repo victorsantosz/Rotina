@@ -19,7 +19,29 @@ html,body{width:100%;max-width:100%;overflow-x:hidden;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
 /* ── SIDEBAR ── */
-.sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;z-index:200;box-shadow:4px 0 24px rgba(13,19,76,.2);}
+.sidebar{
+  width:var(--sidebar-w);
+  height:100vh;
+  background:var(--navy);
+  display:flex;
+  flex-direction:column;
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:200;
+  box-shadow:4px 0 24px rgba(13,19,76,.2);
+  overflow-y:auto;
+  transition:transform .3s ease;
+}
+.sidebar-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(13,19,76,.4);
+  z-index:150;
+  display:none;
+}
+.sidebar-overlay.open{display:block;}
+
 .sb-logo{padding:20px 18px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.08);}
 .sb-badge{width:38px;height:38px;background:var(--rust);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;flex-shrink:0;padding:7px;}
 .sb-words{font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;color:white;line-height:1.25;}
@@ -34,7 +56,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .cd-date{font-size:11px;color:rgba(255,255,255,.65);margin-top:2px;}
 .cd-num{font-family:'Nunito',sans-serif;font-weight:900;font-size:26px;color:white;line-height:1;}
 .cd-dias{font-size:9px;color:rgba(255,255,255,.65);margin-top:1px;text-align:right;}
-.sb-nav{padding:14px 10px;flex:1;overflow-y:auto;}
+.sb-nav{padding:14px 10px;flex:1;overflow-y:visible;}
 .sb-nav-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.28);padding:0 8px;margin-bottom:5px;margin-top:10px;}
 .nav-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;color:rgba(255,255,255,.55);transition:all .15s;user-select:none;margin-bottom:2px;text-decoration:none;}
 .nav-item:hover{background:rgba(255,255,255,.08);color:white;}
@@ -254,7 +276,7 @@ tr.done .topic-dt{display:block;}
 
 /* ── HISTÓRICO ── */
 .hist-filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:4px;}
-.hist-table-wrap{background:white;border-radius:14px;border:1.5px solid var(--border);overflow:hidden;}
+.hist-table-wrap{background:white;border-radius:14px;border:1.5px solid var(--border);overflow-x:auto;}
 .hist-table{width:100%;border-collapse:collapse;font-size:13px;}
 .hist-table th{padding:10px 14px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-soft);text-align:left;border-bottom:1.5px solid var(--border);background:var(--bg);white-space:nowrap;}
 .hist-table td{padding:11px 14px;border-bottom:1px solid #f0f2f9;vertical-align:middle;}
@@ -323,9 +345,35 @@ tr.done .topic-dt{display:block;}
 .toast{position:fixed;bottom:22px;right:22px;background:var(--navy);color:white;padding:11px 18px;border-radius:12px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(13,19,76,.3);transform:translateY(80px);opacity:0;transition:all .3s;z-index:999;}
 .toast.show{transform:translateY(0);opacity:1;}
 ::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px;}
-@media(max-width:900px){:root{--sidebar-w:0px;}.sidebar{display:none;}.content{margin-left:0;width:100%;max-width:100vw;}.topstrip{padding:0 16px;gap:12px;}.page{padding:18px 16px;}.metas-grid,.hist-summary{grid-template-columns:1fr 1fr;}}
-@media(max-width:760px){.tracker-row{grid-template-columns:1fr;}.prog-card{flex-direction:column;align-items:stretch;gap:16px;}.prog-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}.man-grid,.man-grid-wide{grid-template-columns:1fr;}.topstrip{height:auto;min-height:54px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px;}.strip-right{width:100%;justify-content:space-between;}.strip-actions{flex-shrink:0;}.tab-bar{flex:1;}.cal-day{min-height:48px;}}
-/* Ajuste de largura dos campos de lista suspensa */
+
+/* ── MEDIA QUERIES PARA CELULAR / TABLET ── */
+@media(max-width:900px){
+  :root{--sidebar-w:0px;}
+  .sidebar{
+    transform: translateX(-100%);
+    width: 260px !important;
+  }
+  .sidebar.open{
+    transform: translateX(0);
+  }
+  .mobile-menu-btn{display:flex !important;}
+  .content{margin-left:0;width:100%;max-width:100vw;}
+  .topstrip{padding:0 16px;gap:12px;}
+  .page{padding:18px 16px;}
+  .metas-grid,.hist-summary{grid-template-columns:1fr 1fr;}
+}
+
+@media(max-width:760px){
+  .tracker-row{grid-template-columns:1fr;}
+  .prog-card{flex-direction:column;align-items:stretch;gap:16px;}
+  .prog-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+  .man-grid,.man-grid-wide{grid-template-columns:1fr;}
+  .topstrip{height:auto;min-height:54px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px;}
+  .strip-right{width:100%;justify-content:space-between;}
+  .strip-actions{flex-shrink:0;}
+  .tab-bar{flex:1;}
+  .cal-day{min-height:48px;}
+}
 select{min-width:0;max-width:100%;}
 .crono-session-info{min-width:0;max-width:100%;}
 .crono-disc-select select,.crono-disc-select input{min-width:0;width:100%;max-width:100%;text-overflow:ellipsis;}
@@ -336,6 +384,7 @@ select{min-width:0;max-width:100%;}
 #chart-disc{flex:1 1 150px;width:min(220px,100%);}
 #chart-period{flex:0 1 140px;width:min(160px,100%);}
 @media(max-width:760px){.stats-panel-header > div:last-child{width:100%;}.cf-select,#chart-disc,#chart-period{flex:1 1 100%;width:100%;}}.sb-badge svg{width:100%;height:100%;display:block;}
+
 /* ── ROTINA / POMODORO ── */
 .rt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:14px;align-items:start;}
 .rt-card{background:white;border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 2px 12px rgba(13,19,76,.05);}
@@ -417,6 +466,9 @@ select{min-width:0;max-width:100%;}
 </head>
 <body>
 
+<!-- OVERLAY PARA FECHAR O MENU NO CELULAR -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleMobileSidebar()"></div>
+
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sb-logo"><div class="sb-badge" aria-label="VS"><span style="font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;letter-spacing:-.5px">VS</span></div><div class="sb-words">Victor Santos<span>Estudos &amp; Rotina</span></div></div>
@@ -451,7 +503,10 @@ select{min-width:0;max-width:100%;}
 <!-- MAIN -->
 <div class="content">
   <div class="topstrip">
-    <div class="page-title">Edital Verticalizado</div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <button class="btn btn-ghost mobile-menu-btn" onclick="toggleMobileSidebar()" style="display:none; padding:6px 10px; font-size:15px;" title="Abrir Menu">☰</button>
+      <div class="page-title">Edital Verticalizado</div>
+    </div>
     <div class="strip-right">
       <div class="tab-bar">
         <button class="tab-btn active" onclick="switchTab('estudos')">⏱ Estudos</button>
@@ -818,10 +873,10 @@ select{min-width:0;max-width:100%;}
     <div class="sec-lbl">📅 Histórico de Estudos</div>
 
     <div class="hist-summary">
-      <div class="hist-sum-card"><div class="hsc-val" id="hs-dias">0</div><div class="hsc-lbl">Dias estudados</div></div>
-      <div class="hist-sum-card"><div class="hsc-val" id="hs-horas">0h</div><div class="hsc-lbl">Total de horas</div></div>
-      <div class="hist-sum-card"><div class="hsc-val" id="hs-questoes">0</div><div class="hsc-lbl">Total de questões</div></div>
-      <div class="hist-sum-card"><div class="hsc-val" id="hs-media">0h</div><div class="hsc-lbl">Média diária</div></div>
+      <div class="hist-sum-card"><div class="hsc-val" id="hs-dias">0</div><div class="hist-sum-lbl">Dias estudados</div></div>
+      <div class="hist-sum-card"><div class="hsc-val" id="hs-horas">0h</div><div class="hist-sum-lbl">Total de horas</div></div>
+      <div class="hist-sum-card"><div class="hsc-val" id="hs-questoes">0</div><div class="hist-sum-lbl">Total de questões</div></div>
+      <div class="hist-sum-card"><div class="hsc-val" id="hs-media">0h</div><div class="hist-sum-lbl">Média diária</div></div>
     </div>
 
     <div class="hist-filters">
@@ -932,9 +987,19 @@ let calOffset=0;
 let modalDay=null;
 let curFilter="todos";
 
+// ── TOGGLE MENU MOBILE ────────────────────────────────
+function toggleMobileSidebar() {
+  const sb = document.querySelector('.sidebar');
+  const ov = document.getElementById('sidebar-overlay');
+  if (sb && ov) {
+    sb.classList.toggle('open');
+    ov.classList.toggle('open');
+  }
+}
+
 // ── CRONÔMETRO ─────────────────────────────────────────
-let cronoStartTime = null;  // Date.now() quando iniciou/retomou
-let cronoAccumSecs = 0;     // segundos acumulados em pausas anteriores
+let cronoStartTime = null;
+let cronoAccumSecs = 0;
 let cronoInterval  = null;
 let cronoRunning   = false;
 
@@ -1160,7 +1225,6 @@ function manualAdd() {
   showToast('✅', synced ? 'Registro adicionado e edital atualizado!' : 'Registro adicionado!');
 }
 
-// ── REGISTROS (histórico + calendário unificados) ──────
 function addRegistro(r) {
   r.id = Date.now() + Math.random();
   historico.push(r);
@@ -1180,7 +1244,6 @@ function deleteRegistro(id) {
   showToast('🗑️', 'Registro removido.');
 }
 
-// ── CALENDÁRIO ─────────────────────────────────────────
 function calNav(dir) { calOffset = dir === 0 ? 0 : calOffset + dir; renderCal(); }
 
 function renderCal() {
@@ -1199,7 +1262,6 @@ function renderCal() {
   const firstDay = new Date(y, m, 1).getDay();
   const daysInMonth = new Date(y, m + 1, 0).getDate();
   const daysInPrev = new Date(y, m, 0).getDate();
-  const todayStr = todayKey();
 
   for (let i = 0; i < firstDay; i++) grid.appendChild(makeDayEl(y, m - 1, daysInPrev - firstDay + 1 + i, true));
   for (let d = 1; d <= daysInMonth; d++) grid.appendChild(makeDayEl(y, m, d, false));
@@ -1213,8 +1275,6 @@ function makeDayEl(y, m, d, other) {
   const key = dateToKey(date);
   const regs = historico.filter(r => r.date === key);
   const totalH = regs.reduce((s, r) => s + (r.horas || 0), 0);
-  const totalQ = regs.reduce((s, r) => s + (r.questoes || 0), 0);
-  const discs = [...new Set(regs.map(r => r.disc).filter(Boolean))];
 
   const el = document.createElement('div');
   el.className = 'cal-day' + (other ? ' other-month' : '') + (key === todayKey() ? ' today' : '') + (regs.length ? ' has-data' : '');
@@ -1230,7 +1290,6 @@ function updateCronoTodayVal() {
   document.getElementById('crono-today-val').textContent = horasLabel(totalH);
 }
 
-// ── MODAL CALENDÁRIO ─────────────────────────────────────
 function openModal(key) {
   modalDay = key;
   const [y, m, d] = key.split('-');
@@ -1259,7 +1318,6 @@ function saveModalDay() {
   const questoes = parseInt(document.getElementById('modal-questoes').value) || 0;
   const disc = document.getElementById('modal-disc').value;
   const topic = document.getElementById('modal-topic').value;
-  // Remove registros manuais do dia e adiciona novo consolidado
   historico = historico.filter(r => !(r.date === modalDay && r.origem === 'modal'));
   if (horas > 0 || questoes > 0) addRegistro({ date: modalDay, disc, topic, horas, questoes, origem: 'modal' });
   document.getElementById('modal-overlay').classList.remove('open');
@@ -1267,7 +1325,6 @@ function saveModalDay() {
   showToast('✅', 'Dia atualizado!');
 }
 
-// ── HISTÓRICO ──────────────────────────────────────────
 function renderHistorico() {
   const discFilter = document.getElementById('hist-filter-disc').value;
   const periodDays = parseInt(document.getElementById('hist-filter-period').value);
@@ -1279,7 +1336,6 @@ function renderHistorico() {
     return true;
   }).sort((a, b) => b.date.localeCompare(a.date));
 
-  // Summary
   const totalH = filtered.reduce((s, r) => s + (r.horas || 0), 0);
   const totalQ = filtered.reduce((s, r) => s + (r.questoes || 0), 0);
   const dias = new Set(filtered.map(r => r.date)).size;
@@ -1290,7 +1346,7 @@ function renderHistorico() {
 
   const tbody = document.getElementById('hist-tbody');
   if (!filtered.length) {
-    tbody.innerHTML = `<tr><td colspan="11" class="hist-empty">Nenhum registro encontrado.<br>Use o cronômetro ou inserção manual para começar.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="12" class="hist-empty">Nenhum registro encontrado.<br>Use o cronômetro ou inserção manual para começar.</td></tr>`;
     return;
   }
 
@@ -1328,7 +1384,6 @@ function populateHistFilterDisc() {
   sel.innerHTML = '<option value="">Todas as disciplinas</option>' + EDITAL.map(d => `<option value="${d.nome}">${d.nome}</option>`).join('');
 }
 
-// ── SELECTS DE DISCIPLINA ─────────────────────────────
 function populateDiscSelects() {
   const opts = '<option value="">— selecione —</option>' + EDITAL.map(d => `<option value="${d.nome}">${d.nome}</option>`).join('');
   document.getElementById('crono-disc').innerHTML = opts;
@@ -1336,7 +1391,6 @@ function populateDiscSelects() {
   document.getElementById('modal-disc').innerHTML = opts;
 }
 
-// ── TABS ───────────────────────────────────────────────
 function switchTab(tab) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1347,18 +1401,26 @@ function switchTab(tab) {
   });
   document.getElementById('btn-expand').style.display  = tab==='edital' ? '' : 'none';
   document.getElementById('btn-collapse').style.display = tab==='edital' ? '' : 'none';
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   if (tab==='historico') renderHistorico();
   if (tab==='revisoes')  renderRevisoes();
   if (tab==='estudos')   renderCharts();
   if (tab==='rotina')    renderRotina();
+
+  // Fecha o menu lateral no celular ao trocar de aba
+  if (window.innerWidth <= 900) {
+    const sb = document.querySelector('.sidebar');
+    const ov = document.getElementById('sidebar-overlay');
+    if (sb && sb.classList.contains('open')) {
+      sb.classList.remove('open');
+      ov.classList.remove('open');
+    }
+  }
 }
 
 function scrollToId(id) {
   setTimeout(() => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
 }
 
-// ── SIDEBAR ────────────────────────────────────────────
 function renderSidebar() {
   const info = document.getElementById('sb-info');
   const rows = [{l:'Concurso',v:CONCURSO_INFO.concurso},{l:'Cargo',v:CONCURSO_INFO.cargo},{l:'Banca',v:CONCURSO_INFO.banca}];
@@ -1380,7 +1442,6 @@ function goDisc(id) {
   if (el) { el.classList.add('open'); setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50); }
 }
 
-// ── DISCIPLINAS ────────────────────────────────────────
 function renderDiscs() {
   const list = document.getElementById('disc-list'); list.innerHTML = '';
   EDITAL.forEach((disc, di) => {
@@ -1431,18 +1492,13 @@ function applyFilter(){EDITAL.forEach(d=>d.grupos.forEach(g=>g.topicos.forEach((
 function expandAll(){document.querySelectorAll('.disc-card').forEach(c=>c.classList.add('open'));}
 function collapseAll(){document.querySelectorAll('.disc-card').forEach(c=>c.classList.remove('open'));}
 
-// ── UPDATE ALL ──────────────────────────────────────────
 function updateAll() {
-  // Progresso edital — checkboxes
   let tot=0,conc=0,acEdital=0,erEdital=0;
   EDITAL.forEach(d=>{const s=getDiscStats(d);tot+=s.totalTopicos;conc+=s.concluidos;acEdital+=s.acertos;erEdital+=s.erros;});
   const pct=tot>0?Math.round(conc/tot*100):0;
 
-  // Aproveitamento TOTAL = edital + cronômetro + inserção manual
   const acHist = historico.reduce((s,r)=>s+(r.acertos||0),0);
   const erHist = historico.reduce((s,r)=>s+(r.erros||0),0);
-  // Evitar dupla contagem: usa só o histórico se tiver registros, senão usa edital
-  // Na prática o aluno usa um ou outro — mas somamos os dois para ser abrangente
   const acTotal = acEdital + acHist;
   const erTotal = erEdital + erHist;
   const totQ    = acTotal + erTotal;
@@ -1456,7 +1512,6 @@ function updateAll() {
   document.getElementById('ps-tot').textContent=totQ;
   document.getElementById('ps-aprov').textContent=aprov!==null?aprov+'%':'—';
 
-  // Metas — horas e questões da semana atual (automático)
   const weekStart = getWeekStart();
   const weekRegs = historico.filter(r => r.date >= weekStart);
   const weekH = weekRegs.reduce((s,r)=>s+(r.horas||0),0);
@@ -1484,7 +1539,6 @@ function updateAll() {
   document.getElementById('ml-a').textContent=totQ>0?acTotal+' acertos de '+totQ:'Sem questões';
   document.getElementById('mp-a').textContent=rA+'%';
 
-  // Disc headers
   EDITAL.forEach(d=>{
     const s=getDiscStats(d),cp=s.totalTopicos>0?Math.round(s.concluidos/s.totalTopicos*100):0,g=id=>document.getElementById(id);
     if(g('dcac-'+d.id))g('dcac-'+d.id).textContent=s.acertos;if(g('dcer-'+d.id))g('dcer-'+d.id).textContent=s.erros;if(g('dcto-'+d.id))g('dcto-'+d.id).textContent=s.total;
@@ -1499,11 +1553,10 @@ function updateAll() {
 
 function getWeekStart() {
   const d = new Date(); d.setHours(0,0,0,0);
-  d.setDate(d.getDate() - d.getDay()); // domingo
+  d.setDate(d.getDate() - d.getDay());
   return dateToKey(d);
 }
 
-// ── STATE ───────────────────────────────────────────────
 function getTS(tid){return state[tid]||{};}
 function setTS(tid,k,v){if(!state[tid])state[tid]={};state[tid][k]=v;}
 function getDiscStats(disc){
@@ -1512,10 +1565,6 @@ function getDiscStats(disc){
   const pct=totalQ>0?Math.round(ac/totalQ*100):0;return{acertos:ac,erros:er,total:totalQ,pct,concluidos:c,totalTopicos:t};
 }
 
-
-// ═══════════════════════════════════════════════════════
-//  FIREBASE — LOGIN E BANCO DE DADOS (sincroniza celular/PC)
-// ═══════════════════════════════════════════════════════
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyDyt4KZ25wWDMGGKiTdkS7rGF3LMsEEDJg",
   authDomain: "rotina-bc181.firebaseapp.com",
@@ -1593,7 +1642,6 @@ async function bootWithAuth() {
   });
 }
 
-// ── STORAGE (sincronizado — nuvem do Claude, com fallback local) ──
 const DB_PATH = 'victor/estado-principal';
 let dbHandle = null, dbReady = false, syncOn = false;
 
@@ -1648,7 +1696,7 @@ async function loadStorage() {
     try {
       const doc = await dbHandle.doc(DB_PATH).get();
       if (doc && doc.data) { applySnapshot(doc.data); setSyncBadge(); return; }
-    } catch(e) { /* segue para o fallback local */ }
+    } catch(e) {}
   }
   try {
     const raw = localStorage.getItem(KEY);
@@ -1681,7 +1729,6 @@ async function saveData() {
   showToast('💾', 'Salvo neste aparelho.');
 }
 
-// ── BACKUP / RESTORE ──────────────────────────────────
 function openBackupModal() {
   document.getElementById('backup-modal').classList.add('open');
 }
@@ -1713,7 +1760,6 @@ function exportBackup() {
     document.getElementById('backup-modal').classList.remove('open');
     showToast('✅', 'Backup exportado com sucesso!');
   } catch(e) {
-    console.error('exportBackup error:', e);
     showToast('⚠️', 'Erro ao exportar: ' + e.message);
   }
 }
@@ -1756,7 +1802,6 @@ async function importBackup(input) {
 }
 function showToast(icon,msg){document.getElementById('ti').textContent=icon;document.getElementById('tm').textContent=msg;const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
 
-// ── UTILS ────────────────────────────────────────────────
 function slug(s){return s.toLowerCase().replace(/[^a-z0-9]/g,'-').replace(/-+/g,'-');}
 function fmtDt(d){return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
 function pc(pct,tot){if(!tot||tot===0)return'n';if(pct>=70)return'g';if(pct>=50)return'y';return'r';}
@@ -1765,7 +1810,6 @@ function horasLabel(h){const hh=Math.floor(h),mm=Math.round((h-hh)*60);return`${
 function dateToKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function todayKey(){return dateToKey(new Date());}
 
-// ── REVISÕES ───────────────────────────────────────────
 function toggleRevBtn(btn, days) {
   btn.classList.toggle('done'); updateRevSelected();
 }
@@ -1793,8 +1837,6 @@ function renderRevisoes() {
     el.innerHTML = '<div class="rev-empty">Nenhuma revisão agendada ainda.<br>Use o cronômetro e agende revisões ao estudar.</div>'; return;
   }
   const today = todayKey();
-
-  // Classify each revisao
   const groups = { overdue: [], today: [], week: [], later: [], done: [] };
   revisoes.forEach(r => {
     if (r.done) { groups.done.push(r); return; }
@@ -1817,8 +1859,6 @@ function renderRevisoes() {
   groupDefs.forEach(gd => {
     const items = groups[gd.key];
     if (!items.length) return;
-
-    // Group by disc within this group
     const byDisc = {};
     items.forEach(r => {
       const k = r.disc || 'Sem disciplina';
@@ -1870,11 +1910,10 @@ function renderRevisoes() {
           </div>
         </div>`;
       });
-      html += '</div>'; // rev-disc-block
+      html += '</div>';
     });
-    html += '</div>'; // rev-group
+    html += '</div>';
   });
-
   el.innerHTML = html;
 }
 function toggleRevDone(id) {
@@ -1884,7 +1923,6 @@ function deleteRevisao(id) {
   revisoes = revisoes.filter(r => String(r.id)!==String(id)); renderRevisoes(); debouncedSave();
 }
 
-// ── PAINEL DE ESTATÍSTICAS ─────────────────────────────
 function renderCharts() {
   const discEl   = document.getElementById('chart-disc');
   const periodEl = document.getElementById('chart-period');
@@ -1902,10 +1940,8 @@ function renderCharts() {
   const totalEr = regs.reduce((s,r)=>s+(r.erros||0),0);
   const totQ    = totalAc + totalEr;
   const pct     = totQ > 0 ? Math.round(totalAc/totQ*100) : null;
-
   const pctColor = pct===null ? 'var(--text-soft)' : pct>=70 ? '#15803d' : pct>=50 ? '#b45309' : '#b91c1c';
 
-  // Big numbers
   document.getElementById('sb-horas').textContent    = horasLabel(totalH);
   document.getElementById('sb-acertos').textContent  = totalAc;
   document.getElementById('sb-erros').textContent    = totalEr;
@@ -1917,7 +1953,6 @@ function renderCharts() {
     document.getElementById(id).textContent = periodLabel;
   });
 
-  // Per-discipline breakdown — always show all disciplines
   const discRow = document.getElementById('stats-disc-row');
   const discData = EDITAL.map((d, i) => {
     let dRegs = historico.filter(r => r.disc === d.nome && r.date >= cutoffKey);
@@ -1929,11 +1964,8 @@ function renderCharts() {
     return { nome: d.nome, cor: DISC_CORES[i % DISC_CORES.length], h, ac, er, q, p };
   });
 
-  // Show all, sorted: with data first
   discData.sort((a,b) => (b.h+b.q) - (a.h+a.q));
-
   const maxH = Math.max(...discData.map(d => d.h), 0.01);
-  const maxQ = Math.max(...discData.map(d => d.q), 0.01);
 
   discRow.innerHTML = discData.map(d => {
     const hasData = d.h > 0 || d.q > 0;
@@ -1958,10 +1990,6 @@ function populateChartDisc() {
   sel.innerHTML = '<option value="">Todas as disciplinas</option>' + EDITAL.map(d=>`<option value="${d.nome}">${d.nome}</option>`).join('');
 }
 
-
-// ═══════════════════════════════════════════════════════
-//  ROTINA · POMODORO · AGENDA · CONTAS
-// ═══════════════════════════════════════════════════════
 let pomo = { foco:25, curta:5, longa:15, log:{} };
 let rotina = { habitos:['Exercício físico','Estudo — Concursos','Estudo — Redes','Leitura','Beber água'], marcas:{} };
 let agenda = [];
@@ -2032,7 +2060,6 @@ function renderPomoStats(){
   document.getElementById('pomo-total').textContent=tot;
 }
 
-// ── HÁBITOS ───────────────────────────────────────────
 function addHabito(){
   const i=document.getElementById('hab-novo'), v=i.value.trim();
   if(!v) return; rotina.habitos.push(v); i.value=''; renderHabitos(); debouncedSave();
@@ -2056,7 +2083,6 @@ function renderHabitos(){
   document.getElementById('hab-count').textContent=feitos+'/'+rotina.habitos.length;
 }
 
-// ── COMPROMISSOS ──────────────────────────────────────
 function addCompromisso(){
   const tipo=document.getElementById('ag-tipo').value;
   const titulo=document.getElementById('ag-titulo').value.trim();
@@ -2088,7 +2114,6 @@ function renderAgenda(){
       <button class="rt-del" onclick="delComp(${c.id})">×</button></div>`; }).join('');
 }
 
-// ── CONTAS ────────────────────────────────────────────
 function addConta(){
   const desc=document.getElementById('ct-desc').value.trim();
   const valor=parseFloat(document.getElementById('ct-valor').value)||0;
@@ -2142,7 +2167,6 @@ function initRotina(){
   pomoSetMode('foco'); renderRotina();
 }
 
-// ── INIT ─────────────────────────────────────────────────
 async function init() {
   await loadStorage();
   renderSidebar();
