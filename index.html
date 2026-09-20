@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -469,6 +469,7 @@ select{min-width:0;max-width:100%;}
         <button class="tab-btn" onclick="switchTab('revisoes')">🔁 Revisões</button>
         <button class="tab-btn" onclick="switchTab('historico')">📅 Histórico</button>
         <button class="tab-btn" onclick="switchTab('ranking')">🏆 Ranking</button>
+        <button class="tab-btn admin-only" id="admin-tab" onclick="switchTab('admin')">🛡️ Administração</button>
       </div>
       <div class="strip-actions">
         <button class="btn btn-ghost" id="btn-expand" onclick="expandAll()" style="display:none">↕ Expandir</button>
@@ -888,6 +889,7 @@ select{min-width:0;max-width:100%;}
         <input class="rt-inp" id="admin-new-pass" type="password" placeholder="Senha (mín. 6 caracteres)">
         <button class="rt-btn" onclick="adminCreateUser()">➕ Cadastrar aluno</button>
       </div>
+      <div id="admin-users-status" style="font-size:11px;color:var(--text-soft);margin:0 0 8px 0"></div>
       <div id="admin-users-list"><div class="rt-empty">Carregando usuários…</div></div>
     </div>
     <div class="admin-panel"><h3 style="font-family:Nunito;margin-bottom:6px">📚 Conteúdo e importações</h3><p style="font-size:12px;color:var(--text-soft);line-height:1.5">Use a área de importação para preparar editais, rotinas e imagens. As alterações de código continuam sendo publicadas pelo GitHub Pages.</p><div class="rt-actions" style="margin-top:10px"><button class="rt-btn" onclick="switchTab('importacao')">Abrir importações</button></div></div>
@@ -1335,6 +1337,25 @@ function updateCronoTodayVal() {
 }
 
 // ── MODAL CALENDÁRIO ─────────────────────────────────────
+function renderModalAgenda(key){
+  const aw=document.getElementById('modal-agenda-wrap');
+  const al=document.getElementById('modal-agenda-list');
+  if(!aw||!al) return;
+  const items=agenda.filter(a=>a.data===key);
+  aw.style.display=items.length?'block':'none';
+  const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  al.innerHTML=items.length?items.slice().sort((a,b)=>(a.hora||'').localeCompare(b.hora||'')).map(a=>{
+    const cancelled=a.status==='cancelled';
+    const status=cancelled?'Cancelada':a.done?'Concluída':'Agendada';
+    const actionButtons=[];
+    if(!cancelled && !a.done) actionButtons.push(`<button onclick="toggleCompFromModal(${JSON.stringify(a.id)},${JSON.stringify(key)})">✓ Concluir</button>`);
+    if(!cancelled) actionButtons.push(`<button onclick="cancelCompFromModal(${JSON.stringify(a.id)},${JSON.stringify(key)})">🗑️ Cancelar</button>`);
+    else actionButtons.push(`<button onclick="restoreCompFromModal(${JSON.stringify(a.id)},${JSON.stringify(key)})">↩️ Reativar</button>`);
+    actionButtons.push(`<button onclick="deleteCompFromModal(${JSON.stringify(a.id)},${JSON.stringify(key)})">❌ Excluir</button>`);
+    return `<div class="ag-modal-item"><div class="ag-modal-title">${esc(a.titulo||a.tipo||'Atividade')}</div><div class="ag-modal-sub">${esc(a.hora||'Sem horário')} · ${status}</div><div class="ag-modal-actions">${actionButtons.join('')}</div></div>`;
+  }).join(''):' ';
+}
+
 function openModal(key) {
   modalDay = key;
   const [y, m, d] = key.split('-');
@@ -1347,6 +1368,7 @@ function openModal(key) {
   document.getElementById('modal-disc').value = '';
   document.getElementById('modal-topic').value = '';
   document.getElementById('modal-topic-field').classList.remove('visible');
+  renderModalAgenda(key);
   document.getElementById('modal-overlay').classList.add('open');
 }
 
@@ -1442,12 +1464,13 @@ function populateDiscSelects() {
 
 // ── TABS ───────────────────────────────────────────────
 function switchTab(tab) {
+  if(tab==='admin' && !isAdmin){ showToast('⚠️','Acesso restrito ao administrador.'); return; }
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   const target=document.getElementById('page-' + tab); if(!target)return; target.classList.add('active');
   document.querySelectorAll('.tab-btn').forEach(b => {
     const t = b.textContent.toLowerCase();
-    if ((tab==='estudos'&&t.includes('estudo'))||(tab==='edital'&&t.includes('edital'))||(tab==='revisoes'&&t.includes('revis'))||(tab==='historico'&&t.includes('hist'))||(tab==='rotina'&&t.includes('rotina'))||(tab==='ranking'&&t.includes('ranking'))||(tab==='importacao'&&t.includes('import'))) b.classList.add('active');
+    if ((tab==='estudos'&&t.includes('estudo'))||(tab==='edital'&&t.includes('edital'))||(tab==='revisoes'&&t.includes('revis'))||(tab==='historico'&&t.includes('hist'))||(tab==='rotina'&&t.includes('rotina'))||(tab==='ranking'&&t.includes('ranking'))||(tab==='importacao'&&t.includes('import'))||(tab==='admin'&&t.includes('administra'))) b.classList.add('active');
   });
   document.getElementById('btn-expand').style.display  = tab==='edital' ? '' : 'none';
   document.getElementById('btn-collapse').style.display = tab==='edital' ? '' : 'none';
@@ -1600,17 +1623,6 @@ function updateAll() {
     const badge=g('dcpct-'+d.id);if(badge){badge.textContent=s.total>0?s.pct+'%':'—';badge.className='pct-pill '+pc(s.pct,s.total);}
   });
 
-  const agendaDay = agenda.filter(a => a.data === key);
-  const aw = document.getElementById('modal-agenda-wrap');
-  const al = document.getElementById('modal-agenda-list');
-  if (aw && al) {
-    aw.style.display = agendaDay.length ? 'block' : 'none';
-    al.innerHTML = agendaDay.length ? agendaDay.sort((a,b)=>(a.hora||'').localeCompare(b.hora||'')).map(a => {
-      const cancelled = a.status === 'cancelled';
-      const status = cancelled ? 'Cancelada' : a.done ? 'Concluída' : 'Agendada';
-      return `<div class="ag-modal-item"><div class="ag-modal-title">${String(a.titulo||a.tipo||'Atividade').replace(/</g,'&lt;')}</div><div class="ag-modal-sub">${a.hora||'Sem horário'} · ${status}</div><div class="ag-modal-actions">${!cancelled && !a.done ? `<button onclick="toggleComp(${a.id});openModal('${key}')">✓ Concluir</button>`:''}${!cancelled ? `<button onclick="cancelComp(${a.id});openModal('${key}')">🗑️ Cancelar</button>` : `<button onclick="restoreComp(${a.id});openModal('${key}')">↩️ Reativar</button>`}<button onclick="delComp(${a.id});openModal('${key}')">❌ Excluir</button></div></div>`;
-    }).join('') : '';
-  }
   updateCronoTodayVal();
 }
 
@@ -1642,6 +1654,7 @@ const FIREBASE_CONFIG = {
   appId: "1:710454580472:web:335be81d5fea05c98cd70d"
 };
 let fbAuth = null, fbDB = null, fbUser = null, firebaseAvailable = false;
+let fbAdminApp = null, fbAdminAuth = null;
 let currentProfile = null, isAdmin = false;
 const APP_NAME = 'RotinAI';
 const ADMIN_DISPLAY_NAME = 'Victor Santos';
@@ -1657,6 +1670,17 @@ function initFirebase() {
     firebaseAvailable = true;
     return true;
   } catch(e) { firebaseAvailable = false; return false; }
+}
+
+function getSecondaryAdminAuth(){
+  if(!firebaseAvailable || !isAdmin) return null;
+  try{
+    if(!fbAdminApp) fbAdminApp=firebase.app('rotinai-admin-helper');
+  }catch(e){
+    try{ fbAdminApp=firebase.initializeApp(FIREBASE_CONFIG,'rotinai-admin-helper'); }catch(err){ console.warn('admin helper init',err); return null; }
+  }
+  try{ if(!fbAdminAuth) fbAdminAuth=fbAdminApp.auth(); }catch(e){ return null; }
+  return fbAdminAuth;
 }
 
 function showLogin(msg) {
@@ -1709,10 +1733,16 @@ async function loadUserProfile(){
       currentProfile={name,email:fbUser.email||'',role:'student',rankingEnabled:true,rankingId:null};
     }else currentProfile=snap.data();
     if(!currentProfile.rankingId){ currentProfile.rankingId=makeRankingId(); await ref.set({rankingId:currentProfile.rankingId},{merge:true}); }
-    isAdmin=currentProfile?.role==='admin';
+    isAdmin=String(currentProfile?.role||'').toLowerCase()==='admin';
     loadWhatsAppSettingsUI();
     document.querySelectorAll('.admin-only').forEach(el=>el.classList.toggle('admin-visible',isAdmin));
-  }catch(e){isAdmin=false;currentProfile=null;}
+    const adminStatus=document.getElementById('admin-users-status');
+    if(adminStatus) adminStatus.textContent=isAdmin?'Acesso de administrador confirmado pelo Firestore.':'Sua conta ainda está como aluno.';
+  }catch(e){
+    console.error('loadUserProfile',e);
+    isAdmin=false;currentProfile=null;
+    document.querySelectorAll('.admin-only').forEach(el=>el.classList.remove('admin-visible'));
+  }
 }
 function loadWhatsAppSettingsUI(){
   const w=currentProfile?.whatsapp||{};
@@ -2292,10 +2322,14 @@ function addCompromisso(){
 function copyAgendaText(text){ if(!text) return; if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(()=>showToast('📋','Copiado!')).catch(()=>fallbackCopy(text));}else fallbackCopy(text); }
 function fallbackCopy(text){ const t=document.createElement('textarea');t.value=text;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();try{document.execCommand('copy');showToast('📋','Copiado!');}catch(e){showToast('⚠️','Não foi possível copiar automaticamente.');}t.remove(); }
 function agendaSearchUrl(text){ return 'https://www.google.com/search?q='+encodeURIComponent(text||''); }
-function toggleComp(id){ const c=agenda.find(x=>x.id===id); if(c){c.done=!c.done; renderAgenda(); debouncedSave();} }
-function cancelComp(id){ const c=agenda.find(x=>x.id===id); if(c){c.status='cancelled';c.done=false;renderAgenda();debouncedSave();showToast('🗑️','Tarefa cancelada.');} }
-function restoreComp(id){ const c=agenda.find(x=>x.id===id); if(c){c.status='scheduled';renderAgenda();debouncedSave();showToast('↩️','Tarefa reativada.');} }
-function delComp(id){ agenda=agenda.filter(x=>x.id!==id); renderAgenda(); debouncedSave(); }
+function toggleComp(id){ const c=agenda.find(x=>String(x.id)===String(id)); if(c){c.done=!c.done; renderAgenda(); renderCal(); debouncedSave();} }
+function cancelComp(id){ const c=agenda.find(x=>String(x.id)===String(id)); if(c){c.status='cancelled';c.done=false;renderAgenda();renderCal();debouncedSave();showToast('🗑️','Tarefa cancelada.');} }
+function restoreComp(id){ const c=agenda.find(x=>String(x.id)===String(id)); if(c){c.status='scheduled';renderAgenda();renderCal();debouncedSave();showToast('↩️','Tarefa reativada.');} }
+function delComp(id){ agenda=agenda.filter(x=>String(x.id)!==String(id)); renderAgenda(); renderCal(); if(modalDay) renderModalAgenda(modalDay); debouncedSave(); showToast('🗑️','Tarefa excluída do calendário.'); }
+function toggleCompFromModal(id,key){ toggleComp(id); renderCal(); renderModalAgenda(key); }
+function cancelCompFromModal(id,key){ cancelComp(id); renderCal(); renderModalAgenda(key); }
+function restoreCompFromModal(id,key){ restoreComp(id); renderCal(); renderModalAgenda(key); }
+function deleteCompFromModal(id,key){ delComp(id); renderModalAgenda(key); }
 function renderAgenda(){
   const el=document.getElementById('ag-list'), hoje=todayKey();
   const lista=agenda.slice().sort((a,b)=>(a.data+(a.hora||'')).localeCompare(b.data+(b.hora||'')));
@@ -2405,6 +2439,7 @@ function initRotina(){
 // ── INIT ─────────────────────────────────────────────────
 async function init() {
   await loadStorage();
+  document.querySelectorAll('.admin-only').forEach(el=>el.classList.toggle('admin-visible',isAdmin));
   renderSidebar();
   renderDiscs();
   populateDiscSelects();
@@ -2424,34 +2459,81 @@ async function loadAdminStats(){
   if(!isAdmin||!fbDB)return;
   try{
     const u=await fbDB.collection('users').get();
-    const r=await fbDB.collection('ranking_public').get();
     document.getElementById('admin-user-count').textContent=u.size;
-    document.getElementById('admin-ranking-count').textContent=r.size;
+    try{ const r=await fbDB.collection('ranking_public').get(); document.getElementById('admin-ranking-count').textContent=r.size; }
+    catch(e){ document.getElementById('admin-ranking-count').textContent='—'; }
     await loadAdminUsers();
   }catch(e){
     console.warn('admin stats',e);
-    const el=document.getElementById('admin-users-list'); if(el) el.innerHTML='<div class="rt-empty">Não foi possível carregar os usuários.</div>';
+    const el=document.getElementById('admin-users-list'); if(el) el.innerHTML='<div class="rt-empty">Não foi possível carregar os usuários. Verifique as regras do Firestore.</div>';
   }
 }
 async function adminCall(name,data){
-  if(!isAdmin||!fbUser||typeof firebase==='undefined'||!firebase.functions){showToast('⚠️','Área disponível somente para administrador.');return null;}
-  try{ const fn=firebase.functions().httpsCallable(name); return (await fn(data||{})).data; }
-  catch(e){ console.error(name,e); showToast('⚠️',e?.message||'Não foi possível executar a ação.'); return null; }
+  if(!isAdmin||!fbUser||!fbDB){showToast('⚠️','Área disponível somente para administrador.');return null;}
+  try{
+    if(firebase.functions){
+      const fn=firebase.functions().httpsCallable(name);
+      return (await fn(data||{})).data;
+    }
+  }catch(e){
+    console.warn('Cloud Function indisponível:',name,e);
+  }
+  return null;
 }
+
 async function loadAdminUsers(){
   const el=document.getElementById('admin-users-list'); if(!el||!isAdmin)return;
-  const data=await adminCall('adminListUsers',{}); if(!data)return;
-  const users=data.users||[];
-  el.innerHTML=users.length?users.map(u=>`<div class="admin-user"><div class="admin-user-head"><div><div class="admin-user-name">${String(u.name||u.email||'Usuário').replace(/</g,'&lt;')}</div><div class="admin-user-meta">${String(u.email||'').replace(/</g,'&lt;')} · ${u.disabled?'Bloqueado':'Ativo'}</div></div><span class="admin-badge">${u.role==='admin'?'ADMIN':'ALUNO'}</span></div><div class="admin-user-actions">${u.uid!==fbUser.uid?`<button onclick="adminToggleBlock('${u.uid}',${!u.disabled})">${u.disabled?'🔓 Desbloquear':'🔒 Bloquear'}</button><button onclick="adminDeleteUser('${u.uid}')">🗑️ Excluir</button>`:'<span class="admin-user-meta">Sua conta atual</span>'}</div></div>`).join(''):'<div class="rt-empty">Nenhum usuário cadastrado.</div>';
+  try{
+    let users=[];
+    const data=await adminCall('adminListUsers',{});
+    if(data?.users) users=data.users;
+    else {
+      const snap=await fbDB.collection('users').get();
+      users=snap.docs.map(doc=>{const u=doc.data()||{};return {uid:doc.id,name:u.name||'',email:u.email||'',role:u.role||'student',disabled:!!u.disabled,createdAt:null};});
+    }
+    users.sort((a,b)=>String(a.name||a.email).localeCompare(String(b.name||b.email),'pt-BR'));
+    const status=document.getElementById('admin-users-status');
+    if(status) status.textContent=users.length?`${users.length} usuário(s) encontrado(s).`:'Nenhum usuário cadastrado ainda.';
+    const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    el.innerHTML=users.length?users.map(u=>`<div class="admin-user"><div class="admin-user-head"><div><div class="admin-user-name">${esc(u.name||u.email||'Usuário')}</div><div class="admin-user-meta">${esc(u.email||'')} · ${u.disabled?'Bloqueado':'Ativo'}</div></div><span class="admin-badge">${u.role==='admin'?'ADMIN':'ALUNO'}</span></div><div class="admin-user-actions">${u.uid!==fbUser.uid?`<button onclick="adminToggleBlock('${esc(u.uid)}',${!u.disabled})">${u.disabled?'🔓 Desbloquear':'🔒 Bloquear'}</button><button onclick="adminDeleteUser('${esc(u.uid)}')">🗑️ Excluir</button>`:'<span class="admin-user-meta">Sua conta atual</span>'}</div></div>`).join(''):'<div class="rt-empty">Nenhum usuário cadastrado.</div>';
+  }catch(e){
+    console.error('loadAdminUsers',e);
+    const status=document.getElementById('admin-users-status'); if(status) status.textContent='Não foi possível carregar os usuários.';
+    el.innerHTML='<div class="rt-empty">Não foi possível carregar os usuários. Verifique as regras do Firestore.</div>';
+  }
 }
+
 async function adminCreateUser(){
   const name=(document.getElementById('admin-new-name')?.value||'').trim();
-  const email=(document.getElementById('admin-new-email')?.value||'').trim();
+  const email=(document.getElementById('admin-new-email')?.value||'').trim().toLowerCase();
   const password=document.getElementById('admin-new-pass')?.value||'';
   if(!name||!email||password.length<6){showToast('⚠️','Informe nome, e-mail e senha com pelo menos 6 caracteres.');return;}
+
+  // Primeiro tenta a Cloud Function (mais completa).
   const r=await adminCall('adminCreateUser',{name,email,password});
-  if(r?.ok){['admin-new-name','admin-new-email','admin-new-pass'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});showToast('✅','Aluno cadastrado com sucesso!');await loadAdminStats();}
+  if(r?.ok){
+    ['admin-new-name','admin-new-email','admin-new-pass'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+    showToast('✅','Aluno cadastrado com sucesso!'); await loadAdminStats(); return;
+  }
+
+  // Fallback para GitHub Pages: cria a conta usando uma instância secundária do Firebase Auth,
+  // sem desconectar o administrador atual.
+  try{
+    const auth2=getSecondaryAdminAuth();
+    if(!auth2) throw new Error('Firebase Auth secundário indisponível.');
+    const cred=await auth2.createUserWithEmailAndPassword(email,password);
+    await cred.user.updateProfile({displayName:name});
+    await fbDB.collection('users').doc(cred.user.uid).set({name,email,role:'student',rankingEnabled:true,rankingId:makeRankingId(),createdAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+    await auth2.signOut();
+    ['admin-new-name','admin-new-email','admin-new-pass'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+    showToast('✅','Aluno cadastrado. A conta continua separada da sua sessão de administrador.');
+    await loadAdminStats();
+  }catch(e){
+    console.error('adminCreateUser fallback',e);
+    showToast('⚠️',loginErrMsg(e)||e.message||'Não foi possível cadastrar o aluno.');
+  }
 }
+
 async function adminToggleBlock(uid,blocked){
   const r=await adminCall('adminSetUserBlocked',{uid,blocked}); if(r?.ok){showToast(blocked?'🔒':'🔓',blocked?'Usuário bloqueado.':'Usuário desbloqueado.');await loadAdminUsers();}
 }
