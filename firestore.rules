@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Perfil: cada aluno lê apenas o próprio perfil.
+    // O campo role não pode ser promovido pelo próprio usuário.
+    match /users/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+      allow create: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.role == 'student';
+      allow update: if signedIn() && (
+        isAdmin()
+        || (request.auth.uid == uid
+            && request.resource.data.role == resource.data.role)
+      );
+      allow delete: if isAdmin();
+    }
+
+    // Dados privados do aluno: nunca públicos.
+    match /user_data/{uid} {
+      allow read, write: if signedIn() && (request.auth.uid == uid || isAdmin());
+    }
+
+    // Compatibilidade com o documento antigo usado pela primeira versão.
+    // Recomenda-se migrar tudo para user_data/{uid} e depois remover esta regra.
+    match /victor/{uid} {
+      allow read, write: if signedIn() && (request.auth.uid == uid || isAdmin());
+    }
+
+    // Ranking: somente métricas agregadas e código anônimo.
+    // O ID do documento fica guardado no perfil privado do usuário, sem expor UID/e-mail.
+    match /ranking_public/{rankingId} {
+      allow read: if signedIn();
+      allow create, update: if signedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rankingId == rankingId
+        && request.resource.data.keys().hasOnly([
+          'anonimo','questoes','acertos','horas','aproveitamento','updatedAt'
+        ]);
+      allow delete: if isAdmin();
+    }
+
+    // Coleções administrativas futuras.
+    match /admin_data/{docId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Nenhuma outra coleção fica pública por padrão.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
