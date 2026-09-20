@@ -1563,15 +1563,27 @@ function doLogout() {
   if (fbAuth) fbAuth.signOut();
 }
 
-function bootWithAuth() {
+async function bootWithAuth() {
   if (!initFirebase()) { init(); return; }
-  fbAuth.onAuthStateChanged(user => {
+  fbAuth.onAuthStateChanged(async user => {
     if (user) {
       fbUser = user;
       hideLogin();
       const ub = document.getElementById('sb-user'), ue = document.getElementById('sb-user-email');
       if (ub) ub.style.display = 'flex';
       if (ue) ue.textContent = user.email;
+
+      try {
+        const docSnap = await fbDB.collection('victor').doc(user.uid).get();
+        if (docSnap.exists && docSnap.data().role === 'admin') {
+          showToast('👑', 'Modo Admin Ativado!');
+        } else {
+          showToast('👤', 'Acesso de Usuário Padrão.');
+        }
+      } catch (error) {
+        showToast('👤', 'Acesso de Usuário Padrão.');
+      }
+
       init();
     } else {
       fbUser = null;
