@@ -770,19 +770,39 @@ select{min-width:0;max-width:100%;}
           <input class="rt-inp" id="ag-data" type="date" style="flex:1 1 44%">
           <input class="rt-inp" id="ag-titulo" placeholder="Descrição" style="flex:1 1 60%" onkeydown="if(event.key==='Enter')addCompromisso()">
           <input class="rt-inp" id="ag-hora" type="time" style="flex:1 1 30%">
+          <label style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-mid);flex:1 1 100%"><input type="checkbox" id="ag-weekly"> 🔁 Repetir toda semana</label>
           <div id="ag-detalhes" class="ag-details" style="display:none;flex:1 1 100%">
             <div class="ag-detail-title">🔗 Links e pesquisas da rotina</div>
             <input class="rt-inp" id="ag-link" placeholder="Link da reunião / aula / material (https://...)" style="flex:1 1 100%">
             <input class="rt-inp" id="ag-concurso" placeholder="Concurso / órgão (ex.: INSS, PC-BA, TJ-BA)" style="flex:1 1 48%">
             <input class="rt-inp" id="ag-materia" placeholder="Matéria (ex.: Português)" style="flex:1 1 48%">
             <input class="rt-inp" id="ag-assunto" placeholder="Assunto / tópico (ex.: Crase)" style="flex:1 1 48%">
-            <input class="rt-inp" id="ag-fonte-questoes" placeholder="Onde fazer as questões (site/app/link)" style="flex:1 1 48%">
-            <input class="rt-inp" id="ag-curso" placeholder="Onde está o cursinho/material (site/link)" style="flex:1 1 48%">
-            <input class="rt-inp" id="ag-pesquisa" placeholder="Pesquisa pronta para Google/YouTube" style="flex:1 1 48%">
+            <input class="rt-inp" id="ag-banca" placeholder="Banca(s) (ex.: FGV, Cebraspe, IBFC)" style="flex:1 1 48%">
+            <input class="rt-inp" id="ag-fonte-questoes" placeholder="Plataforma de questões (ex.: Tec Concursos)" style="flex:1 1 48%">
+            <input class="rt-inp" id="ag-link-questoes" placeholder="Link direto da plataforma/lista de questões (https://...)" style="flex:1 1 48%">
+            <input class="rt-inp" id="ag-curso" placeholder="Cursinho / material (nome)" style="flex:1 1 48%">
+            <input class="rt-inp" id="ag-link-curso" placeholder="Link direto do cursinho/material (https://...)" style="flex:1 1 48%">
+            <input class="rt-inp" id="ag-pesquisa" placeholder="Pesquisa personalizada (opcional). Se vazio, o RotinAI gera automaticamente." style="flex:1 1 100%">
           </div>
           <button class="rt-btn" onclick="addCompromisso()" style="flex:1">+ Agendar</button>
         </div>
         <div id="ag-list"></div>
+      </div>
+
+      <!-- NOTIFICAÇÕES WHATSAPP -->
+      <div class="rt-card" id="whatsapp-settings-card">
+        <h3>📱 WhatsApp automático</h3>
+        <p style="font-size:11px;color:var(--text-soft);line-height:1.5;margin-bottom:10px">Receba no WhatsApp o resumo da semana no domingo e lembretes antes dos seus compromissos.</p>
+        <div class="rt-add">
+          <input class="rt-inp" id="wa-phone" placeholder="55 + DDD + número (ex.: 5575999999999)" inputmode="numeric" style="flex:1 1 100%">
+          <label style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-mid);flex:1 1 48%"><input type="checkbox" id="wa-enabled"> Ativar WhatsApp</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-mid);flex:1 1 48%"><input type="checkbox" id="wa-weekly" checked> Resumo todo domingo</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-mid);flex:1 1 48%"><input type="checkbox" id="wa-reminders" checked> Lembrete antes da tarefa</label>
+          <select class="rt-inp" id="wa-reminder-min" style="flex:1 1 48%"><option value="15">15 min antes</option><option value="30" selected>30 min antes</option><option value="60">1 hora antes</option><option value="120">2 horas antes</option></select>
+          <button class="rt-btn" onclick="saveWhatsAppSettings()" style="flex:1">💾 Salvar WhatsApp</button>
+          <button class="rt-btn secondary" onclick="testWhatsApp()" style="flex:1">📤 Enviar teste</button>
+        </div>
+        <div id="wa-status" style="font-size:11px;color:var(--text-soft);margin-top:8px"></div>
       </div>
 
       <!-- CONTAS A PAGAR -->
@@ -1662,9 +1682,34 @@ async function loadUserProfile(){
     }else currentProfile=snap.data();
     if(!currentProfile.rankingId){ currentProfile.rankingId=makeRankingId(); await ref.set({rankingId:currentProfile.rankingId},{merge:true}); }
     isAdmin=currentProfile?.role==='admin';
+    loadWhatsAppSettingsUI();
     document.querySelectorAll('.admin-only').forEach(el=>el.classList.toggle('admin-visible',isAdmin));
   }catch(e){isAdmin=false;currentProfile=null;}
 }
+function loadWhatsAppSettingsUI(){
+  const w=currentProfile?.whatsapp||{};
+  const set=(id,val)=>{const e=document.getElementById(id);if(e)e.value=val??'';};
+  const chk=(id,val)=>{const e=document.getElementById(id);if(e)e.checked=!!val;};
+  set('wa-phone',w.phone||''); chk('wa-enabled',w.enabled); chk('wa-weekly',w.weekly!==false); chk('wa-reminders',w.reminders!==false); set('wa-reminder-min',String(w.reminderMinutes||30));
+  const st=document.getElementById('wa-status'); if(st) st.textContent=w.enabled?'WhatsApp configurado.':'WhatsApp ainda não configurado.';
+}
+async function saveWhatsAppSettings(){
+  if(!fbUser||!fbDB){showToast('⚠️','Entre na conta para configurar o WhatsApp.');return;}
+  const phone=(document.getElementById('wa-phone')?.value||'').replace(/\D/g,'');
+  if(phone.length<12){showToast('⚠️','Informe o WhatsApp com código do país e DDD. Ex.: 5575999999999');return;}
+  const whatsapp={phone,enabled:!!document.getElementById('wa-enabled')?.checked,weekly:!!document.getElementById('wa-weekly')?.checked,reminders:!!document.getElementById('wa-reminders')?.checked,reminderMinutes:Number(document.getElementById('wa-reminder-min')?.value||30),updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
+  try{await fbDB.collection('users').doc(fbUser.uid).set({whatsapp},{merge:true}); currentProfile={...(currentProfile||{}),whatsapp}; document.getElementById('wa-status').textContent=whatsapp.enabled?'Configuração salva. O envio automático depende da API do WhatsApp estar conectada.':'Configuração salva, mas o envio está desativado.'; showToast('📱','Configuração do WhatsApp salva!');}
+  catch(e){showToast('⚠️','Não foi possível salvar o WhatsApp.');}
+}
+async function testWhatsApp(){
+  if(!fbAuth||!fbUser){showToast('⚠️','Faça login primeiro.');return;}
+  try{
+    const fn=firebase.functions().httpsCallable('sendTestWhatsApp');
+    const r=await fn({});
+    showToast('📤',r.data?.message||'Teste enviado!');
+  }catch(e){console.error(e);showToast('⚠️',e.message||'Não foi possível enviar o teste.');}
+}
+
 function anonymousCode(){
   let h=0, s=fbUser?.uid||'rotinai'; for(let i=0;i<s.length;i++) h=((h<<5)-h)+s.charCodeAt(i)|0;
   const n=Math.abs(h)%10000; return 'Aluno #'+String(n).padStart(4,'0');
@@ -2184,12 +2229,36 @@ function toggleAgendaDetalhes(){
   box.style.display=['Reunião','Aula / Curso','Estudo para concurso','Prova'].includes(tipo)?'flex':'none';
   const link=document.getElementById('ag-link'); if(link) link.placeholder=tipo==='Reunião'?'Link da reunião (Meet, Teams, Zoom...)':'Link da aula/material (opcional)';
 }
-function clearAgendaDetalhes(){ ['ag-link','ag-concurso','ag-materia','ag-assunto','ag-fonte-questoes','ag-curso','ag-pesquisa'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';}); }
+function clearAgendaDetalhes(){ ['ag-link','ag-concurso','ag-materia','ag-assunto','ag-banca','ag-fonte-questoes','ag-link-questoes','ag-curso','ag-link-curso','ag-pesquisa'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';}); }
+function agendaSearchText(c){
+  const parts=[c.concurso,c.materia,c.assunto,c.banca].filter(Boolean);
+  return parts.join(' ');
+}
+function agendaYouTubeText(c){
+  const banks=(c.banca||'').split(',').map(x=>x.trim()).filter(Boolean);
+  const base=[c.materia,c.assunto].filter(Boolean).join(' ');
+  if(!base) return '';
+  if(!banks.length) return base+' aula';
+  return banks.map(b=>[base,b,'aula'].filter(Boolean).join(' ')).join(' OR ');
+}
+function agendaQuestoesText(c){
+  return [c.concurso,c.materia,c.assunto,c.banca,c.fonteQuestoes,'questões'].filter(Boolean).join(' ');
+}
+function agendaSimuladoText(c){
+  return [c.concurso,c.materia,c.assunto,c.banca,c.fonteQuestoes,'simulado'].filter(Boolean).join(' ');
+}
+function agendaProvaText(c){
+  return [c.concurso,c.materia,c.banca,'prova anterior'].filter(Boolean).join(' ');
+}
+function youtubeSearchUrl(text){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(text||''); }
 function addCompromisso(){
   const tipo=document.getElementById('ag-tipo').value, titulo=document.getElementById('ag-titulo').value.trim(), data=document.getElementById('ag-data').value, hora=document.getElementById('ag-hora').value;
   if(!data){ showToast('⚠️','Escolha a data do compromisso.'); return; }
-  agenda.push({id:Date.now()+Math.random(),tipo,titulo:titulo||tipo,data,hora,done:false,status:'scheduled',link:agendaVal('ag-link'),concurso:agendaVal('ag-concurso'),materia:agendaVal('ag-materia'),assunto:agendaVal('ag-assunto'),fonteQuestoes:agendaVal('ag-fonte-questoes'),curso:agendaVal('ag-curso'),pesquisa:agendaVal('ag-pesquisa')});
-  document.getElementById('ag-titulo').value=''; document.getElementById('ag-hora').value=''; clearAgendaDetalhes();
+  const banca=agendaVal('ag-banca'), linkQuestoes=agendaVal('ag-link-questoes'), linkCurso=agendaVal('ag-link-curso');
+  const temp={concurso:agendaVal('ag-concurso'),materia:agendaVal('ag-materia'),assunto:agendaVal('ag-assunto'),banca,fonteQuestoes:agendaVal('ag-fonte-questoes')};
+  const pesquisa=agendaVal('ag-pesquisa') || agendaSearchText(temp);
+  agenda.push({id:Date.now()+Math.random(),tipo,titulo:titulo||tipo,data,hora,done:false,status:'scheduled',weekly:!!document.getElementById('ag-weekly')?.checked,link:agendaVal('ag-link'),concurso:temp.concurso,materia:temp.materia,assunto:temp.assunto,banca,fonteQuestoes:temp.fonteQuestoes,linkQuestoes,curso:agendaVal('ag-curso'),linkCurso,pesquisa});
+  document.getElementById('ag-titulo').value=''; document.getElementById('ag-hora').value=''; if(document.getElementById('ag-weekly'))document.getElementById('ag-weekly').checked=false; clearAgendaDetalhes();
   renderAgenda(); debouncedSave(); showToast('📌','Compromisso agendado!');
 }
 function copyAgendaText(text){ if(!text) return; if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(()=>showToast('📋','Copiado!')).catch(()=>fallbackCopy(text));}else fallbackCopy(text); }
@@ -2209,9 +2278,12 @@ function renderAgenda(){
     let tag='neu', txt=new Date(c.data+'T00:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
     if(c.status==='cancelled'){tag='neu';txt='cancelado';} else if(c.done){tag='ok';txt='feito';} else if(c.data<hoje){tag='late';txt='atrasado';} else if(c.data===hoje){tag='warn';txt='hoje';}
     const cancelled=c.status==='cancelled';
-    const busca=[c.concurso,c.materia,c.assunto].filter(Boolean).join(' ');
-    const yt=[c.materia,c.assunto].filter(Boolean).join(' ');
-    const detalhes=(c.link||c.concurso||c.materia||c.assunto||c.fonteQuestoes||c.curso||c.pesquisa)?`<div class="ag-info">${c.concurso?`<div><strong>Concurso:</strong> ${safe(c.concurso)}</div>`:''}${c.materia?`<div><strong>Matéria:</strong> ${safe(c.materia)}</div>`:''}${c.assunto?`<div><strong>Assunto:</strong> ${safe(c.assunto)}</div>`:''}<div class="ag-links">${c.link?`<a class="ag-link" href="${safe(c.link)}" target="_blank" rel="noopener">🔗 Abrir link</a><button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(c.link)})">📋 Copiar link</button>`:''}${c.fonteQuestoes?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(c.fonteQuestoes)})">📝 Copiar questões</button>`:''}${c.curso?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(c.curso)})">🎓 Copiar cursinho</button>`:''}${c.materia?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(c.materia)})">📚 Copiar matéria</button>`:''}${c.assunto?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(c.assunto)})">📌 Copiar assunto</button>`:''}${c.pesquisa?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(c.pesquisa)})">🔎 Copiar pesquisa</button><a class="ag-link" href="${agendaSearchUrl(c.pesquisa)}" target="_blank" rel="noopener">Google</a>`:''}${busca?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(busca)})">📋 Copiar busca</button><a class="ag-link" href="${agendaSearchUrl(busca)}" target="_blank" rel="noopener">🔎 Google</a>`:''}${yt?`<a class="ag-link" href="https://www.youtube.com/results?search_query=${encodeURIComponent(yt)}" target="_blank" rel="noopener">▶️ YouTube</a>`:''}</div></div>`:'';
+    const busca=agendaSearchText(c) || c.pesquisa || '';
+    const yt=agendaYouTubeText(c);
+    const questoes=agendaQuestoesText(c);
+    const simulado=agendaSimuladoText(c);
+    const prova=agendaProvaText(c);
+    const detalhes=(c.link||c.concurso||c.materia||c.assunto||c.banca||c.fonteQuestoes||c.linkQuestoes||c.curso||c.linkCurso||c.pesquisa)?`<div class="ag-info">${c.concurso?`<div><strong>Concurso:</strong> ${safe(c.concurso)}</div>`:''}${c.materia?`<div><strong>Matéria:</strong> ${safe(c.materia)}</div>`:''}${c.assunto?`<div><strong>Assunto:</strong> ${safe(c.assunto)}</div>`:''}${c.banca?`<div><strong>Banca(s):</strong> ${safe(c.banca)}</div>`:''}${c.fonteQuestoes?`<div><strong>Questões:</strong> ${safe(c.fonteQuestoes)}</div>`:''}<div class="ag-links">${c.link?`<a class="ag-link" href="${safe(c.link)}" target="_blank" rel="noopener">🔗 Abrir link</a><button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(c.link)})">📋 Copiar link</button>`:''}${c.linkQuestoes?`<a class="ag-link" href="${safe(c.linkQuestoes)}" target="_blank" rel="noopener">📝 Abrir questões</a><button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(c.linkQuestoes)})">📋 Copiar link questões</button>`:''}${c.fonteQuestoes?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(c.fonteQuestoes)})">📝 Copiar plataforma</button>`:''}${c.curso?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(c.curso)})">🎓 Copiar cursinho</button>`:''}${c.linkCurso?`<a class="ag-link" href="${safe(c.linkCurso)}" target="_blank" rel="noopener">🎓 Abrir cursinho</a><button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(c.linkCurso)})">📋 Copiar link cursinho</button>`:''}${c.materia?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(c.materia)})">📚 Copiar matéria</button>`:''}${c.assunto?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(c.assunto)})">📌 Copiar assunto</button>`:''}${c.banca?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(c.banca)})">🏛️ Copiar banca(s)</button>`:''}${busca?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(busca)})">🔎 Copiar pesquisa Google</button><a class="ag-link" href="${agendaSearchUrl(busca)}" target="_blank" rel="noopener">🔎 Abrir Google</a>`:''}${yt?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(yt)})">▶️ Copiar pesquisa YouTube</button><a class="ag-link" href="${youtubeSearchUrl(yt)}" target="_blank" rel="noopener">▶️ Abrir YouTube</a>`:''}${questoes?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(questoes)})">📝 Copiar busca de questões</button>`:''}${simulado?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(simulado)})">🎯 Copiar busca de simulado</button>`:''}${prova?`<button class="ag-copy" onclick="copyAgendaText(${JSON.stringify(prova)})">📄 Copiar busca de prova anterior</button>`:''}</div></div>`:'';
     return `<div class="rt-li ${c.done?'done':''} ${cancelled?'status-cancel':''}"><div class="rt-chk ${c.done?'on':''}" onclick="${cancelled?'restoreComp':'toggleComp'}(${c.id})">${c.done?'✓':''}</div><div class="rt-body"><div class="rt-ti">${safe(c.titulo)}</div><div class="rt-sub">${safe(c.tipo)}${c.hora?' · '+safe(c.hora):''} · ${new Date(c.data+'T00:00:00').toLocaleDateString('pt-BR')}</div>${detalhes}</div><span class="rt-tag ${tag}">${txt}</span><div class="rt-actions">${!cancelled?`<button class="rt-action" onclick="cancelComp(${c.id})">Cancelar</button>`:`<button class="rt-action" onclick="restoreComp(${c.id})">Reativar</button>`}<button class="rt-del" onclick="delComp(${c.id})">×</button></div></div>`;
   }).join('');
 }
@@ -2326,5 +2398,6 @@ async function loadAdminStats(){
 }
 bootWithAuth();
 </script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-functions-compat.js"></script>
 </body>
 </html>
