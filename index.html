@@ -523,6 +523,7 @@ select{min-width:0;max-width:100%;}
   <div class="sb-logo"><div class="sb-badge" aria-label="VS"><span style="font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;letter-spacing:-.5px">VS</span></div><div class="sb-words">Victor Santos<span>Estudos &amp; Rotina</span></div></div>
   <div class="sb-info" id="sb-info"></div>
   <div id="sync-badge" class="sync-badge">☁️ Conectando…</div>
+  <div id="admin-only-badge" class="admin-only-badge">👑 MODO ADMINISTRADOR</div>
   <div id="sb-user" class="sb-user" style="display:none"><b id="sb-user-email"></b><button class="sb-logout" onclick="doLogout()">Sair</button></div>
   <div class="sb-cd">
     <div><div class="cd-lbl">Data da Prova</div><div class="cd-date" id="cd-date">—</div></div>
@@ -815,7 +816,7 @@ select{min-width:0;max-width:100%;}
 
   <div class="page admin-page" id="page-admin">
     <div class="admin-head">
-      <div><h2>👑 Painel Administrativo</h2><p>Gerencie os usuários da plataforma. Cada aluno possui seus próprios dados.</p></div>
+      <div><h2>👑 Painel Administrativo</h2><p>Cadastre, edite, ative/bloqueie alunos e envie redefinição de senha. Cada aluno possui seus próprios dados.</p></div>
       <div class="admin-actions"><button class="btn btn-navy" onclick="openUserModal()">＋ Cadastrar usuário</button><button class="btn btn-ghost" onclick="loadAdminUsers()">↻ Atualizar</button></div>
     </div>
     <div class="admin-stats">
@@ -1476,6 +1477,15 @@ function populateDiscSelects() {
 }
 
 function switchTab(tab) {
+  if(tab === 'admin' && !isAdmin()){
+    showToast('⚠️','Acesso restrito ao administrador.');
+    return;
+  }
+  const targetPage = document.getElementById('page-' + tab);
+  if(!targetPage){
+    console.warn('Página não encontrada:', tab);
+    return;
+  }
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + tab).classList.add('active');
@@ -1664,6 +1674,16 @@ let fbUser = null;
 let firebaseAvailable = false;
 let currentUserProfile = null;
 let currentUserRole = 'student';
+
+// Conta administrativa principal da plataforma.
+// O painel só fica visível para esta conta quando o e-mail autenticado
+// corresponde ao administrador definido pelo proprietário do projeto.
+// IMPORTANTE: as Regras do Firestore devem continuar protegendo os dados.
+const ADMIN_EMAILS = ['victorsantospsa@gmail.com'];
+
+function emailIsConfiguredAdmin(email){
+  return ADMIN_EMAILS.includes(String(email || '').trim().toLowerCase());
+}
 
 /*
   ESTRUTURA MULTIUSUÁRIO
@@ -1900,11 +1920,19 @@ function migrateOldLocalDataForAdmin() {
 let adminUsersCache = [];
 let editingAdminUid = null;
 
-function isAdmin(){ return !!fbUser && currentUserRole === 'admin'; }
+function isAdmin(){
+  return !!fbUser && (
+    currentUserRole === 'admin' ||
+    emailIsConfiguredAdmin(fbUser.email)
+  );
+}
 
 function updateAdminNav(){
+  const admin = isAdmin();
   const b=document.getElementById('admin-nav-btn');
-  if(b) b.classList.toggle('visible', isAdmin());
+  const badge=document.getElementById('admin-only-badge');
+  if(b) b.classList.toggle('visible', admin);
+  if(badge) badge.style.display = admin ? 'block' : 'none';
 }
 
 function openAdminPanel(){
@@ -2049,7 +2077,8 @@ async function bootWithAuth() {
       }
 
       currentUserRole =
-        currentUserProfile && currentUserProfile.role === 'admin'
+        (currentUserProfile && currentUserProfile.role === 'admin') ||
+        emailIsConfiguredAdmin(user.email)
           ? 'admin'
           : 'student';
 
