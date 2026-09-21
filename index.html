@@ -462,6 +462,42 @@ select{min-width:0;max-width:100%;}
 .sb-logout{background:none;border:none;color:rgba(255,255,255,.45);cursor:pointer;font-size:10.5px;
   text-decoration:underline;flex-shrink:0;}
 .sb-logout:hover{color:white;}
+
+
+/* ===== PAINEL ADMINISTRATIVO ===== */
+.admin-nav-btn{display:none!important}
+.admin-nav-btn.visible{display:flex!important}
+.admin-page{padding-bottom:40px}
+.admin-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.admin-head h2{font-family:'Nunito',sans-serif;color:var(--navy);font-size:22px;margin:0}
+.admin-head p{margin:3px 0 0;color:var(--text-soft);font-size:12px}
+.admin-actions{display:flex;gap:8px;flex-wrap:wrap}
+.admin-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(15,23,42,.04)}
+.admin-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.admin-stat{padding:13px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.admin-stat b{display:block;font-size:20px;color:var(--navy)}
+.admin-stat span{font-size:10px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.5px}
+.admin-search{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;outline:none;font-size:12px;margin-bottom:12px}
+.admin-table{width:100%;border-collapse:collapse;font-size:12px}
+.admin-table th{text-align:left;font-size:10px;text-transform:uppercase;color:var(--text-soft);padding:9px;border-bottom:1px solid var(--line)}
+.admin-table td{padding:10px 9px;border-bottom:1px solid #eef1f5;vertical-align:middle}
+.admin-badge{display:inline-block;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:700}
+.admin-badge.active{background:#dcfce7;color:#166534}.admin-badge.blocked{background:#fee2e2;color:#991b1b}
+.admin-role{color:var(--text-soft);font-size:10px}
+.admin-row-actions{display:flex;gap:5px;flex-wrap:wrap}
+.admin-mini{border:1px solid var(--line);background:#fff;border-radius:6px;padding:5px 8px;font-size:10px;cursor:pointer}
+.admin-mini:hover{background:var(--bg)}
+.admin-modal{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:1200;display:none;align-items:center;justify-content:center;padding:18px}
+.admin-modal.open{display:flex}
+.admin-box{background:#fff;width:min(520px,100%);max-height:90vh;overflow:auto;border-radius:14px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.admin-box h3{margin:0 0 4px;font-family:'Nunito',sans-serif;color:var(--navy);font-size:18px}
+.admin-box .sub{font-size:11px;color:var(--text-soft);margin-bottom:16px}
+.admin-form{display:grid;gap:10px}.admin-form label{font-size:10px;font-weight:700;color:var(--text-soft);text-transform:uppercase;letter-spacing:.4px}.admin-form input,.admin-form select{width:100%;box-sizing:border-box;padding:10px 11px;border:1px solid var(--line);border-radius:8px;font-size:12px;outline:none}
+.admin-form input:focus,.admin-form select:focus{border-color:#94a3b8}
+.admin-modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.admin-modal-actions button{border:0;border-radius:8px;padding:9px 13px;cursor:pointer;font-size:11px;font-weight:700}.admin-cancel{background:#eef2f7;color:#334155}.admin-save{background:var(--navy);color:#fff}
+.admin-msg{min-height:16px;font-size:11px;margin-top:8px;color:#dc2626}.admin-msg.ok{color:#15803d}
+@media(max-width:760px){.admin-stats{grid-template-columns:1fr}.admin-table{display:block;overflow-x:auto;white-space:nowrap}}
+
 </style>
 <style id="multiuser-admin-style">
 .admin-only-badge{
@@ -500,6 +536,7 @@ select{min-width:0;max-width:100%;}
     <a class="nav-item" href="#" onclick="switchTab('edital');return false;">📋 &nbsp;Edital</a>
     <a class="nav-item" href="#" onclick="switchTab('revisoes');return false;">🔁 &nbsp;Revisões</a>
     <a class="nav-item" href="#" onclick="switchTab('historico');return false;">📅 &nbsp;Histórico</a>
+    <a id="admin-nav-btn" class="nav-item admin-nav-btn" href="#" onclick="openAdminPanel();return false;">👑 &nbsp;Painel Administrativo</a>
     <div class="sb-nav-lbl" style="margin-top:14px">Disciplinas</div>
     <div id="nav-discs"></div>
   </nav>
@@ -775,6 +812,23 @@ select{min-width:0;max-width:100%;}
   </div><!-- /page-estudos -->
 
   <!-- PAGE: ROTINA -->
+
+  <div class="page admin-page" id="page-admin">
+    <div class="admin-head">
+      <div><h2>👑 Painel Administrativo</h2><p>Gerencie os usuários da plataforma. Cada aluno possui seus próprios dados.</p></div>
+      <div class="admin-actions"><button class="btn btn-navy" onclick="openUserModal()">＋ Cadastrar usuário</button><button class="btn btn-ghost" onclick="loadAdminUsers()">↻ Atualizar</button></div>
+    </div>
+    <div class="admin-stats">
+      <div class="admin-stat"><b id="adm-total">0</b><span>Total de usuários</span></div>
+      <div class="admin-stat"><b id="adm-active">0</b><span>Ativos</span></div>
+      <div class="admin-stat"><b id="adm-blocked">0</b><span>Bloqueados</span></div>
+    </div>
+    <div class="admin-card">
+      <input class="admin-search" id="admin-user-search" placeholder="Pesquisar por nome ou e-mail..." oninput="renderAdminUsers()">
+      <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Usuário</th><th>Perfil</th><th>Status</th><th>Último acesso</th><th>Ações</th></tr></thead><tbody id="admin-users-body"><tr><td colspan="5" style="color:var(--text-soft)">Clique em Atualizar para carregar.</td></tr></tbody></table></div>
+    </div>
+  </div>
+
   <div class="page" id="page-rotina">
 
     <div class="sec-lbl">🍅 Pomodoro</div>
@@ -973,6 +1027,22 @@ select{min-width:0;max-width:100%;}
     <input type="password" id="login-pass" class="rt-inp" placeholder="Senha" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="rt-btn" onclick="doLogin()">Entrar</button>
     <div class="login-err" id="login-err"></div>
+  </div>
+</div>
+
+
+<div class="admin-modal" id="admin-user-modal" onclick="if(event.target===this)closeUserModal()">
+  <div class="admin-box">
+    <h3 id="admin-modal-title">Cadastrar usuário</h3><div class="sub">O usuário será criado no Firebase Authentication e terá um perfil separado no Firestore.</div>
+    <div class="admin-form">
+      <div><label>Nome</label><input id="adm-name" placeholder="Nome do aluno"></div>
+      <div><label>E-mail</label><input id="adm-email" type="email" placeholder="aluno@email.com"></div>
+      <div id="adm-password-wrap"><label>Senha inicial</label><input id="adm-password" type="password" placeholder="Mínimo de 6 caracteres"></div>
+      <div><label>Perfil</label><select id="adm-role"><option value="student">Aluno</option><option value="admin">Administrador</option></select></div>
+      <div><label>Status</label><select id="adm-status"><option value="active">Ativo</option><option value="blocked">Bloqueado</option></select></div>
+    </div>
+    <div id="admin-modal-msg" class="admin-msg"></div>
+    <div class="admin-modal-actions"><button class="admin-cancel" onclick="closeUserModal()">Cancelar</button><button class="admin-save" onclick="saveAdminUser()">Salvar</button></div>
   </div>
 </div>
 
@@ -1825,6 +1895,138 @@ function migrateOldLocalDataForAdmin() {
   }
 }
 
+
+/* ===== ADMIN: CADASTRO E EDIÇÃO DE USUÁRIOS ===== */
+let adminUsersCache = [];
+let editingAdminUid = null;
+
+function isAdmin(){ return !!fbUser && currentUserRole === 'admin'; }
+
+function updateAdminNav(){
+  const b=document.getElementById('admin-nav-btn');
+  if(b) b.classList.toggle('visible', isAdmin());
+}
+
+function openAdminPanel(){
+  if(!isAdmin()){ showToast('⚠️','Acesso restrito ao administrador.'); return; }
+  switchTab('admin');
+  loadAdminUsers();
+}
+
+function openUserModal(uid){
+  if(!isAdmin()) return;
+  editingAdminUid = uid || null;
+  const modal=document.getElementById('admin-user-modal');
+  const title=document.getElementById('admin-modal-title');
+  const msg=document.getElementById('admin-modal-msg');
+  const pw=document.getElementById('adm-password-wrap');
+  msg.textContent=''; msg.className='admin-msg';
+  if(uid){
+    const u=adminUsersCache.find(x=>x.uid===uid); if(!u) return;
+    title.textContent='Editar usuário';
+    document.getElementById('adm-name').value=u.name||'';
+    document.getElementById('adm-email').value=u.email||'';
+    document.getElementById('adm-role').value=u.role==='admin'?'admin':'student';
+    document.getElementById('adm-status').value=u.status==='blocked'?'blocked':'active';
+    pw.style.display='none';
+  }else{
+    title.textContent='Cadastrar usuário';
+    document.getElementById('adm-name').value=''; document.getElementById('adm-email').value=''; document.getElementById('adm-password').value='';
+    document.getElementById('adm-role').value='student'; document.getElementById('adm-status').value='active'; pw.style.display='block';
+  }
+  modal.classList.add('open');
+}
+function closeUserModal(){ document.getElementById('admin-user-modal')?.classList.remove('open'); editingAdminUid=null; }
+function adminMsg(text,ok){ const m=document.getElementById('admin-modal-msg'); if(m){m.textContent=text||'';m.className='admin-msg'+(ok?' ok':'');} }
+
+async function createAuthUserSecondary(email,password){
+  const appName='adminCreator_'+Date.now();
+  let secondary=null;
+  try{
+    secondary=firebase.initializeApp(FIREBASE_CONFIG,appName);
+    const cred=await secondary.auth().createUserWithEmailAndPassword(email,password);
+    return {uid:cred.user.uid,app:secondary};
+  }catch(e){
+    if(secondary){try{await secondary.delete();}catch(_){} }
+    throw e;
+  }
+}
+
+async function saveAdminUser(){
+  if(!isAdmin() || !fbDB) return;
+  const name=document.getElementById('adm-name').value.trim();
+  const email=document.getElementById('adm-email').value.trim().toLowerCase();
+  const password=document.getElementById('adm-password').value;
+  const role=document.getElementById('adm-role').value==='admin'?'admin':'student';
+  const status=document.getElementById('adm-status').value==='blocked'?'blocked':'active';
+  if(!name||!email){adminMsg('Informe nome e e-mail.');return;}
+  const btn=document.querySelector('#admin-user-modal .admin-save'); if(btn) btn.disabled=true;
+  adminMsg(editingAdminUid?'Salvando alterações...':'Criando usuário...');
+  try{
+    if(editingAdminUid){
+      await fbDB.collection('users').doc(editingAdminUid).set({name,email,role,status,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+      if(editingAdminUid===fbUser.uid){ currentUserProfile=Object.assign({},currentUserProfile,{name,email,role,status}); currentUserRole=role; setCurrentUserUI(); updateAdminNav(); }
+      adminMsg('Alterações salvas.',true); await loadAdminUsers(); setTimeout(closeUserModal,500);
+    }else{
+      if(password.length<6){adminMsg('A senha inicial precisa ter pelo menos 6 caracteres.');return;}
+      const created=await createAuthUserSecondary(email,password);
+      try{
+        await fbDB.collection('users').doc(created.uid).set({name,email,role,status,createdAt:firebase.firestore.FieldValue.serverTimestamp(),lastLogin:null,createdBy:fbUser.uid},{merge:true});
+      }finally{
+        try{await created.app.auth().signOut();}catch(_){}
+        try{await created.app.delete();}catch(_){}
+      }
+      adminMsg('Usuário cadastrado com sucesso.',true); await loadAdminUsers(); setTimeout(closeUserModal,700);
+    }
+  }catch(e){
+    console.error(e);
+    const c=e?.code||'';
+    const msg=c.includes('email-already-in-use')?'Este e-mail já está cadastrado no Firebase.':c.includes('invalid-email')?'E-mail inválido.':c.includes('weak-password')?'Senha muito fraca.':'Não foi possível salvar o usuário. '+(e?.message||'');
+    adminMsg(msg);
+  }finally{ if(btn) btn.disabled=false; }
+}
+
+async function loadAdminUsers(){
+  if(!isAdmin()||!fbDB) return;
+  const body=document.getElementById('admin-users-body'); if(body) body.innerHTML='<tr><td colspan="5" style="color:var(--text-soft)">Carregando...</td></tr>';
+  try{
+    const snap=await fbDB.collection('users').get();
+    adminUsersCache=snap.docs.map(d=>Object.assign({uid:d.id},d.data()||{})).sort((a,b)=>(a.name||a.email||'').localeCompare(b.name||b.email||'','pt-BR'));
+    renderAdminUsers();
+  }catch(e){
+    console.error(e); if(body) body.innerHTML='<tr><td colspan="5" style="color:#dc2626">Não foi possível carregar os usuários. Verifique as regras do Firestore.</td></tr>';
+  }
+}
+function formatAdminDate(v){
+  if(!v) return '—';
+  try{const d=v.toDate?v.toDate():new Date(v); return d.toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'});}catch(_){return '—';}
+}
+function renderAdminUsers(){
+  const body=document.getElementById('admin-users-body'); if(!body)return;
+  const q=(document.getElementById('admin-user-search')?.value||'').toLowerCase().trim();
+  const rows=adminUsersCache.filter(u=>!q||(u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q));
+  document.getElementById('adm-total').textContent=adminUsersCache.length;
+  document.getElementById('adm-active').textContent=adminUsersCache.filter(u=>(u.status||'active')==='active').length;
+  document.getElementById('adm-blocked').textContent=adminUsersCache.filter(u=>u.status==='blocked').length;
+  if(!rows.length){body.innerHTML='<tr><td colspan="5" style="color:var(--text-soft)">Nenhum usuário encontrado.</td></tr>';return;}
+  body.innerHTML=rows.map(u=>{
+    const status=u.status==='blocked'?'blocked':'active';
+    const role=u.role==='admin'?'Administrador':'Aluno';
+    return `<tr><td><b>${escAdmin(u.name||'Sem nome')}</b><div class="admin-role">${escAdmin(u.email||'')}</div></td><td>${role}</td><td><span class="admin-badge ${status}">${status==='active'?'Ativo':'Bloqueado'}</span></td><td>${formatAdminDate(u.lastLogin)}</td><td><div class="admin-row-actions"><button class="admin-mini" onclick="openUserModal('${u.uid}')">Editar</button><button class="admin-mini" onclick="toggleAdminUserStatus('${u.uid}')">${status==='active'?'Bloquear':'Ativar'}</button><button class="admin-mini" onclick="sendAdminReset('${u.email}')">Resetar senha</button></div></td></tr>`;
+  }).join('');
+}
+function escAdmin(v){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+async function toggleAdminUserStatus(uid){
+  if(!isAdmin()||uid===fbUser.uid)return;
+  const u=adminUsersCache.find(x=>x.uid===uid); if(!u)return;
+  const next=u.status==='blocked'?'active':'blocked';
+  try{await fbDB.collection('users').doc(uid).set({status:next,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}); await loadAdminUsers(); showToast(next==='blocked'?'⛔':'✅',next==='blocked'?'Usuário bloqueado.':'Usuário ativado.');}catch(e){showToast('⚠️','Não foi possível alterar o status.');}
+}
+async function sendAdminReset(email){
+  if(!isAdmin()||!email)return;
+  try{await fbAuth.sendPasswordResetEmail(email);showToast('📧','E-mail de redefinição enviado.');}catch(e){showToast('⚠️','Não foi possível enviar a redefinição.');}
+}
+
 async function bootWithAuth() {
   if (!initFirebase()) {
     // Mantém o site funcionando localmente se Firebase estiver indisponível.
@@ -1861,6 +2063,7 @@ async function bootWithAuth() {
 
       hideLogin();
       setCurrentUserUI();
+      updateAdminNav();
 
       if (currentUserRole === 'admin') {
         showToast('👑', 'Administrador conectado.');
@@ -1874,6 +2077,7 @@ async function bootWithAuth() {
       currentUserProfile = null;
       currentUserRole = 'student';
       KEY = KEY_BASE;
+      updateAdminNav();
 
       const ub = document.getElementById('sb-user');
       if (ub) ub.style.display = 'none';
