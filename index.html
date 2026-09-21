@@ -462,55 +462,6 @@ select{min-width:0;max-width:100%;}
 .sb-logout{background:none;border:none;color:rgba(255,255,255,.45);cursor:pointer;font-size:10.5px;
   text-decoration:underline;flex-shrink:0;}
 .sb-logout:hover{color:white;}
-
-
-/* ===== PAINEL ADMINISTRATIVO ===== */
-.admin-nav-btn{display:none!important}
-.admin-nav-btn.visible{display:flex!important}
-.admin-page{padding-bottom:40px}
-.admin-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap}
-.admin-head h2{font-family:'Nunito',sans-serif;color:var(--navy);font-size:22px;margin:0}
-.admin-head p{margin:3px 0 0;color:var(--text-soft);font-size:12px}
-.admin-actions{display:flex;gap:8px;flex-wrap:wrap}
-.admin-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(15,23,42,.04)}
-.admin-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}
-.admin-stat{padding:13px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
-.admin-stat b{display:block;font-size:20px;color:var(--navy)}
-.admin-stat span{font-size:10px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.5px}
-.admin-search{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;outline:none;font-size:12px;margin-bottom:12px}
-.admin-table{width:100%;border-collapse:collapse;font-size:12px}
-.admin-table th{text-align:left;font-size:10px;text-transform:uppercase;color:var(--text-soft);padding:9px;border-bottom:1px solid var(--line)}
-.admin-table td{padding:10px 9px;border-bottom:1px solid #eef1f5;vertical-align:middle}
-.admin-badge{display:inline-block;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:700}
-.admin-badge.active{background:#dcfce7;color:#166534}.admin-badge.blocked{background:#fee2e2;color:#991b1b}
-.admin-role{color:var(--text-soft);font-size:10px}
-.admin-row-actions{display:flex;gap:5px;flex-wrap:wrap}
-.admin-mini{border:1px solid var(--line);background:#fff;border-radius:6px;padding:5px 8px;font-size:10px;cursor:pointer}
-.admin-mini:hover{background:var(--bg)}
-.admin-modal{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:1200;display:none;align-items:center;justify-content:center;padding:18px}
-.admin-modal.open{display:flex}
-.admin-box{background:#fff;width:min(520px,100%);max-height:90vh;overflow:auto;border-radius:14px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
-.admin-box h3{margin:0 0 4px;font-family:'Nunito',sans-serif;color:var(--navy);font-size:18px}
-.admin-box .sub{font-size:11px;color:var(--text-soft);margin-bottom:16px}
-.admin-form{display:grid;gap:10px}.admin-form label{font-size:10px;font-weight:700;color:var(--text-soft);text-transform:uppercase;letter-spacing:.4px}.admin-form input,.admin-form select{width:100%;box-sizing:border-box;padding:10px 11px;border:1px solid var(--line);border-radius:8px;font-size:12px;outline:none}
-.admin-form input:focus,.admin-form select:focus{border-color:#94a3b8}
-.admin-modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.admin-modal-actions button{border:0;border-radius:8px;padding:9px 13px;cursor:pointer;font-size:11px;font-weight:700}.admin-cancel{background:#eef2f7;color:#334155}.admin-save{background:var(--navy);color:#fff}
-.admin-msg{min-height:16px;font-size:11px;margin-top:8px;color:#dc2626}.admin-msg.ok{color:#15803d}
-@media(max-width:760px){.admin-stats{grid-template-columns:1fr}.admin-table{display:block;overflow-x:auto;white-space:nowrap}}
-
-</style>
-<style id="multiuser-admin-style">
-.admin-only-badge{
-  display:none;
-  margin:8px 14px 0;
-  padding:6px 10px;
-  border-radius:8px;
-  text-align:center;
-  font-size:10px;
-  font-weight:800;
-  background:rgba(186,255,56,.12);
-  color:var(--lime);
-}
 </style>
 </head>
 <body>
@@ -523,7 +474,6 @@ select{min-width:0;max-width:100%;}
   <div class="sb-logo"><div class="sb-badge" aria-label="VS"><span style="font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;letter-spacing:-.5px">VS</span></div><div class="sb-words">Victor Santos<span>Estudos &amp; Rotina</span></div></div>
   <div class="sb-info" id="sb-info"></div>
   <div id="sync-badge" class="sync-badge">☁️ Conectando…</div>
-  <div id="admin-only-badge" class="admin-only-badge">👑 MODO ADMINISTRADOR</div>
   <div id="sb-user" class="sb-user" style="display:none"><b id="sb-user-email"></b><button class="sb-logout" onclick="doLogout()">Sair</button></div>
   <div class="sb-cd">
     <div><div class="cd-lbl">Data da Prova</div><div class="cd-date" id="cd-date">—</div></div>
@@ -537,7 +487,6 @@ select{min-width:0;max-width:100%;}
     <a class="nav-item" href="#" onclick="switchTab('edital');return false;">📋 &nbsp;Edital</a>
     <a class="nav-item" href="#" onclick="switchTab('revisoes');return false;">🔁 &nbsp;Revisões</a>
     <a class="nav-item" href="#" onclick="switchTab('historico');return false;">📅 &nbsp;Histórico</a>
-    <a id="admin-nav-btn" class="nav-item admin-nav-btn" href="#" onclick="openAdminPanel();return false;">👑 &nbsp;Painel Administrativo</a>
     <div class="sb-nav-lbl" style="margin-top:14px">Disciplinas</div>
     <div id="nav-discs"></div>
   </nav>
@@ -813,23 +762,6 @@ select{min-width:0;max-width:100%;}
   </div><!-- /page-estudos -->
 
   <!-- PAGE: ROTINA -->
-
-  <div class="page admin-page" id="page-admin">
-    <div class="admin-head">
-      <div><h2>👑 Painel Administrativo</h2><p>Cadastre, edite, ative/bloqueie alunos e envie redefinição de senha. Cada aluno possui seus próprios dados.</p></div>
-      <div class="admin-actions"><button class="btn btn-navy" onclick="openUserModal()">＋ Cadastrar usuário</button><button class="btn btn-ghost" onclick="loadAdminUsers()">↻ Atualizar</button></div>
-    </div>
-    <div class="admin-stats">
-      <div class="admin-stat"><b id="adm-total">0</b><span>Total de usuários</span></div>
-      <div class="admin-stat"><b id="adm-active">0</b><span>Ativos</span></div>
-      <div class="admin-stat"><b id="adm-blocked">0</b><span>Bloqueados</span></div>
-    </div>
-    <div class="admin-card">
-      <input class="admin-search" id="admin-user-search" placeholder="Pesquisar por nome ou e-mail..." oninput="renderAdminUsers()">
-      <div style="overflow-x:auto"><table class="admin-table"><thead><tr><th>Usuário</th><th>Perfil</th><th>Status</th><th>Último acesso</th><th>Ações</th></tr></thead><tbody id="admin-users-body"><tr><td colspan="5" style="color:var(--text-soft)">Clique em Atualizar para carregar.</td></tr></tbody></table></div>
-    </div>
-  </div>
-
   <div class="page" id="page-rotina">
 
     <div class="sec-lbl">🍅 Pomodoro</div>
@@ -1031,22 +963,6 @@ select{min-width:0;max-width:100%;}
   </div>
 </div>
 
-
-<div class="admin-modal" id="admin-user-modal" onclick="if(event.target===this)closeUserModal()">
-  <div class="admin-box">
-    <h3 id="admin-modal-title">Cadastrar usuário</h3><div class="sub">O usuário será criado no Firebase Authentication e terá um perfil separado no Firestore.</div>
-    <div class="admin-form">
-      <div><label>Nome</label><input id="adm-name" placeholder="Nome do aluno"></div>
-      <div><label>E-mail</label><input id="adm-email" type="email" placeholder="aluno@email.com"></div>
-      <div id="adm-password-wrap"><label>Senha inicial</label><input id="adm-password" type="password" placeholder="Mínimo de 6 caracteres"></div>
-      <div><label>Perfil</label><select id="adm-role"><option value="student">Aluno</option><option value="admin">Administrador</option></select></div>
-      <div><label>Status</label><select id="adm-status"><option value="active">Ativo</option><option value="blocked">Bloqueado</option></select></div>
-    </div>
-    <div id="admin-modal-msg" class="admin-msg"></div>
-    <div class="admin-modal-actions"><button class="admin-cancel" onclick="closeUserModal()">Cancelar</button><button class="admin-save" onclick="saveAdminUser()">Salvar</button></div>
-  </div>
-</div>
-
 <div class="toast" id="toast"><span id="ti">✅</span><span id="tm">Salvo!</span></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
@@ -1063,8 +979,7 @@ const DISC_CORES = ['#C8102E','#0D134C','#E255BE','#A7C3BB','#EFBD7B','#AFE8D0',
 //  DADOS DO EDITAL — EDITE AQUI
 // ═══════════════════════════════════════════════════════
 const EDITAL=[{"id": "lingua-portuguesa", "nome": "LÍNGUA PORTUGUESA", "grupos": [{"nome": "Texto, Leitura e Interpretação", "topicos": ["1. Compreensão e interpretação de textos de gêneros variados.  ·  [GCM · PMBA · PMPE · TRANSP]", "2. Textos argumentativos: métodos de raciocínio e tipologia argumentativa.  ·  [GCM]", "3. Tipologia textual e gêneros textuais.  ·  [PMBA · PMPE]", "4. Processos de construção textual e progressão textual.  ·  [GCM]", "5. Marcas de textualidade: coesão, coerência e intertextualidade.  ·  [GCM · PMBA · PMPE · TRANSP]", "6. Reescritura de frases em busca da melhor expressão escrita.  ·  [GCM]", "7. Variação linguística e adequação às situações comunicativas.  ·  [GCM · PMPE]", "8. Linguagem denotativa e conotativa.  ·  [GCM]"]}, {"nome": "Gramática e Ortografia", "topicos": ["9. Ortografia oficial e nova ortografia.  ·  [GCM · PMBA · PMPE · TRANSP]", "10. Acentuação gráfica.  ·  [PMBA · PMPE]", "11. Emprego das classes de palavras.  ·  [GCM · PMBA · PMPE · TRANSP]", "12. Sintaxe da oração e do período.  ·  [GCM · PMBA · PMPE]", "13. Organização sintática e emprego dos sinais de pontuação.  ·  [GCM · PMBA · PMPE · TRANSP]", "14. Concordância nominal e verbal.  ·  [PMBA · PMPE · TRANSP]", "15. Regência nominal e verbal.  ·  [PMBA · PMPE]", "16. Colocação pronominal.  ·  [PMPE]", "17. Emprego do sinal indicativo de crase.  ·  [PMBA · PMPE · TRANSP]", "18. Significação das palavras e domínio vocabular.  ·  [GCM · PMBA · PMPE · TRANSP]", "19. Estrangeirismos no léxico português.  ·  [GCM]"]}, {"nome": "Redação Oficial e Discursiva", "topicos": ["20. Redação oficial: Manual de Redação da Presidência da República / 2018.  ·  [PMPE]", "21. Discursiva: texto dissertativo-argumentativo — estrutura, parágrafos, informatividade e argumentação.  ·  [PMPE]", "22. Discursiva: coesão intra e entre parágrafos; coerência (progressão, articulação, não-contradição).  ·  [PMPE]", "23. Discursiva: modalidade gramatical — pontuação, grafia, concordância, regência e colocação pronominal.  ·  [PMPE]"]}]}, {"id": "matematica-rlm", "nome": "MATEMÁTICA E RACIOCÍNIO LÓGICO", "grupos": [{"nome": "Lógica Proposicional e Argumentação", "topicos": ["1. Proposições, valor-verdade, negação, conjunção, disjunção, implicação e proposições compostas.  ·  [GCM · PMPE]", "2. Equivalências lógicas.  ·  [GCM · PMPE]", "3. Lógica de argumentação: analogias, inferências, deduções, argumentos válidos e conclusões.  ·  [PMPE]", "4. Quantificadores e falácias.  ·  [PMPE]", "5. Diagramas lógicos, tabelas e gráficos.  ·  [GCM · PMPE]", "6. Problemas de raciocínio: deduzir informações de relações arbitrárias entre objetos, lugares, pessoas e eventos.  ·  [GCM]"]}, {"nome": "Aritmética, Conjuntos e Álgebra", "topicos": ["7. Conjuntos e suas operações.  ·  [GCM · PMBA]", "8. Conjuntos numéricos: naturais, inteiros, racionais, reais e complexos — operações e propriedades.  ·  [GCM · PMBA · TRANSP]", "9. Representação na reta e de pontos no plano cartesiano.  ·  [GCM]", "10. Álgebra básica: equações, sistemas e problemas do 1º grau.  ·  [GCM]", "11. Expressões algébricas; polinômios: operações, propriedades, equações e inequações.  ·  [PMBA]", "12. Equações do 1º e 2º grau, exponenciais, logarítmicas e sistemas de equações lineares.  ·  [TRANSP]", "13. Sistemas lineares, matrizes e determinantes: propriedades e aplicações.  ·  [PMBA]", "14. Sequências, reconhecimento de padrões, progressão aritmética e geométrica.  ·  [GCM · PMBA · TRANSP]", "15. Razão e proporção; porcentagem; proporcionalidade direta e inversa; regra de três simples e composta.  ·  [GCM · TRANSP]", "16. Matemática financeira: juros simples e compostos (montante, tempo, taxa e juro).  ·  [GCM · TRANSP]", "17. Funções: generalidades; 1º grau, 2º grau, modular, exponencial, logarítmica e trigonométrica — gráficos e propriedades.  ·  [PMBA · TRANSP]"]}, {"nome": "Geometria e Medidas", "topicos": ["18. Unidades de medida: distância, massa e tempo; medidas de comprimento, área e volume.  ·  [GCM]", "19. Geometria plana: ângulos, polígonos, circunferência, perímetro e área; congruência e semelhança.  ·  [GCM · PMBA · TRANSP]", "20. Relações métricas no triângulo retângulo.  ·  [GCM · TRANSP]", "21. Geometria espacial: paralelismo, perpendicularismo, áreas e volumes (prisma, pirâmide, cilindro, cone e esfera).  ·  [PMBA · TRANSP]", "22. Geometria analítica no plano: retas, circunferência e distâncias.  ·  [PMBA]", "23. Trigonometria: razões, funções, fórmulas de transformação, equações e triângulos.  ·  [PMBA]"]}, {"nome": "Contagem, Probabilidade e Estatística", "topicos": ["24. Princípios de contagem, princípio multiplicativo, permutações, arranjos e combinações.  ·  [GCM · PMBA · PMPE · TRANSP]", "25. Binômio de Newton.  ·  [PMBA]", "26. Probabilidade em espaços amostrais finitos / equiprováveis.  ·  [GCM · PMBA · PMPE · TRANSP]", "27. Estatística básica: tabelas e gráficos; média, mediana e moda; amplitude, variância e desvio padrão.  ·  [TRANSP]"]}]}, {"id": "informatica", "nome": "INFORMÁTICA", "grupos": [{"nome": "Sistemas Operacionais e Arquivos", "topicos": ["1. Ambientes operacionais: Windows (XP, 7, 8, 10) e Linux — janelas, programas, menus e mecanismos de busca e ajuda.  ·  [GCM · PMBA · PMPE]", "2. Organização e gerenciamento de informações, arquivos, pastas e programas; instalação de periféricos.  ·  [PMBA · PMPE]", "3. Atalhos de teclado, ícones, área de trabalho e lixeira.  ·  [PMBA]", "4. Arquivos digitais: documentos, planilhas, imagens, sons e vídeos — padrões e características.  ·  [GCM]", "5. Arquivos PDF.  ·  [GCM]"]}, {"nome": "Aplicativos de Escritório", "topicos": ["6. Editores de texto (Word / Writer): formatação, páginas, impressão, fontes, tabelas, figuras, cabeçalhos e rodapés.  ·  [GCM · PMBA · PMPE]", "7. Editores de texto: localização e substituição, controle de alterações, senhas, formulários e integração com planilhas.  ·  [GCM]", "8. Planilhas (Excel / Calc): criação, fórmulas, formatação, cópia e recorte, filtros, ordenação e macros.  ·  [GCM · PMBA · PMPE]", "9. Planilhas: integração entre planilhas, controle de exibição, impressão, importação/exportação e proteção de dados.  ·  [GCM]", "10. Apresentações (PowerPoint / Impress).  ·  [PMBA · PMPE]", "11. Microsoft Office 2007/2010/2019 e superiores; LibreOffice 5.0/7 e superiores.  ·  [GCM · PMBA · PMPE]"]}, {"nome": "Internet, Nuvem e Segurança", "topicos": ["12. Conceitos de internet e intranet; endereçamento de recursos; navegadores, sites, links e buscas.  ·  [GCM · PMBA · PMPE]", "13. Correio eletrônico.  ·  [PMBA]", "14. Computação em nuvem.  ·  [PMBA]", "15. Conceitos de proteção e segurança: ameaças, senhas fracas e fortes, criptografia, tokens.  ·  [GCM · PMPE]", "16. Backup: procedimentos, aplicativos e dispositivos para armazenamento e cópia de segurança.  ·  [PMPE]", "17. Transferência de arquivos e dados: upload, download, banda e velocidades de transmissão.  ·  [GCM]"]}]}, {"id": "redes", "nome": "REDES DE COMPUTADORES", "grupos": [{"nome": "Fundamentos de Redes", "topicos": ["1. Conceito de rede: objetivos, vantagens e componentes.  ·  [REDES]", "2. Classificação por abrangência: PAN, LAN, MAN, WAN e SAN.  ·  [REDES]", "3. Topologias físicas e lógicas: barramento, estrela, anel, malha e híbrida.  ·  [REDES]", "4. Meios de transmissão: par trançado, cabo coaxial, fibra óptica e wireless.  ·  [REDES]", "5. Modos de transmissão: simplex, half-duplex e full-duplex; banda, latência e throughput.  ·  [REDES]", "6. Comutação de circuitos, de pacotes e de mensagens.  ·  [REDES]", "7. Arquiteturas: cliente-servidor, peer-to-peer e computação em nuvem.  ·  [REDES]"]}, {"nome": "Modelos de Referência", "topicos": ["8. Modelo OSI: as 7 camadas, funções e exemplos de cada uma.  ·  [REDES]", "9. Modelo TCP/IP: as 4 camadas e comparação com o OSI.  ·  [REDES]", "10. Encapsulamento e desencapsulamento; PDUs (quadro, pacote, segmento, dados).  ·  [REDES]"]}, {"nome": "Camada Física e de Enlace", "topicos": ["11. Cabeamento estruturado: normas, categorias de cabo, patch panel, rack e distâncias.  ·  [REDES]", "12. Pinagem T568A e T568B; cabo direto e cabo crossover.  ·  [REDES]", "13. Ethernet / IEEE 802.3: quadro Ethernet, CSMA/CD, domínios de colisão e de broadcast.  ·  [REDES]", "14. Endereço MAC: estrutura, unicast, multicast e broadcast; protocolo ARP.  ·  [REDES]", "15. Switching: tabela MAC, comutação, full-duplex e PoE.  ·  [REDES]", "16. VLANs (IEEE 802.1Q): segmentação, trunk, access e roteamento entre VLANs.  ·  [REDES]", "17. Spanning Tree Protocol (STP / RSTP); agregação de links (LACP).  ·  [REDES]", "18. Redes sem fio IEEE 802.11: padrões a/b/g/n/ac/ax, canais, SSID e access point.  ·  [REDES]"]}, {"nome": "★ Endereçamento IP e Máscara de Sub-rede", "topicos": ["19. Endereçamento IPv4: estrutura, notação decimal pontuada e conversão binário ↔ decimal.  ·  [REDES]", "20. Classes de endereços A, B, C, D e E; máscaras padrão (/8, /16, /24).  ·  [REDES]", "21. Máscara de sub-rede: conceito, função, notação decimal e notação CIDR (/prefixo).  ·  [REDES]", "22. Operação AND entre IP e máscara: identificação do endereço de rede.  ·  [REDES]", "23. Cálculo de sub-redes: número de sub-redes (2^n), número de hosts válidos (2^h − 2).  ·  [REDES]", "24. Endereço de rede, endereço de broadcast, primeiro e último host válido de cada faixa.  ·  [REDES]", "25. Sub-netting: dividir uma rede em N sub-redes; bits emprestados e salto (block size).  ·  [REDES]", "26. VLSM — máscara de tamanho variável: projeto de rede com faixas de tamanhos diferentes.  ·  [REDES]", "27. Sumarização de rotas (supernetting / CIDR).  ·  [REDES]", "28. Endereços privados (RFC 1918), APIPA/link-local, loopback e endereços reservados.  ·  [REDES]", "29. NAT e PAT: tradução de endereços, estático, dinâmico e overload.  ·  [REDES]", "30. IPv6: notação hexadecimal, abreviação, prefixo /64, tipos de endereço e transição (dual stack, túnel).  ·  [REDES]"]}, {"nome": "Camada de Transporte", "topicos": ["31. TCP: orientado à conexão, three-way handshake, flags, confiabilidade e janela deslizante.  ·  [REDES]", "32. UDP: não orientado à conexão, características e aplicações típicas.  ·  [REDES]", "33. Portas: well-known, registradas e dinâmicas; principais portas de serviço.  ·  [REDES]", "34. Controle de fluxo, controle de congestionamento e sequenciamento.  ·  [REDES]"]}, {"nome": "Camada de Aplicação e Serviços", "topicos": ["35. DNS: hierarquia, tipos de registro (A, AAAA, MX, CNAME, PTR, NS), resolução e cache.  ·  [REDES]", "36. DHCP: escopo, DORA (Discover, Offer, Request, Ack), lease e reserva.  ·  [REDES]", "37. HTTP e HTTPS; TLS/SSL; certificados digitais.  ·  [REDES]", "38. FTP, SFTP e TFTP; SMTP, POP3 e IMAP.  ·  [REDES]", "39. SSH, Telnet, RDP, SNMP e NTP.  ·  [REDES]", "40. Proxy, cache web e balanceamento de carga.  ·  [REDES]"]}, {"nome": "Roteamento", "topicos": ["41. Função do roteador; tabela de roteamento e gateway padrão.  ·  [REDES]", "42. Roteamento estático x dinâmico; métrica, distância administrativa e rota default.  ·  [REDES]", "43. Protocolos de vetor de distância (RIP) e de estado de enlace (OSPF).  ·  [REDES]", "44. Roteamento externo: BGP e sistemas autônomos.  ·  [REDES]", "45. ICMP e mensagens de erro/diagnóstico.  ·  [REDES]"]}, {"nome": "Segurança de Redes", "topicos": ["46. Firewall: stateless, stateful, de aplicação e next-generation; regras e ACLs.  ·  [REDES]", "47. VPN: site-to-site, client-to-site, IPSec e túneis.  ·  [REDES]", "48. IDS e IPS; DMZ e segmentação de rede.  ·  [REDES]", "49. Ataques: DDoS, spoofing, sniffing, man-in-the-middle, ARP poisoning e phishing.  ·  [REDES]", "50. Segurança em redes sem fio: WEP, WPA, WPA2 e WPA3; filtragem de MAC.  ·  [REDES]", "51. Criptografia simétrica e assimétrica; hash; princípios de confidencialidade, integridade e disponibilidade.  ·  [REDES]"]}, {"nome": "Equipamentos e Troubleshooting", "topicos": ["52. Equipamentos: hub, switch (L2 e L3), roteador, bridge, access point, modem e repetidor.  ·  [REDES]", "53. Comandos de diagnóstico: ping, traceroute/tracert, ipconfig/ifconfig, nslookup/dig.  ·  [REDES]", "54. Comandos: netstat, arp, route, telnet e nmap.  ·  [REDES]", "55. Metodologia de troubleshooting por camadas do modelo OSI.  ·  [REDES]", "56. Monitoramento de rede, análise de tráfego (Wireshark) e documentação.  ·  [REDES]"]}]}, {"id": "historia", "nome": "HISTÓRIA", "grupos": [{"nome": "História do Brasil", "topicos": ["1. Descobrimento do Brasil (1500).  ·  [PMBA]", "2. Brasil Colônia (1530–1815): capitanias hereditárias, economia, extrativismo, pecuária, escravidão e expansão territorial.  ·  [PMBA]", "3. Independência do Brasil (1822): D. Pedro I, Dia do Fico e reconhecimento da Independência.  ·  [PMBA]", "4. Primeiro Reinado (1822–1831).  ·  [PMBA]", "5. Segundo Reinado (1831–1840).  ·  [PMBA]", "6. Primeira República (1889–1930): governo provisório, política dos governadores, coronelismo, tenentismo, Coluna Prestes e Revolta da Armada.  ·  [PMBA]", "7. Revolução de 1930.  ·  [PMBA]", "8. Era Vargas (1930–1945).  ·  [PMBA]", "9. Os presidentes do Brasil de 1964 à atualidade.  ·  [PMBA]"]}, {"nome": "História da Bahia", "topicos": ["10. História da Bahia — panorama geral.  ·  [PMBA]", "11. Independência da Bahia.  ·  [PMBA]", "12. Revolta de Canudos.  ·  [PMBA]", "13. Revolta dos Malês.  ·  [PMBA]", "14. Conjuração Baiana.  ·  [PMBA]", "15. Sabinada.  ·  [PMBA]"]}, {"nome": "História de Pernambuco", "topicos": ["16. Ocupação e colonização: contatos iniciais do europeu com o nativo, capitanias hereditárias, Duarte Coelho.  ·  [PMPE]", "17. A importância do açúcar para a economia local.  ·  [PMPE]", "18. Formação de Olinda e Recife.  ·  [PMPE]", "19. A presença holandesa e o governo de Maurício de Nassau.  ·  [PMPE]", "20. Resistência e emancipacionismo: quilombos, Insurreição Pernambucana (1654), Guerra dos Mascates (1710), Revolução Pernambucana (1817), Confederação do Equador (1824), Guerra dos Cabanos (1835), Revolução Praieira (1848).  ·  [PMPE]", "21. Pernambuco e a República.  ·  [PMPE]", "22. Cultura popular pernambucana: frevo, maracatu, culinária e festas populares.  ·  [PMPE]", "23. Herança afrodescendente em Pernambuco.  ·  [PMPE]"]}]}, {"id": "geografia-atualidades", "nome": "GEOGRAFIA E ATUALIDADES", "grupos": [{"nome": "Geografia do Brasil e da Bahia", "topicos": ["1. Relevo brasileiro.  ·  [PMBA]", "2. Urbanização: crescimento urbano, problemas estruturais e contingente populacional.  ·  [PMBA]", "3. Matriz energética brasileira: eólica, hidráulica, biomassa, solar e das marés.  ·  [PMBA]", "4. Problemas ambientais.  ·  [PMBA]", "5. Clima: pressão atmosférica, umidade, temperatura, fatores do clima, mudanças climáticas e consequências.  ·  [PMBA]", "6. Geografia da Bahia: aspectos políticos, físicos, econômicos, sociais e culturais.  ·  [PMBA]"]}, {"nome": "Atualidades", "topicos": ["7. Globalização: conceitos, efeitos e implicações sociais, econômicas, políticas e culturais.  ·  [PMBA]", "8. Multiculturalidade, pluralidade e diversidade cultural.  ·  [PMBA]", "9. Tecnologias de Informação e Comunicação: conceitos, efeitos e implicações.  ·  [PMBA]"]}]}, {"id": "direito-constitucional", "nome": "DIREITO CONSTITUCIONAL", "grupos": [{"nome": "Teoria e Princípios Fundamentais", "topicos": ["1. Constituição: conceito, classificações e princípios fundamentais.  ·  [GCM · PMBA · PMPE]"]}, {"nome": "Direitos e Garantias Fundamentais", "topicos": ["2. Direitos e deveres individuais e coletivos; vida, liberdade, igualdade, segurança e propriedade.  ·  [GCM · PMBA · PMPE]", "3. Direitos sociais.  ·  [GCM · PMBA · PMPE]", "4. Nacionalidade, cidadania, direitos políticos e partidos políticos.  ·  [GCM · PMBA · PMPE]", "5. Remédios constitucionais.  ·  [PMPE]"]}, {"nome": "Organização do Estado e Administração Pública", "topicos": ["6. Organização político-administrativa: União, Estados, DF, Municípios e Territórios; repartição de competências.  ·  [GCM · PMBA · PMPE]", "7. Administração Pública: disposições gerais e servidores públicos.  ·  [GCM · PMBA · PMPE]", "8. Dos militares dos Estados, do Distrito Federal e dos Territórios.  ·  [PMBA · PMPE]", "9. Da Segurança Pública (art. 144 da CF).  ·  [PMBA]"]}, {"nome": "Organização dos Poderes e Funções Essenciais", "topicos": ["10. Organização dos Poderes: Legislativo, Executivo e Judiciário.  ·  [PMPE]", "11. Poder Judiciário: disposições gerais, órgãos, competências e estrutura.  ·  [GCM]", "12. Conselho Nacional de Justiça (CNJ): composição e competência.  ·  [GCM]", "13. Funções essenciais à Justiça: Ministério Público, advocacia e defensoria pública.  ·  [GCM]", "14. Defesa do Estado e das instituições democráticas.  ·  [PMPE]"]}, {"nome": "Constituição do Estado da Bahia", "topicos": ["15. Dos princípios fundamentais.  ·  [PMBA]", "16. Direitos e garantias fundamentais.  ·  [PMBA]", "17. Dos servidores públicos militares.  ·  [PMBA]", "18. Da segurança pública.  ·  [PMBA]"]}, {"nome": "Jurisprudência", "topicos": ["19. Súmulas e jurisprudência dominante dos Tribunais Superiores relacionadas aos temas.  ·  [GCM · PMPE]"]}]}, {"id": "direitos-humanos", "nome": "DIREITOS HUMANOS, IGUALDADE RACIAL E DE GÊNERO", "grupos": [{"nome": "Teoria Geral dos Direitos Humanos", "topicos": ["1. Conceito, terminologia, estrutura normativa, fundamento, classificação e especificidades.  ·  [PMPE]", "2. Evolução histórica e gerações de direitos humanos.  ·  [PMPE]", "3. Natureza jurídica da incorporação de normas internacionais de Direitos Humanos ao direito interno brasileiro.  ·  [PMPE]"]}, {"nome": "Documentos Internacionais", "topicos": ["4. Declaração Universal dos Direitos Humanos (ONU, 1948).  ·  [PMBA · PMPE]", "5. Convenção Americana sobre Direitos Humanos / 1969 — Pacto de São José da Costa Rica (art. 1º ao 32).  ·  [PMBA]", "6. Pacto Internacional dos Direitos Econômicos, Sociais e Culturais (art. 1º ao 15).  ·  [PMBA]", "7. Declaração de Pequim — IV Conferência Mundial sobre as Mulheres.  ·  [PMBA]", "8. Decreto nº 65.810/1969 — Convenção sobre a eliminação de todas as formas de discriminação racial.  ·  [PMBA]", "9. Decreto nº 4.377/2002 — Convenção sobre a eliminação de todas as formas de discriminação contra a mulher.  ·  [PMBA]"]}, {"nome": "Igualdade Racial e de Gênero — Legislação", "topicos": ["10. Constituição Federal (arts. 1º, 3º, 4º e 5º).  ·  [PMBA]", "11. Constituição do Estado da Bahia — Cap. XXIII 'Do Negro'.  ·  [PMBA]", "12. Lei nº 12.288/2010 — Estatuto da Igualdade Racial.  ·  [PMBA]", "13. Lei nº 7.716/1989 e Lei nº 9.459/1997 — crimes de preconceito de raça ou cor.  ·  [GCM · PMBA · PMPE]", "14. Código Penal, art. 140 (injúria).  ·  [PMBA]", "15. Lei nº 7.437/1985 — Lei Caó.  ·  [PMBA]", "16. Lei Estadual BA nº 10.549/2006 — Secretaria de Promoção da Igualdade Racial.  ·  [PMBA]", "17. Lei nº 10.678/2003 — SEPPIR / Presidência da República.  ·  [PMBA]"]}]}, {"id": "direito-administrativo", "nome": "DIREITO ADMINISTRATIVO", "grupos": [{"nome": "Fundamentos", "topicos": ["1. Administração Pública.  ·  [PMBA]", "2. Princípios fundamentais da administração pública.  ·  [PMBA]"]}, {"nome": "Poderes, Deveres e Servidores", "topicos": ["3. Poderes e deveres dos administradores públicos: uso e abuso do poder.  ·  [PMBA]", "4. Poderes vinculado, discricionário, hierárquico, disciplinar, regulamentar e poder de polícia.  ·  [PMBA]", "5. Servidores públicos: cargo, emprego e função públicos.  ·  [PMBA]", "6. Regime jurídico do militar estadual: Estatuto dos Policiais Militares da Bahia (Lei estadual nº 7.990/2001, arts. 1º ao 59).  ·  [PMBA]"]}]}, {"id": "direito-civil", "nome": "DIREITO CIVIL", "grupos": [{"nome": "Lei, Pessoas e Bens", "topicos": ["1. Aplicação da lei no tempo e no espaço; interpretação; analogia; princípios gerais do direito e equidade; LINDB.  ·  [GCM]", "2. Das pessoas naturais e jurídicas; domicílio; capacidade civil; direitos da personalidade; emancipação.  ·  [GCM]", "3. Dos bens: considerados em si mesmos, reciprocamente considerados e bens públicos.  ·  [GCM]"]}, {"nome": "Fatos Jurídicos e Obrigações", "topicos": ["4. Dos fatos jurídicos: negócio jurídico, atos lícitos e ilícitos; prescrição e decadência; da prova.  ·  [GCM]", "5. Direito das obrigações: modalidades, transmissão, adimplemento, extinção e inadimplemento.  ·  [GCM]"]}, {"nome": "Responsabilidade Civil", "topicos": ["6. Responsabilidade civil; preferências e privilégios creditórios; indenização por dano moral.  ·  [GCM]", "7. Responsabilidade civil por perda de uma chance; desconsideração da personalidade jurídica.  ·  [GCM]", "8. Preservação e reparação de danos (proteção à saúde e segurança).  ·  [GCM]", "9. Jurisprudência e súmulas do STF, STJ e TJ-BA.  ·  [GCM]"]}]}, {"id": "direito-penal", "nome": "DIREITO PENAL", "grupos": [{"nome": "Parte Geral", "topicos": ["1. Conceito e fontes do Direito Penal; interpretação e integração da lei penal; analogia; princípio da reserva legal.  ·  [GCM]", "2. Lei penal no tempo e no espaço.  ·  [GCM]", "3. Classificação das infrações penais; fato típico, conduta, resultado e relação de causalidade.  ·  [GCM · PMBA]", "4. Crime doloso, culposo e preterdoloso.  ·  [GCM · PMBA]", "5. Consumação e tentativa; desistência voluntária; arrependimento eficaz e posterior; crime impossível.  ·  [GCM · PMBA]", "6. Ilicitude e causas excludentes; culpabilidade e causas excludentes.  ·  [GCM · PMBA]", "7. Concurso de pessoas e concurso de crimes.  ·  [GCM]", "8. Sanções penais: penas privativas de liberdade, restritivas de direitos, multa e medidas de segurança.  ·  [GCM]", "9. Suspensão condicional da execução da pena (sursis) e livramento condicional.  ·  [GCM]", "10. Causas extintivas da punibilidade.  ·  [GCM]", "11. Contravenção penal.  ·  [PMBA]"]}, {"nome": "Parte Especial", "topicos": ["12. Crimes contra a pessoa: homicídio, lesão corporal e rixa.  ·  [GCM · PMBA]", "13. Crimes contra a liberdade pessoal: constrangimento ilegal, ameaça, perseguição, sequestro e cárcere privado.  ·  [PMBA]", "14. Crimes contra o patrimônio: furto, roubo, extorsão, apropriação indébita e receptação.  ·  [GCM · PMBA]", "15. Crimes contra a dignidade sexual: estupro, importunação sexual e assédio sexual.  ·  [GCM · PMBA]", "16. Crimes contra a honra e crimes contra a fé pública.  ·  [GCM]", "17. Crimes contra a Administração Pública: corrupção ativa, corrupção passiva e peculato.  ·  [GCM · PMBA]", "18. Crimes contra a Administração da Justiça.  ·  [GCM]", "19. Crimes contra a ordem tributária e econômica, contra o consumidor e as relações de consumo (Lei nº 8.078/1990 e Lei nº 8.137/1990).  ·  [GCM]"]}]}, {"id": "direito-processual-penal", "nome": "DIREITO PROCESSUAL PENAL", "grupos": [{"nome": "Teoria Geral", "topicos": ["1. Processo Penal brasileiro e Processo Penal constitucional.  ·  [GCM]", "2. Sistemas e princípios fundamentais; princípios gerais e informadores do processo.  ·  [GCM]", "3. Aplicação da lei processual penal no tempo, no espaço e em relação às pessoas; disposições preliminares do CPP.  ·  [GCM]"]}, {"nome": "Persecução Penal", "topicos": ["4. Inquérito policial.  ·  [GCM]", "5. Processo, procedimento e relação jurídica processual; pretensão punitiva.  ·  [GCM]", "6. Ação penal.  ·  [GCM]", "7. Prova; Lei nº 9.296/1996 (interceptação telefônica) e alterações.  ·  [GCM]", "8. Sujeitos do processo.  ·  [GCM]"]}, {"nome": "Prisões, Prazos e Nulidades", "topicos": ["9. Prisão, medidas cautelares e liberdade provisória; Lei nº 7.960/1989 (prisão temporária).  ·  [GCM]", "10. Lei nº 9.099/1995 e Lei nº 10.259/2001 — Juizados Especiais Cíveis e Criminais.  ·  [GCM]", "11. Prazos: características, princípios e contagem.  ·  [GCM]", "12. Nulidades.  ·  [GCM]", "13. Jurisprudência aplicada dos tribunais superiores.  ·  [GCM]"]}]}, {"id": "direito-penal-militar", "nome": "DIREITO PENAL MILITAR", "grupos": [{"nome": "Crimes contra a autoridade ou disciplina militar", "topicos": ["1. Motim, revolta, conspiração e aliciação para motim ou revolta.  ·  [PMBA]", "2. Violência contra superior ou militar de serviço.  ·  [PMBA]", "3. Desrespeito a superior.  ·  [PMBA]", "4. Recusa de obediência.  ·  [PMBA]", "5. Reunião ilícita.  ·  [PMBA]", "6. Publicação ou crítica indevida.  ·  [PMBA]", "7. Resistência mediante ameaça ou violência.  ·  [PMBA]"]}, {"nome": "Crimes contra o serviço e o dever militar", "topicos": ["8. Deserção, abandono de posto, descumprimento de missão, embriaguez em serviço e dormir em serviço.  ·  [PMBA]"]}, {"nome": "Crimes contra a Administração Militar e o dever funcional", "topicos": ["9. Desacato a superior, desacato a militar, desobediência, peculato, peculato-furto e concussão.  ·  [PMBA]", "10. Prevaricação.  ·  [PMBA]"]}]}, {"id": "legislacao-especial", "nome": "LEGISLAÇÃO PENAL ESPECIAL E EXTRAVAGANTE", "grupos": [{"nome": "Proteção de Grupos Vulneráveis", "topicos": ["1. Lei nº 11.340/2006 — Lei Maria da Penha (crimes e disposições penais).  ·  [GCM · PMBA · PMPE]", "2. Lei nº 8.069/1990 — ECA: crimes e infrações administrativas.  ·  [GCM · PMPE]", "3. Lei nº 7.853/1989 e Lei nº 13.146/2015 — Estatuto da Pessoa com Deficiência.  ·  [GCM]", "4. Lei nº 9.455/1997 — Crimes de tortura.  ·  [GCM · PMBA · PMPE]", "5. Lei nº 7.716/1989 — Crimes resultantes de preconceito de raça ou de cor.  ·  [GCM · PMBA · PMPE]"]}, {"nome": "Segurança Pública e Criminalidade", "topicos": ["6. Lei nº 11.343/2006 — Lei de Drogas.  ·  [GCM · PMPE]", "7. Lei nº 8.072/1990 — Crimes hediondos.  ·  [GCM · PMPE]", "8. Lei nº 13.869/2019 — Lei de Abuso de Autoridade.  ·  [GCM · PMPE]", "9. Lei nº 10.826/2003 — Estatuto do Desarmamento.  ·  [GCM]", "10. Lei nº 12.850/2013 — Organizações criminosas, com as alterações da Lei nº 15.358/2026.  ·  [GCM]", "11. Lei nº 9.613/1998 — Lavagem ou ocultação de bens, direitos e valores.  ·  [GCM]"]}, {"nome": "Trânsito, Ambiente e Outras", "topicos": ["12. Lei nº 9.503/1997 — Código de Trânsito Brasileiro: crimes de trânsito.  ·  [GCM]", "13. Lei nº 9.605/1998 — Crimes contra o meio ambiente.  ·  [GCM · PMPE]", "14. Lei nº 14.133/2021 — Licitações e contratos; crimes dos arts. 337-E a 337-P do CP.  ·  [GCM]", "15. Lei nº 14.597/2023 — Lei Geral do Esporte.  ·  [GCM]", "16. Lei nº 11.101/2005 — Crimes na recuperação judicial, extrajudicial e falência.  ·  [GCM]"]}, {"nome": "Estatutos Militares Estaduais", "topicos": ["17. Lei Estadual PE nº 6.783/1974 — Estatuto dos Policiais Militares de Pernambuco.  ·  [PMPE]", "18. Lei Estadual BA nº 7.990/2001 — Estatuto dos Policiais Militares da Bahia (arts. 1º ao 59).  ·  [PMBA]"]}]}, {"id": "administracao-politicas-publicas", "nome": "NOÇÕES DE ADMINISTRAÇÃO E POLÍTICAS PÚBLICAS", "grupos": [{"nome": "Fundamentos da Administração", "topicos": ["1. Introdução à Administração: definição, importância, história e evolução.  ·  [GCM]", "2. Funções administrativas: planejamento, organização, direção e controle.  ·  [GCM]", "3. Teorias da Administração: clássica, relações humanas, comportamental e da contingência.  ·  [GCM]", "4. Abordagens modernas: gestão por competências e gestão de projetos.  ·  [GCM]", "5. Estruturas organizacionais: funcional, matricial e por projetos; cultura organizacional; estilos de liderança.  ·  [GCM]", "6. Planejamento estratégico: missão, visão e valores; análise SWOT; objetivos e metas.  ·  [GCM]"]}, {"nome": "Áreas Funcionais", "topicos": ["7. Marketing e vendas: fundamentos, segmentação de mercado, composto de marketing (4 Ps) e estratégias de vendas.  ·  [GCM]", "8. Gestão financeira: finanças básicas, orçamento empresarial, fluxo de caixa e indicadores financeiros.  ·  [GCM]", "9. Recursos humanos: recrutamento e seleção, treinamento e desenvolvimento, avaliação de desempenho, motivação e liderança.  ·  [GCM]", "10. Empreendedorismo: processo empreendedor, plano de negócios, inovação e criatividade.  ·  [GCM]", "11. Ética na administração, responsabilidade social corporativa e sustentabilidade.  ·  [GCM]"]}, {"nome": "Políticas Públicas", "topicos": ["12. Conceitos fundamentais: definição e evolução.  ·  [GCM]", "13. Ciclo de políticas públicas: formulação, implementação e avaliação; ferramentas de análise.  ·  [GCM]", "14. Governança: federalismo, relações estado-sociedade, capacidades estatais e políticas intergovernamentais.  ·  [GCM]", "15. Bases quantitativas: estatística descritiva e inferencial; economia (micro e macro) aplicada a políticas.  ·  [GCM]", "16. Gestão e avaliação: análise ex ante e ex post, avaliação de impacto e gestão de riscos.  ·  [GCM]"]}]}, {"id": "area-de-atuacao", "nome": "CONHECIMENTOS NA ÁREA DE ATUAÇÃO", "grupos": [{"nome": "Atendimento e Relações Humanas", "topicos": ["1. Qualidade no atendimento: comunicação, apresentação, atenção, cortesia, presteza, eficiência, discrição e objetividade.  ·  [GCM]", "2. Trabalho em equipe.  ·  [GCM]"]}, {"nome": "Defesa Pessoal, Riscos e Informação", "topicos": ["3. Noções de defesa pessoal.  ·  [GCM]", "4. Planejamento de contingências: necessidade, planejamento e componentes.  ·  [GCM]", "5. Manejo de emergência, gerenciamento de crises e procedimentos emergenciais.  ·  [GCM]", "6. Discrição e segurança de informações: graus de sigilo, atributos básicos, ameaças, vulnerabilidades e comportamento do agente.  ·  [GCM]"]}, {"nome": "Proteção, Escoltas e Segurança Patrimonial", "topicos": ["7. Planejamento de proteção pessoal e de comitivas: estudos de rota, pontos sensíveis e contingências.  ·  [GCM]", "8. Composição de equipes, papéis e formações em deslocamentos e eventos.  ·  [GCM]", "9. Procedimentos de varredura, controle de público e resposta imediata a ameaças.  ·  [GCM]", "10. Condução operacional e estratégica de veículos.  ·  [GCM]", "11. Proteção de áreas críticas e guarda de materiais sensíveis.  ·  [GCM]", "12. Planos de segurança de instalações: objetivos, responsabilidades e auditorias.  ·  [GCM]", "13. Controle de acessos: credenciamento, barreiras e procedimentos; vigilância e monitoramento.  ·  [GCM]", "14. Equipamentos eletrônicos de proteção; segurança corporativa estratégica; gestão de segurança patrimonial.  ·  [GCM]"]}, {"nome": "Incidentes Críticos e Negociação", "topicos": ["15. Conceitos de incidente crítico, cadeia de comando e gerenciamento do cenário.  ·  [GCM]", "16. Estabilização, isolamentos e perímetros; comunicação operacional.  ·  [GCM]", "17. Noções básicas de negociação policial: contato, escuta ativa, redução de tensão e encaminhamentos.  ·  [GCM]", "18. Critérios para escalonamento e emprego de táticas de resolução.  ·  [GCM]"]}, {"nome": "Incêndio, Socorrismo e Inteligência", "topicos": ["19. NR-23; proteção contra incêndio; código de segurança contra incêndio, pânico e outros riscos.  ·  [GCM]", "20. Atuação integrada com brigada; tipos e uso de extintores; rotas e saídas de emergência; plano de abandono e evacuação.  ·  [GCM]", "21. Condutas do socorrista: medidas de segurança do local, comunicação e transferência ao atendimento especializado; APH nível básico.  ·  [GCM]", "22. Serviços de inteligência: finalidade, utilização, conceitos básicos, fontes de coleta e metodologia de produção de conhecimentos.  ·  [GCM]"]}]}, {"id": "legislacao-municipal-salvador", "nome": "LEGISLAÇÃO MUNICIPAL — SALVADOR / GCM", "grupos": [{"nome": "Estatuto e Carreira", "topicos": ["1. Lei Complementar nº 1/1991 — Regime Jurídico Único dos Funcionários Públicos de Salvador, e alterações.  ·  [GCM]", "2. Lei Ordinária nº 9.640/2022 — Plano de Carreira e Vencimentos do cargo de Guarda Civil Municipal.  ·  [GCM]", "3. Lei nº 13.022/2014 — Estatuto Geral das Guardas Municipais.  ·  [GCM]", "4. Decreto nº 27.731/2016 — Regimento da Guarda Civil Municipal de Salvador.  ·  [GCM]", "5. Lei nº 9.273/2017 — Regime Disciplinar da Guarda Civil Municipal de Salvador.  ·  [GCM]"]}, {"nome": "Lei Orgânica e Administração Municipal", "topicos": ["6. Lei Orgânica do Município: princípios fundamentais, organização do Município e competências municipais.  ·  [GCM]", "7. Poder Legislativo e Poder Executivo; atribuições da Câmara, do Prefeito e dos órgãos da Administração Municipal.  ·  [GCM]", "8. Administração pública, servidores públicos, bens municipais e serviços públicos.  ·  [GCM]", "9. Planejamento, orçamento e finanças municipais; políticas sociais e desenvolvimento urbano.  ·  [GCM]", "10. Organização administrativa do Município: administração direta e indireta; princípios, competências e responsabilidades dos agentes públicos.  ·  [GCM]", "11. Código Tributário e de Rendas de Salvador (Lei nº 7.186/2006): tributos, obrigações e fiscalização tributária.  ·  [GCM]", "12. Normas municipais de ética, integridade, transparência, acesso à informação e controle da Administração Pública.  ·  [GCM]", "13. Direitos e deveres dos cidadãos perante a Administração Municipal.  ·  [GCM]"]}, {"nome": "Atribuições do Cargo", "topicos": ["14. Anexo II do Edital: requisitos e atribuições do cargo de Guarda Civil Municipal.  ·  [GCM]"]}]}, {"id": "especificos-transpetro", "nome": "ESPECÍFICOS — INSTRUMENTAÇÃO E MECÂNICA (TRANSPETRO)", "grupos": [{"nome": "Metrologia e Instrumentação Industrial", "topicos": ["1. Noções de metrologia.  ·  [TRANSP]", "2. Transmissão e transmissores pneumáticos, eletrônicos analógicos, digitais e inteligentes.  ·  [TRANSP]", "3. Noções de controle de processos: malha aberta e malha fechada.  ·  [TRANSP]", "4. Elementos finais de controle: válvulas pneumáticas, hidráulicas e motorizadas.  ·  [TRANSP]", "5. Noções de instrumentação: tipos de instrumentos, terminologia e simbologia.  ·  [TRANSP]", "6. Noções de sistemas instrumentados de segurança.  ·  [TRANSP]", "7. Medição: definições e unidades de pressão, temperatura, nível, vazão, massa e densidade.  ·  [TRANSP]", "8. Sistema Internacional de Unidades.  ·  [TRANSP]", "9. Instrumentos de medição de pressão, nível, temperatura e vazão.  ·  [TRANSP]"]}, {"nome": "Mecânica, Termodinâmica e Equipamentos", "topicos": ["10. Mecânica geral: estática, cinemática e dinâmica; conservação da energia mecânica.  ·  [TRANSP]", "11. Mecânica dos fluidos: propriedades, hidrostática, escoamento e perda de carga em tubulações e dutos.  ·  [TRANSP]", "12. Transmissão de calor: condução, convecção e radiação; máquinas térmicas.  ·  [TRANSP]", "13. Resistência dos materiais: tensões normais e cisalhantes, solicitações axiais, flexão e torção.  ·  [TRANSP]", "14. Termodinâmica básica: propriedades termodinâmicas, primeira e segunda leis.  ·  [TRANSP]", "15. Equipamentos de processo: bombas centrífugas e alternativas, compressores e permutadores casco/tubo.  ·  [TRANSP]"]}, {"nome": "Química e Processos", "topicos": ["16. Química geral: modelos atômicos, classificação periódica, ligações químicas e cálculo estequiométrico.  ·  [TRANSP]", "17. Estudo dos gases; reações de oxidação-redução; transformações químicas e equilíbrio; termoquímica.  ·  [TRANSP]", "18. Química inorgânica: ácidos, bases, sais e óxidos. Química orgânica: hidrocarbonetos e polímeros.  ·  [TRANSP]", "19. Unidades de concentração; soluções aquosas; dispersões; natureza elétrica da matéria.  ·  [TRANSP]", "20. Operações unitárias e noções de processos de refino.  ·  [TRANSP]"]}, {"nome": "Física, Eletricidade e SMS", "topicos": ["21. Eletrostática; cargas elétricas em movimento; eletromagnetismo; radiações eletromagnéticas.  ·  [TRANSP]", "22. Noções de eletricidade e eletrônica.  ·  [TRANSP]", "23. Segurança do trabalho, meio ambiente e saúde.  ·  [TRANSP]"]}]}];
-const KEY_BASE="verticalizado-unificado-4-concursos";
-let KEY=KEY_BASE;
+const KEY="verticalizado-unificado-4-concursos";
 let state={};
 let historico=[];
 let revisoes=[];
@@ -1477,15 +1392,6 @@ function populateDiscSelects() {
 }
 
 function switchTab(tab) {
-  if(tab === 'admin' && !isAdmin()){
-    showToast('⚠️','Acesso restrito ao administrador.');
-    return;
-  }
-  const targetPage = document.getElementById('page-' + tab);
-  if(!targetPage){
-    console.warn('Página não encontrada:', tab);
-    return;
-  }
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + tab).classList.add('active');
@@ -1667,719 +1573,160 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "710454580472",
   appId: "1:710454580472:web:335be81d5fea05c98cd70d"
 };
-
-let fbAuth = null;
-let fbDB = null;
-let fbUser = null;
-let firebaseAvailable = false;
-let currentUserProfile = null;
-let currentUserRole = 'student';
-
-// Conta administrativa principal da plataforma.
-// O painel só fica visível para esta conta quando o e-mail autenticado
-// corresponde ao administrador definido pelo proprietário do projeto.
-// IMPORTANTE: as Regras do Firestore devem continuar protegendo os dados.
-const ADMIN_EMAILS = ['victorsantospsa@gmail.com'];
-
-function emailIsConfiguredAdmin(email){
-  return ADMIN_EMAILS.includes(String(email || '').trim().toLowerCase());
-}
-
-/*
-  ESTRUTURA MULTIUSUÁRIO
-
-  users/{uid}
-    name
-    email
-    role: "admin" | "student"
-    status: "active" | "blocked"
-    createdAt
-    lastLogin
-    appData: {
-      state, historico, revisoes, pomo, rotina, agenda, contas, metas...
-    }
-
-  O UID do Firebase é a chave de isolamento.
-  Nunca usamos e-mail ou nome como chave dos dados.
-*/
+let fbAuth = null, fbDB = null, fbUser = null, firebaseAvailable = false;
 
 function initFirebase() {
-  if (typeof firebase === 'undefined') {
-    firebaseAvailable = false;
-    return false;
-  }
-
+  if (typeof firebase === 'undefined') { firebaseAvailable = false; return false; }
   try {
-    if (!firebase.apps.length) {
-      firebase.initializeApp(FIREBASE_CONFIG);
-    }
-
+    firebase.initializeApp(FIREBASE_CONFIG);
     fbAuth = firebase.auth();
-    fbDB = firebase.firestore();
+    fbDB   = firebase.firestore();
     firebaseAvailable = true;
     return true;
-  } catch (e) {
-    console.error('Erro ao iniciar Firebase:', e);
-    firebaseAvailable = false;
-    return false;
-  }
+  } catch(e) { firebaseAvailable = false; return false; }
 }
 
 function showLogin(msg) {
-  const overlay = document.getElementById('login-overlay');
-  const err = document.getElementById('login-err');
-
-  if (overlay) overlay.style.display = 'flex';
-  if (err) err.textContent = msg || '';
+  document.getElementById('login-overlay').style.display = 'flex';
+  document.getElementById('login-err').textContent = msg || '';
 }
-
-function hideLogin() {
-  const overlay = document.getElementById('login-overlay');
-  if (overlay) overlay.style.display = 'none';
-}
+function hideLogin() { document.getElementById('login-overlay').style.display = 'none'; }
 
 function loginErrMsg(err) {
   const c = (err && err.code) || '';
-
-  if (c.indexOf('wrong-password') >= 0 ||
-      c.indexOf('invalid-credential') >= 0 ||
-      c.indexOf('invalid-login-credentials') >= 0) {
-    return 'E-mail ou senha incorretos.';
-  }
-
+  if (c.indexOf('wrong-password') >= 0 || c.indexOf('invalid-credential') >= 0 || c.indexOf('invalid-login-credentials') >= 0) return 'Senha incorreta.';
   if (c.indexOf('user-not-found') >= 0) return 'Usuário não encontrado.';
   if (c.indexOf('invalid-email') >= 0) return 'E-mail inválido.';
-  if (c.indexOf('too-many-requests') >= 0) return 'Muitas tentativas. Aguarde um pouco.';
+  if (c.indexOf('too-many-requests') >= 0) return 'Muitas tentativas — aguarde um pouco e tente de novo.';
   if (c.indexOf('network-request-failed') >= 0) return 'Sem conexão com a internet.';
-  if (c.indexOf('user-disabled') >= 0) return 'Este usuário está bloqueado.';
-
   return 'Não foi possível entrar. Confira e-mail e senha.';
 }
-
 function doLogin() {
-  const emailEl = document.getElementById('login-email');
-  const passEl = document.getElementById('login-pass');
-
-  const email = emailEl ? emailEl.value.trim() : '';
-  const pass = passEl ? passEl.value : '';
-
-  if (!email || !pass) {
-    showLogin('Preencha e-mail e senha.');
-    return;
-  }
-
-  if (!fbAuth) {
-    showLogin('Firebase não está disponível.');
-    return;
-  }
-
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  if (!email || !pass) { showLogin('Preencha e-mail e senha.'); return; }
   showLogin('Entrando...');
-
-  fbAuth.signInWithEmailAndPassword(email, pass)
-    .catch(err => showLogin(loginErrMsg(err)));
+  fbAuth.signInWithEmailAndPassword(email, pass).catch(err => showLogin(loginErrMsg(err)));
 }
-
 function doLogout() {
   if (fbAuth) fbAuth.signOut();
 }
 
-async function getUserProfile(user) {
-  if (!user || !fbDB) return null;
-
-  // Nova estrutura: users/{uid}
-  try {
-    const snap = await fbDB.collection('users').doc(user.uid).get();
-
-    if (snap.exists) {
-      return Object.assign(
-        { uid: user.uid },
-        snap.data()
-      );
-    }
-  } catch (e) {
-    console.warn('Não foi possível ler users/{uid}:', e);
-  }
-
-  // Compatibilidade com a estrutura antiga que já estava funcionando.
-  try {
-    const oldSnap = await fbDB.collection('victor').doc(user.uid).get();
-
-    if (oldSnap.exists) {
-      const oldData = oldSnap.data() || {};
-
-      const profile = Object.assign(
-        {
-          uid: user.uid,
-          name: oldData.name || user.displayName || 'Usuário',
-          email: oldData.email || user.email || '',
-          role: oldData.role === 'admin' ? 'admin' : 'student',
-          status: oldData.status || 'active'
-        },
-        oldData
-      );
-
-      // Tenta copiar o perfil para a nova coleção.
-      try {
-        await fbDB.collection('users').doc(user.uid).set({
-          name: profile.name,
-          email: profile.email,
-          role: profile.role,
-          status: profile.status,
-          createdAt: profile.createdAt || firebase.firestore.FieldValue.serverTimestamp(),
-          lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-      } catch (copyError) {
-        console.warn('Perfil antigo preservado; não foi possível migrar automaticamente:', copyError);
-      }
-
-      return profile;
-    }
-  } catch (e) {
-    console.warn('Não foi possível ler perfil antigo:', e);
-  }
-
-  // Usuário autenticado sem perfil ainda.
-  // Ele nasce como aluno. Nunca criamos admin pelo navegador.
-  return {
-    uid: user.uid,
-    name: user.displayName || (user.email ? user.email.split('@')[0] : 'Aluno'),
-    email: user.email || '',
-    role: 'student',
-    status: 'active'
-  };
-}
-
-async function ensureUserProfile(user, profile) {
-  if (!fbDB || !user) return;
-
-  const ref = fbDB.collection('users').doc(user.uid);
-
-  try {
-    const snap = await ref.get();
-
-    if (!snap.exists) {
-      await ref.set({
-        name: profile.name || 'Aluno',
-        email: user.email || profile.email || '',
-        role: 'student',
-        status: 'active',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
-    } else {
-      await ref.set({
-        email: user.email || profile.email || '',
-        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
-    }
-  } catch (e) {
-    console.warn('Não foi possível atualizar perfil:', e);
-  }
-}
-
-function setCurrentUserUI() {
-  const ub = document.getElementById('sb-user');
-  const ue = document.getElementById('sb-user-email');
-
-  if (ub) ub.style.display = fbUser ? 'flex' : 'none';
-
-  if (ue) {
-    const name = currentUserProfile && currentUserProfile.name
-      ? currentUserProfile.name
-      : (fbUser ? fbUser.email : '');
-
-    ue.textContent = name || '';
-    ue.title = fbUser ? (fbUser.email || '') : '';
-  }
-}
-
-function userDataPath() {
-  if (!fbUser) return null;
-  return fbDB.collection('users').doc(fbUser.uid);
-}
-
-function migrateOldLocalDataForAdmin() {
-  if (!fbUser || currentUserRole !== 'admin') return;
-
-  const newKey = KEY_BASE + ':' + fbUser.uid;
-
-  try {
-    const current = localStorage.getItem(newKey);
-    const old = localStorage.getItem(KEY_BASE);
-
-    if (!current && old) {
-      localStorage.setItem(newKey, old);
-    }
-  } catch (e) {
-    console.warn('Migração local ignorada:', e);
-  }
-}
-
-
-/* ===== ADMIN: CADASTRO E EDIÇÃO DE USUÁRIOS ===== */
-let adminUsersCache = [];
-let editingAdminUid = null;
-
-function isAdmin(){
-  return !!fbUser && (
-    currentUserRole === 'admin' ||
-    emailIsConfiguredAdmin(fbUser.email)
-  );
-}
-
-function updateAdminNav(){
-  const admin = isAdmin();
-  const b=document.getElementById('admin-nav-btn');
-  const badge=document.getElementById('admin-only-badge');
-  if(b) b.classList.toggle('visible', admin);
-  if(badge) badge.style.display = admin ? 'block' : 'none';
-}
-
-function openAdminPanel(){
-  if(!isAdmin()){ showToast('⚠️','Acesso restrito ao administrador.'); return; }
-  switchTab('admin');
-  loadAdminUsers();
-}
-
-function openUserModal(uid){
-  if(!isAdmin()) return;
-  editingAdminUid = uid || null;
-  const modal=document.getElementById('admin-user-modal');
-  const title=document.getElementById('admin-modal-title');
-  const msg=document.getElementById('admin-modal-msg');
-  const pw=document.getElementById('adm-password-wrap');
-  msg.textContent=''; msg.className='admin-msg';
-  if(uid){
-    const u=adminUsersCache.find(x=>x.uid===uid); if(!u) return;
-    title.textContent='Editar usuário';
-    document.getElementById('adm-name').value=u.name||'';
-    document.getElementById('adm-email').value=u.email||'';
-    document.getElementById('adm-role').value=u.role==='admin'?'admin':'student';
-    document.getElementById('adm-status').value=u.status==='blocked'?'blocked':'active';
-    pw.style.display='none';
-  }else{
-    title.textContent='Cadastrar usuário';
-    document.getElementById('adm-name').value=''; document.getElementById('adm-email').value=''; document.getElementById('adm-password').value='';
-    document.getElementById('adm-role').value='student'; document.getElementById('adm-status').value='active'; pw.style.display='block';
-  }
-  modal.classList.add('open');
-}
-function closeUserModal(){ document.getElementById('admin-user-modal')?.classList.remove('open'); editingAdminUid=null; }
-function adminMsg(text,ok){ const m=document.getElementById('admin-modal-msg'); if(m){m.textContent=text||'';m.className='admin-msg'+(ok?' ok':'');} }
-
-async function createAuthUserSecondary(email,password){
-  const appName='adminCreator_'+Date.now();
-  let secondary=null;
-  try{
-    secondary=firebase.initializeApp(FIREBASE_CONFIG,appName);
-    const cred=await secondary.auth().createUserWithEmailAndPassword(email,password);
-    return {uid:cred.user.uid,app:secondary};
-  }catch(e){
-    if(secondary){try{await secondary.delete();}catch(_){} }
-    throw e;
-  }
-}
-
-async function saveAdminUser(){
-  if(!isAdmin() || !fbDB) return;
-  const name=document.getElementById('adm-name').value.trim();
-  const email=document.getElementById('adm-email').value.trim().toLowerCase();
-  const password=document.getElementById('adm-password').value;
-  const role=document.getElementById('adm-role').value==='admin'?'admin':'student';
-  const status=document.getElementById('adm-status').value==='blocked'?'blocked':'active';
-  if(!name||!email){adminMsg('Informe nome e e-mail.');return;}
-  const btn=document.querySelector('#admin-user-modal .admin-save'); if(btn) btn.disabled=true;
-  adminMsg(editingAdminUid?'Salvando alterações...':'Criando usuário...');
-  try{
-    if(editingAdminUid){
-      await fbDB.collection('users').doc(editingAdminUid).set({name,email,role,status,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
-      if(editingAdminUid===fbUser.uid){ currentUserProfile=Object.assign({},currentUserProfile,{name,email,role,status}); currentUserRole=role; setCurrentUserUI(); updateAdminNav(); }
-      adminMsg('Alterações salvas.',true); await loadAdminUsers(); setTimeout(closeUserModal,500);
-    }else{
-      if(password.length<6){adminMsg('A senha inicial precisa ter pelo menos 6 caracteres.');return;}
-      const created=await createAuthUserSecondary(email,password);
-      try{
-        await fbDB.collection('users').doc(created.uid).set({name,email,role,status,createdAt:firebase.firestore.FieldValue.serverTimestamp(),lastLogin:null,createdBy:fbUser.uid},{merge:true});
-      }finally{
-        try{await created.app.auth().signOut();}catch(_){}
-        try{await created.app.delete();}catch(_){}
-      }
-      adminMsg('Usuário cadastrado com sucesso.',true); await loadAdminUsers(); setTimeout(closeUserModal,700);
-    }
-  }catch(e){
-    console.error(e);
-    const c=e?.code||'';
-    const msg=c.includes('email-already-in-use')?'Este e-mail já está cadastrado no Firebase.':c.includes('invalid-email')?'E-mail inválido.':c.includes('weak-password')?'Senha muito fraca.':'Não foi possível salvar o usuário. '+(e?.message||'');
-    adminMsg(msg);
-  }finally{ if(btn) btn.disabled=false; }
-}
-
-async function loadAdminUsers(){
-  if(!isAdmin()||!fbDB) return;
-  const body=document.getElementById('admin-users-body'); if(body) body.innerHTML='<tr><td colspan="5" style="color:var(--text-soft)">Carregando...</td></tr>';
-  try{
-    const snap=await fbDB.collection('users').get();
-    adminUsersCache=snap.docs.map(d=>Object.assign({uid:d.id},d.data()||{})).sort((a,b)=>(a.name||a.email||'').localeCompare(b.name||b.email||'','pt-BR'));
-    renderAdminUsers();
-  }catch(e){
-    console.error(e); if(body) body.innerHTML='<tr><td colspan="5" style="color:#dc2626">Não foi possível carregar os usuários. Verifique as regras do Firestore.</td></tr>';
-  }
-}
-function formatAdminDate(v){
-  if(!v) return '—';
-  try{const d=v.toDate?v.toDate():new Date(v); return d.toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'});}catch(_){return '—';}
-}
-function renderAdminUsers(){
-  const body=document.getElementById('admin-users-body'); if(!body)return;
-  const q=(document.getElementById('admin-user-search')?.value||'').toLowerCase().trim();
-  const rows=adminUsersCache.filter(u=>!q||(u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q));
-  document.getElementById('adm-total').textContent=adminUsersCache.length;
-  document.getElementById('adm-active').textContent=adminUsersCache.filter(u=>(u.status||'active')==='active').length;
-  document.getElementById('adm-blocked').textContent=adminUsersCache.filter(u=>u.status==='blocked').length;
-  if(!rows.length){body.innerHTML='<tr><td colspan="5" style="color:var(--text-soft)">Nenhum usuário encontrado.</td></tr>';return;}
-  body.innerHTML=rows.map(u=>{
-    const status=u.status==='blocked'?'blocked':'active';
-    const role=u.role==='admin'?'Administrador':'Aluno';
-    return `<tr><td><b>${escAdmin(u.name||'Sem nome')}</b><div class="admin-role">${escAdmin(u.email||'')}</div></td><td>${role}</td><td><span class="admin-badge ${status}">${status==='active'?'Ativo':'Bloqueado'}</span></td><td>${formatAdminDate(u.lastLogin)}</td><td><div class="admin-row-actions"><button class="admin-mini" onclick="openUserModal('${u.uid}')">Editar</button><button class="admin-mini" onclick="toggleAdminUserStatus('${u.uid}')">${status==='active'?'Bloquear':'Ativar'}</button><button class="admin-mini" onclick="sendAdminReset('${u.email}')">Resetar senha</button></div></td></tr>`;
-  }).join('');
-}
-function escAdmin(v){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
-async function toggleAdminUserStatus(uid){
-  if(!isAdmin()||uid===fbUser.uid)return;
-  const u=adminUsersCache.find(x=>x.uid===uid); if(!u)return;
-  const next=u.status==='blocked'?'active':'blocked';
-  try{await fbDB.collection('users').doc(uid).set({status:next,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}); await loadAdminUsers(); showToast(next==='blocked'?'⛔':'✅',next==='blocked'?'Usuário bloqueado.':'Usuário ativado.');}catch(e){showToast('⚠️','Não foi possível alterar o status.');}
-}
-async function sendAdminReset(email){
-  if(!isAdmin()||!email)return;
-  try{await fbAuth.sendPasswordResetEmail(email);showToast('📧','E-mail de redefinição enviado.');}catch(e){showToast('⚠️','Não foi possível enviar a redefinição.');}
-}
-
 async function bootWithAuth() {
-  if (!initFirebase()) {
-    // Mantém o site funcionando localmente se Firebase estiver indisponível.
-    currentUserRole = 'local';
-    KEY = KEY_BASE;
-    init();
-    return;
-  }
-
+  if (!initFirebase()) { init(); return; }
   fbAuth.onAuthStateChanged(async user => {
     if (user) {
       fbUser = user;
-
-      currentUserProfile = await getUserProfile(user);
-
-      if (currentUserProfile && currentUserProfile.status === 'blocked') {
-        await fbAuth.signOut();
-        showLogin('Este usuário está bloqueado.');
-        return;
-      }
-
-      currentUserRole =
-        (currentUserProfile && currentUserProfile.role === 'admin') ||
-        emailIsConfiguredAdmin(user.email)
-          ? 'admin'
-          : 'student';
-
-      // Cada usuário possui um localStorage separado.
-      KEY = KEY_BASE + ':' + user.uid;
-
-      // Preserva os dados locais antigos do Victor quando ele for o admin.
-      migrateOldLocalDataForAdmin();
-
-      await ensureUserProfile(user, currentUserProfile || {});
-
       hideLogin();
-      setCurrentUserUI();
-      updateAdminNav();
+      const ub = document.getElementById('sb-user'), ue = document.getElementById('sb-user-email');
+      if (ub) ub.style.display = 'flex';
+      if (ue) ue.textContent = user.email;
 
-      if (currentUserRole === 'admin') {
-        showToast('👑', 'Administrador conectado.');
-      } else {
-        showToast('👤', 'Aluno conectado.');
+      try {
+        const docSnap = await fbDB.collection('victor').doc(user.uid).get();
+        if (docSnap.exists && docSnap.data().role === 'admin') {
+          showToast('👑', 'Modo Admin Ativado!');
+        } else {
+          showToast('👤', 'Acesso de Usuário Padrão.');
+        }
+      } catch (error) {
+        showToast('👤', 'Acesso de Usuário Padrão.');
       }
 
       init();
     } else {
       fbUser = null;
-      currentUserProfile = null;
-      currentUserRole = 'student';
-      KEY = KEY_BASE;
-      updateAdminNav();
-
-      const ub = document.getElementById('sb-user');
-      if (ub) ub.style.display = 'none';
-
+      document.getElementById('sb-user').style.display = 'none';
       showLogin();
     }
   });
 }
 
-const DB_PATH = 'estado-principal';
-let dbHandle = null;
-let dbReady = false;
-let syncOn = false;
+const DB_PATH = 'victor/estado-principal';
+let dbHandle = null, dbReady = false, syncOn = false;
 
 async function initDB() {
-  // O banco Claude fica apenas como fallback/local.
-  // Firebase é a fonte principal quando existe usuário autenticado.
   try {
-    if (typeof claude !== 'undefined' && claude.use) {
-      dbHandle = await claude.use('db');
-      syncOn = !!dbHandle;
-    } else {
-      dbHandle = null;
-      syncOn = false;
-    }
-  } catch (e) {
-    dbHandle = null;
-    syncOn = false;
-  }
-
+    dbHandle = await claude.use('db');
+    syncOn = !!dbHandle;
+  } catch(e) { dbHandle = null; syncOn = false; }
   setSyncBadge();
 }
 
 function setSyncBadge() {
   const b = document.getElementById('sync-badge');
   if (!b) return;
-
-  if (firebaseAvailable && fbUser) {
-    b.textContent = 'Sincronizando';
-    b.className = 'sync-badge on';
-    b.title = 'Dados deste usuário sincronizados no Firebase. Clique para atualizar.';
-    b.onclick = refreshCloudData;
-    b.style.cursor = 'pointer';
-  } else if (syncOn) {
-    b.textContent = 'Sincronizado';
-    b.className = 'sync-badge on';
-    b.title = 'Clique para atualizar.';
-    b.onclick = refreshCloudData;
-    b.style.cursor = 'pointer';
-  } else {
-    b.textContent = 'Somente local';
-    b.className = 'sync-badge off';
-    b.title = 'Firebase indisponível.';
-    b.onclick = null;
-    b.style.cursor = 'default';
-  }
+  if (firebaseAvailable && fbUser) { b.textContent = '🔥 Firebase — sincronizado'; b.className = 'sync-badge on'; }
+  else if (syncOn)                 { b.textContent = '☁️ Sincronizado (Claude)';   b.className = 'sync-badge on'; }
+  else                              { b.textContent = '💾 Somente local';          b.className = 'sync-badge off'; }
 }
 
 function buildSnapshot() {
-  const data = {
-    state,
-    historico,
-    revisoes,
-    pomo,
-    rotina,
-    agenda,
-    contas
-  };
-
+  const data = { state, historico, revisoes, pomo, rotina, agenda, contas };
   ['meta-horas','meta-questoes','meta-conclusao','meta-aprov'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) data[id] = el.value;
+    const el = document.getElementById(id); if (el) data[id] = el.value;
   });
-
   return data;
 }
 
 function applySnapshot(s) {
   if (!s) return;
-
-  state = s.state || {};
+  state     = s.state     || {};
   historico = s.historico || [];
-  revisoes = s.revisoes || [];
-
-  if (s.pomo) pomo = Object.assign(pomo, s.pomo);
+  revisoes  = s.revisoes  || [];
+  if (s.pomo)   pomo   = Object.assign(pomo, s.pomo);
   if (s.rotina) rotina = Object.assign(rotina, s.rotina);
-
   agenda = s.agenda || [];
   contas = s.contas || [];
-
   ['meta-horas','meta-questoes','meta-conclusao','meta-aprov'].forEach(id => {
-    if (s[id] !== undefined) {
-      const el = document.getElementById(id);
-      if (el) el.value = s[id];
-    }
+    if (s[id] !== undefined) { const el = document.getElementById(id); if (el) el.value = s[id]; }
   });
 }
 
 async function loadStorage() {
-  // Firebase: carrega somente os dados do usuário autenticado.
   if (firebaseAvailable && fbUser) {
     try {
-      const ref = userDataPath();
-      const snap = await ref.get();
-
-      if (snap.exists) {
-        const userDoc = snap.data() || {};
-
-        // Nova estrutura: dados dentro de appData.
-        if (userDoc.appData) {
-          applySnapshot(userDoc.appData);
-          setSyncBadge();
-          return;
-        }
-
-        // Compatibilidade com a estrutura antiga:
-        // dados estavam diretamente no documento victor/{uid}.
-        if (
-          userDoc.state ||
-          userDoc.historico ||
-          userDoc.revisoes ||
-          userDoc.rotina ||
-          userDoc.agenda ||
-          userDoc.contas
-        ) {
-          applySnapshot(userDoc);
-          setSyncBadge();
-          return;
-        }
-      }
-
-      // Compatibilidade final com victor/{uid}.
-      try {
-        const oldSnap = await fbDB.collection('victor').doc(fbUser.uid).get();
-
-        if (oldSnap.exists) {
-          const oldData = oldSnap.data() || {};
-
-          if (
-            oldData.state ||
-            oldData.historico ||
-            oldData.revisoes ||
-            oldData.rotina ||
-            oldData.agenda ||
-            oldData.contas
-          ) {
-            applySnapshot(oldData);
-            setSyncBadge();
-            return;
-          }
-        }
-      } catch (oldError) {
-        console.warn('Falha ao ler dados antigos:', oldError);
-      }
-    } catch (e) {
-      console.warn('Falha ao carregar Firebase:', e);
-      showToast('⚠️', 'Não consegui carregar a nuvem. Usando dados locais.');
-    }
+      const snap = await fbDB.collection('victor').doc(fbUser.uid).get();
+      if (snap.exists) { applySnapshot(snap.data()); setSyncBadge(); return; }
+      setSyncBadge();
+    } catch(e) { showToast('⚠️', 'Não consegui puxar da nuvem — usando dados locais.'); }
   }
-
   await initDB();
-
-  if (syncOn && !fbUser) {
+  if (syncOn) {
     try {
       const doc = await dbHandle.doc(DB_PATH).get();
-      if (doc && doc.data) {
-        applySnapshot(doc.data);
-        setSyncBadge();
-        return;
-      }
-    } catch (e) {}
+      if (doc && doc.data) { applySnapshot(doc.data); setSyncBadge(); return; }
+    } catch(e) {}
   }
-
   try {
     const raw = localStorage.getItem(KEY);
     if (raw) applySnapshot(JSON.parse(raw));
-  } catch (e) {}
-
+  } catch(e) {}
   setSyncBadge();
 }
 
 let saveTimer;
-
-function debouncedSave() {
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(saveData, 1200);
-}
+function debouncedSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveData,1200);}
 
 async function saveData() {
   const data = buildSnapshot();
-
-  try {
-    localStorage.setItem(KEY, JSON.stringify(data));
-  } catch (e) {}
-
+  try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e) {}
   if (firebaseAvailable && fbUser) {
     try {
-      // IMPORTANTE:
-      // o perfil fica em users/{uid}; os dados pessoais ficam
-      // dentro de appData do próprio UID.
-      await userDataPath().set({
-        appData: data,
-        email: fbUser.email || '',
-        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
-
+      await fbDB.collection('victor').doc(fbUser.uid).set(data);
+      showToast('🔥', 'Sincronizado no Firebase!');
       setSyncBadge();
-      showToast('☁️', 'Dados sincronizados.');
       return;
-    } catch (e) {
-      console.error('Erro Firebase:', e);
-      setSyncBadge();
-      showToast('⚠️', 'Não sincronizou. Os dados ficaram salvos neste aparelho.');
-      return;
-    }
+    } catch(e) { showToast('⚠️', 'Erro ao sincronizar — salvo só neste aparelho.'); return; }
   }
-
   if (syncOn) {
     try {
       await dbHandle.doc(DB_PATH).set(data);
-      setSyncBadge();
-      showToast('☁️', 'Sincronizado.');
+      showToast('☁️', 'Sincronizado na nuvem!');
       return;
-    } catch (e) {
-      showToast('⚠️', 'Sem conexão — salvo neste aparelho.');
-      return;
-    }
+    } catch(e) { showToast('⚠️', 'Sem conexão — salvo só neste aparelho.'); return; }
   }
-
   showToast('💾', 'Salvo neste aparelho.');
-}
-
-async function refreshCloudData() {
-  if (!fbUser || !fbDB) {
-    showToast('⚠️', 'Faça login para atualizar os dados.');
-    return;
-  }
-
-  const b = document.getElementById('sync-badge');
-
-  if (b) {
-    b.textContent = 'Atualizando...';
-    b.className = 'sync-badge on';
-  }
-
-  try {
-    const snap = await userDataPath().get();
-
-    if (snap.exists && snap.data().appData) {
-      applySnapshot(snap.data().appData);
-
-      try {
-        localStorage.setItem(KEY, JSON.stringify(snap.data().appData));
-      } catch (e) {}
-
-      renderDiscs();
-      renderCal();
-      renderCharts();
-      renderHistorico();
-      renderRevisoes();
-      renderRotina();
-      updateAll();
-
-      showToast('✅', 'Dados atualizados.');
-    } else {
-      showToast('ℹ️', 'Ainda não existem dados salvos na nuvem.');
-    }
-  } catch (e) {
-    console.error('Erro ao atualizar:', e);
-    showToast('⚠️', 'Não foi possível atualizar agora.');
-  }
-
-  setSyncBadge();
 }
 
 function openBackupModal() {
