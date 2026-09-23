@@ -501,6 +501,7 @@ select{min-width:0;max-width:100%;}
 .qp-side label{font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--text-soft)}
 .quiz-question{white-space:pre-line}
 @media(max-width:760px){.qp-item{grid-template-columns:auto minmax(0,1fr)}.qp-side{grid-column:2}}
+.sb-ver{margin-top:10px;text-align:center;font-size:9.5px;letter-spacing:.4px;color:rgba(255,255,255,.35)}
 </style>
 </head>
 <body>
@@ -541,6 +542,7 @@ select{min-width:0;max-width:100%;}
       <button class="btn-backup" onclick="triggerImport()" style="flex:1">⬇️ Restaurar</button>
     </div>
     <input type="file" id="import-file" accept=".json" style="display:none" onchange="importBackup(this)">
+    <div class="sb-ver" id="sb-ver">Versão 3 · login Firebase</div>
   </div>
 </aside>
 
@@ -2817,6 +2819,7 @@ async function init() {
   initQuestions();
   updateAll();
 }
+console.info('RotinIA versão 3 — login Firebase');
 bootWithAuth();
 </script>
 </body>
