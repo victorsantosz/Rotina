@@ -1702,17 +1702,24 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "710454580472",
   appId: "1:710454580472:web:335be81d5fea05c98cd70d"
 };
-let fbAuth = null, fbDB = null, fbUser = null, firebaseAvailable = false;
+let fbAuth = null, fbDB = null, fbUser = null, firebaseAvailable = false, fbError = '';
+function fbErrText(e) {
+  const c = (e && e.code) || '';
+  if (c.indexOf('permission-denied') >= 0) return 'Regras do Firestore negaram o acesso (permission-denied)';
+  if (c.indexOf('unavailable') >= 0) return 'Firestore sem conexão (unavailable)';
+  if (c.indexOf('unauthenticated') >= 0) return 'Sessão não autenticada (unauthenticated)';
+  return c || (e && e.message) || 'erro desconhecido';
+}
 
 function initFirebase() {
-  if (typeof firebase === 'undefined') { firebaseAvailable = false; return false; }
+  if (typeof firebase === 'undefined') { firebaseAvailable = false; fbError = 'Firebase não carregou (internet ou bloqueador de anúncios)'; return false; }
   try {
     firebase.initializeApp(FIREBASE_CONFIG);
     fbAuth = firebase.auth();
     fbDB   = firebase.firestore();
     firebaseAvailable = true;
     return true;
-  } catch(e) { firebaseAvailable = false; return false; }
+  } catch(e) { firebaseAvailable = false; fbError = 'Falha ao iniciar Firebase: ' + fbErrText(e); return false; }
 }
 
 function showLogin(msg) {
@@ -1728,7 +1735,10 @@ function loginErrMsg(err) {
   if (c.indexOf('invalid-email') >= 0) return 'E-mail inválido.';
   if (c.indexOf('too-many-requests') >= 0) return 'Muitas tentativas — aguarde um pouco e tente de novo.';
   if (c.indexOf('network-request-failed') >= 0) return 'Sem conexão com a internet.';
-  return 'Não foi possível entrar. Confira e-mail e senha.';
+  if (c.indexOf('unauthorized-domain') >= 0) return 'Este domínio não está autorizado no Firebase (Authentication → Settings → Authorized domains).';
+  if (c.indexOf('operation-not-allowed') >= 0) return 'Login por e-mail/senha está desativado no Firebase.';
+  if (c.indexOf('api-key') >= 0) return 'Chave de API do Firebase inválida (' + c + ').';
+  return 'Não foi possível entrar' + (c ? ' (' + c + ')' : '') + '. Confira e-mail e senha.';
 }
 function doLogin() {
   const email = document.getElementById('login-email').value.trim();
@@ -1759,6 +1769,7 @@ async function bootWithAuth() {
           showToast('👤', 'Acesso de Usuário Padrão.');
         }
       } catch (error) {
+        fbError = fbErrText(error);
         showToast('👤', 'Acesso de Usuário Padrão.');
       }
 
@@ -1768,7 +1779,7 @@ async function bootWithAuth() {
       document.getElementById('sb-user').style.display = 'none';
       showLogin();
     }
-  });
+  }, err => showLogin('Erro de autenticação: ' + fbErrText(err)));
 }
 
 const DB_PATH = 'victor/estado-principal';
@@ -1785,7 +1796,8 @@ async function initDB() {
 function setSyncBadge() {
   const b = document.getElementById('sync-badge');
   if (!b) return;
-  if (firebaseAvailable && fbUser) { b.textContent = '🔥 Firebase — sincronizado'; b.className = 'sync-badge on'; }
+  if (fbError)                     { b.textContent = '⚠️ ' + fbError; b.className = 'sync-badge off'; b.style.whiteSpace = 'normal'; }
+  else if (firebaseAvailable && fbUser) { b.textContent = '🔥 Firebase — sincronizado'; b.className = 'sync-badge on'; }
   else if (syncOn)                 { b.textContent = '☁️ Sincronizado (Claude)';   b.className = 'sync-badge on'; }
   else                              { b.textContent = '💾 Somente local';          b.className = 'sync-badge off'; }
 }
@@ -1817,9 +1829,10 @@ async function loadStorage() {
   if (firebaseAvailable && fbUser) {
     try {
       const snap = await fbDB.collection('victor').doc(fbUser.uid).get();
+      fbError = '';
       if (snap.exists) { applySnapshot(snap.data()); setSyncBadge(); return; }
       setSyncBadge();
-    } catch(e) { showToast('⚠️', 'Não consegui puxar da nuvem — usando dados locais.'); }
+    } catch(e) { fbError = fbErrText(e); showToast('⚠️', 'Não consegui puxar da nuvem — usando dados locais.'); }
   }
   await initDB();
   if (syncOn) {
@@ -1844,10 +1857,11 @@ async function saveData() {
   if (firebaseAvailable && fbUser) {
     try {
       await fbDB.collection('victor').doc(fbUser.uid).set(data, { mergeFields: Object.keys(data) });
+      fbError = '';
       showToast('🔥', 'Sincronizado no Firebase!');
       setSyncBadge();
       return;
-    } catch(e) { showToast('⚠️', 'Erro ao sincronizar — salvo só neste aparelho.'); return; }
+    } catch(e) { fbError = fbErrText(e); setSyncBadge(); showToast('⚠️', 'Erro ao sincronizar — salvo só neste aparelho.'); return; }
   }
   if (syncOn) {
     try {
