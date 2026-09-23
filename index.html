@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Victor Santos — Central de Estudos & Rotina</title>
+<title>RotinIA | Estudos, rotina e questões</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
 :root{
   --navy:#0D134C;--navy-mid:#1a2060;--mint:#AFE8D0;--mint-d:#7dcfb0;
   --lime:#BAFF38;--rust:#C8102E;--rust-dark:#a50e25;--amber:#EFBD7B;
@@ -462,6 +464,43 @@ select{min-width:0;max-width:100%;}
 .sb-logout{background:none;border:none;color:rgba(255,255,255,.45);cursor:pointer;font-size:10.5px;
   text-decoration:underline;flex-shrink:0;}
 .sb-logout:hover{color:white;}
+
+/* ── QUESTÕES — módulo ConcurseiroIA integrado ── */
+.q-shell{display:flex;flex-direction:column;gap:18px}.q-tabs{display:flex;gap:4px;background:var(--white);border:1px solid var(--border);padding:5px;border-radius:10px;overflow-x:auto}.q-tab{flex:1;min-width:150px;border:0;background:transparent;color:var(--text-mid);padding:10px 14px;border-radius:7px;font:700 12px Inter,sans-serif;cursor:pointer}.q-tab.active{background:var(--navy);color:var(--white)}.q-view{display:none}.q-view.active{display:block;animation:qIn .22s ease}.q-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.q-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:20px;box-shadow:0 3px 12px rgba(13,19,76,.05)}.q-card h3{font:800 16px Nunito,sans-serif;margin-bottom:4px}.q-muted{color:var(--text-soft);font-size:12px;line-height:1.55}.q-field{display:flex;flex-direction:column;gap:6px;margin-top:14px}.q-field label{font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--text-soft)}.q-input,.q-textarea,.q-select{width:100%;border:1px solid var(--border);border-radius:7px;background:var(--white);color:var(--text);padding:10px 11px;font:500 12px Inter,sans-serif;outline:none}.q-input:focus,.q-textarea:focus,.q-select:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(13,19,76,.08)}.q-textarea{resize:vertical;min-height:110px;line-height:1.5}.q-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.q-btn{border:0;border-radius:7px;padding:10px 14px;font:800 11px Inter,sans-serif;cursor:pointer}.q-btn.primary{background:var(--navy);color:var(--white)}.q-btn.rust{background:var(--rust);color:var(--white)}.q-btn.soft{background:var(--bg);color:var(--navy);border:1px solid var(--border)}.q-btn:disabled{opacity:.45;cursor:not-allowed}.q-list{display:flex;flex-direction:column;gap:8px;margin-top:14px;max-height:410px;overflow:auto}.q-list-item{display:flex;align-items:center;gap:10px;border:1px solid var(--border);border-radius:8px;padding:10px 12px}.q-list-body{min-width:0;flex:1}.q-list-title{font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.q-tag{display:inline-flex;background:var(--bg);color:var(--text-mid);border-radius:4px;padding:3px 7px;font-size:9px;font-weight:800;margin-right:4px}.quiz-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.quiz-count{font:900 22px Nunito,sans-serif}.quiz-clock{font:800 17px Nunito,sans-serif;color:var(--rust);background:var(--red-bg);padding:7px 11px;border-radius:7px}.quiz-question{font-size:15px;font-weight:600;line-height:1.65;margin:18px 0}.quiz-options{display:flex;flex-direction:column;gap:9px}.quiz-option{width:100%;display:flex;align-items:flex-start;gap:11px;text-align:left;border:2px solid var(--border);border-radius:8px;background:var(--bg);padding:12px;cursor:pointer;color:var(--text);font:500 13px Inter,sans-serif}.quiz-option:hover,.quiz-option.selected{border-color:var(--navy);background:var(--secondary)}.quiz-option.correct{border-color:var(--green);background:var(--green-bg)}.quiz-option.wrong{border-color:var(--red);background:var(--red-bg)}.quiz-letter{width:26px;height:26px;display:grid;place-items:center;flex:0 0 26px;border-radius:6px;background:var(--white);font-weight:900}.q-empty{text-align:center;padding:52px 20px;color:var(--text-soft)}.q-empty strong{display:block;color:var(--navy);font:800 18px Nunito,sans-serif;margin:9px 0}.q-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.q-stat{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:16px}.q-stat b{display:block;font:900 26px Nunito,sans-serif}.q-stat span{font-size:9px;color:var(--text-soft);text-transform:uppercase;font-weight:800;letter-spacing:.5px}.q-analysis{margin-top:14px;background:var(--navy);color:var(--white);border-radius:10px;padding:20px}.q-analysis h3{font:800 16px Nunito,sans-serif}.q-analysis p{font-size:12px;line-height:1.65;color:rgba(255,255,255,.76);margin-top:7px}.q-subjects{margin-top:14px;display:flex;flex-direction:column;gap:8px}.q-sub-row{display:grid;grid-template-columns:minmax(120px,1fr) 2fr 70px;gap:10px;align-items:center;font-size:11px;font-weight:700}.q-sub-bar{height:7px;background:var(--border);border-radius:99px;overflow:hidden}.q-sub-fill{height:100%;background:var(--mint-d)}@keyframes qIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}@media(max-width:760px){.q-grid,.q-stats{grid-template-columns:1fr}.q-tabs{margin:0 -4px;overflow:visible}.q-tab{min-width:0;padding:10px 5px;font-size:10px;line-height:1.25}.q-card{padding:15px}.q-sub-row{grid-template-columns:1fr 90px}.q-sub-bar{display:none}}
+.q-dashboard{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,.8fr);gap:16px}.q-coach{background:var(--navy);color:var(--white);padding:24px;border-radius:10px;position:relative;overflow:hidden}.q-coach-top{display:flex;align-items:center;gap:12px}.q-coach-mark{width:42px;height:42px;display:grid;place-items:center;border-radius:9px;background:var(--mint);color:var(--navy);font:900 17px Nunito,sans-serif}.q-coach small{display:block;color:var(--mint);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.8px}.q-coach h2{font:900 22px Nunito,sans-serif;margin-top:2px}.q-coach p{color:rgba(255,255,255,.76);font-size:13px;line-height:1.65;margin-top:16px;max-width:620px}.q-coach .q-btn{margin-top:18px;background:var(--lime);color:var(--navy)}.q-focus{display:flex;flex-direction:column;gap:10px}.q-focus-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--border)}.q-focus-item:last-child{border-bottom:0}.q-focus-item span{font-size:11px;color:var(--text-soft)}.q-focus-item b{font:800 13px Nunito,sans-serif;text-align:right}.q-dashboard-stats{grid-column:1/-1}.q-streak{color:var(--rust)}
+@media(max-width:760px){.q-dashboard{grid-template-columns:1fr}.q-dashboard-stats{grid-column:auto}.q-coach{padding:19px}.q-coach h2{font-size:19px}.q-tabs{display:grid;grid-template-columns:repeat(2,1fr)}.q-tab{min-height:42px}}
+
+
+/* ── IMPORTAR QUESTÕES (PDF · Word · TXT) ── */
+.q-drop{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;border:2px dashed var(--border);border-radius:10px;background:var(--bg);padding:22px 14px;cursor:pointer;margin-top:14px;transition:border-color .15s,background .15s}
+.q-drop:hover,.q-drop.over{border-color:var(--navy);background:rgba(175,232,208,.25)}
+.q-drop:focus-visible{outline:3px solid rgba(13,19,76,.3);outline-offset:2px}
+.q-drop input{display:none}
+.q-drop b{font:800 13px Nunito,sans-serif;color:var(--navy)}
+.q-drop span{font-size:11px;color:var(--text-soft)}
+.q-files{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.q-file{display:inline-flex;align-items:center;gap:7px;background:var(--white);border:1px solid var(--border);border-radius:99px;padding:4px 5px 4px 11px;font-size:11px;font-weight:700;max-width:100%}
+.q-file>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px}
+.q-file em{font-style:normal;font-size:9px;font-weight:800;color:var(--text-soft)}
+.q-file button{border:0;background:var(--bg);color:var(--text-mid);border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:13px;line-height:1}
+.q-file button:hover{background:var(--red-bg);color:var(--red)}
+.q-status{margin-top:12px;font-size:12px;font-weight:600;color:var(--text-mid);min-height:16px;line-height:1.5}
+.q-status.err{color:var(--red)}
+.qp-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.qp-item{display:grid;grid-template-columns:auto minmax(0,1fr) 130px;gap:12px;align-items:start;border:1px solid var(--border);border-radius:9px;padding:12px 14px}
+.qp-item.miss{border-color:#fca5a5;background:#fff8f8}
+.qp-ck{width:16px;height:16px;margin-top:3px;accent-color:var(--navy)}
+.qp-text{font-size:12.5px;font-weight:600;line-height:1.55;white-space:pre-line;cursor:pointer}
+.qp-clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.qp-opts{margin-top:8px;display:flex;flex-direction:column;gap:3px;font-size:11.5px;color:var(--text-mid);line-height:1.45}
+.qp-opts>div{display:flex;gap:8px}
+.qp-opts b{flex:0 0 14px}
+.qp-opts .ok{color:var(--navy);font-weight:700;background:rgba(175,232,208,.35);border-radius:5px;padding:2px 5px;margin:0 -5px}
+.qp-src{margin-top:7px;font-size:10px;color:var(--text-soft)}
+.qp-side{display:flex;flex-direction:column;gap:5px}
+.qp-side label{font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--text-soft)}
+.quiz-question{white-space:pre-line}
+@media(max-width:760px){.qp-item{grid-template-columns:auto minmax(0,1fr)}.qp-side{grid-column:2}}
 </style>
 </head>
 <body>
@@ -471,24 +510,29 @@ select{min-width:0;max-width:100%;}
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-  <div class="sb-logo"><div class="sb-badge" aria-label="VS"><span style="font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;letter-spacing:-.5px">VS</span></div><div class="sb-words">Victor Santos<span>Estudos &amp; Rotina</span></div></div>
-  <div class="sb-info" id="sb-info"></div>
+  <div class="sb-logo"><div class="sb-badge" aria-label="VS"><span style="font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;letter-spacing:0">VS</span></div><div class="sb-words">RotinIA<span>Painel de estudos</span></div></div>
   <div id="sync-badge" class="sync-badge">☁️ Conectando…</div>
   <div id="sb-user" class="sb-user" style="display:none"><b id="sb-user-email"></b><button class="sb-logout" onclick="doLogout()">Sair</button></div>
-  <div class="sb-cd">
-    <div><div class="cd-lbl">Data da Prova</div><div class="cd-date" id="cd-date">—</div></div>
-    <div><div class="cd-num" id="cd-num">—</div><div class="cd-dias">dias</div></div>
+  <div class="sb-info">
+    <div class="si-row"><div class="si-lbl">Concurso</div><div class="si-val" id="si-concurso">—</div></div>
+    <div class="si-div"></div>
+    <div class="si-row"><div class="si-lbl">Cargos</div><div class="si-val" id="si-cargo">—</div></div>
+    <div class="si-div"></div>
+    <div class="si-row"><div class="si-lbl">Bancas</div><div class="si-val" id="si-banca">—</div></div>
   </div>
+  <div class="sb-cd"><div><div class="cd-lbl">Dias para a prova</div><div class="cd-date" id="cd-date">—</div></div><div><div class="cd-num" id="cd-num">—</div><div class="cd-dias">dias</div></div></div>
   <nav class="sb-nav">
-    <div class="sb-nav-lbl">Seções</div>
-    <a class="nav-item active" href="#" onclick="switchTab('estudos');return false;">⏱️ &nbsp;Cronômetro</a>
-    <a class="nav-item" href="#" onclick="switchTab('estudos');scrollToId('sec-metas');return false;">🎯 &nbsp;Metas de Estudo</a>
-    <a class="nav-item" href="#" onclick="switchTab('rotina');return false;">🍅 &nbsp;Rotina &amp; Pomodoro</a>
-    <a class="nav-item" href="#" onclick="switchTab('edital');return false;">📋 &nbsp;Edital</a>
-    <a class="nav-item" href="#" onclick="switchTab('revisoes');return false;">🔁 &nbsp;Revisões</a>
-    <a class="nav-item" href="#" onclick="switchTab('historico');return false;">📅 &nbsp;Histórico</a>
-    <div class="sb-nav-lbl" style="margin-top:14px">Disciplinas</div>
-    <div id="nav-discs"></div>
+    <div class="sb-nav-lbl">RotinIA</div>
+    <a class="nav-item active" data-tab="estudos" href="#" onclick="switchTab('estudos');return false;">📊 &nbsp;Estudos</a>
+    <a class="nav-item" data-tab="rotina" href="#" onclick="switchTab('rotina');return false;">🍅 &nbsp;Rotina</a>
+    <a class="nav-item" data-tab="edital" href="#" onclick="switchTab('edital');return false;">📋 &nbsp;Edital verticalizado</a>
+    <a class="nav-item" data-tab="revisoes" href="#" onclick="switchTab('revisoes');return false;">🔁 &nbsp;Revisões</a>
+    <a class="nav-item" data-tab="historico" href="#" onclick="switchTab('historico');return false;">📅 &nbsp;Histórico</a>
+    <div class="sb-nav-lbl">Questões</div>
+    <a class="nav-item" data-tab="questoes" data-qview="dashboard" href="#" onclick="switchTab('questoes','dashboard');return false;">▦ &nbsp;Visão geral</a>
+    <a class="nav-item" data-tab="questoes" data-qview="banco" href="#" onclick="switchTab('questoes','banco');return false;">＋ &nbsp;Banco de questões</a>
+    <a class="nav-item" data-tab="questoes" data-qview="resolver" href="#" onclick="switchTab('questoes','resolver');return false;">▶ &nbsp;Resolver simulado</a>
+    <a class="nav-item" data-tab="questoes" data-qview="analise" href="#" onclick="switchTab('questoes','analise');return false;">◫ &nbsp;Meu desempenho</a>
   </nav>
   <div class="sb-footer">
     <button class="btn-save" onclick="saveData()">💾 Salvar Progresso</button>
@@ -505,16 +549,9 @@ select{min-width:0;max-width:100%;}
   <div class="topstrip">
     <div style="display:flex; align-items:center; gap:8px;">
       <button class="btn btn-ghost mobile-menu-btn" onclick="toggleMobileSidebar()" style="display:none; padding:6px 10px; font-size:15px;" title="Abrir Menu">☰</button>
-      <div class="page-title">Edital Verticalizado</div>
+      <div class="page-title" id="page-title">Estudos</div>
     </div>
     <div class="strip-right">
-      <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchTab('estudos')">⏱ Estudos</button>
-        <button class="tab-btn" onclick="switchTab('rotina')">🍅 Rotina</button>
-        <button class="tab-btn" onclick="switchTab('edital')">📋 Edital</button>
-        <button class="tab-btn" onclick="switchTab('revisoes')">🔁 Revisões</button>
-        <button class="tab-btn" onclick="switchTab('historico')">📅 Histórico</button>
-      </div>
       <div class="strip-actions">
         <button class="btn btn-ghost" id="btn-expand" onclick="expandAll()" style="display:none">↕ Expandir</button>
         <button class="btn btn-ghost" id="btn-collapse" onclick="collapseAll()" style="display:none">↕ Recolher</button>
@@ -911,6 +948,92 @@ select{min-width:0;max-width:100%;}
         </thead>
         <tbody id="hist-tbody"></tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- PAGE: QUESTÕES -->
+  <div class="page" id="page-questoes">
+    <div class="sec-lbl">CENTRAL DE QUESTÕES</div>
+    <div class="q-shell">
+      <div class="q-tabs">
+        <button class="q-tab active" id="qtab-dashboard" onclick="switchQuestView('dashboard')">Visão geral</button>
+        <button class="q-tab" id="qtab-banco" onclick="switchQuestView('banco')">Banco de questões</button>
+        <button class="q-tab" id="qtab-resolver" onclick="switchQuestView('resolver')">Resolver simulado</button>
+        <button class="q-tab" id="qtab-analise" onclick="switchQuestView('analise')">Análise de desempenho</button>
+      </div>
+
+      <div class="q-view active" id="qview-dashboard">
+        <div class="q-dashboard">
+          <section class="q-coach">
+            <div class="q-coach-top"><div class="q-coach-mark">IA</div><div><small>Seu agente de estudos</small><h2 id="qd-title">Vamos avançar hoje?</h2></div></div>
+            <p id="qd-message">Cada questão respondida revela exatamente onde você pode melhorar. Comece com um bloco curto e mantenha a constância.</p>
+            <button class="q-btn" onclick="switchQuestView('resolver')">Começar agora</button>
+          </section>
+          <section class="q-card q-focus">
+            <div><h3>Foco recomendado</h3><p class="q-muted">Próximos passos calculados pelo seu desempenho.</p></div>
+            <div class="q-focus-item"><span>Prioridade</span><b id="qd-focus">Responder primeiro bloco</b></div>
+            <div class="q-focus-item"><span>Ritmo sugerido</span><b id="qd-goal">10 questões</b></div>
+            <div class="q-focus-item"><span>Constância</span><b class="q-streak" id="qd-streak">Comece hoje</b></div>
+          </section>
+          <div class="q-stats q-dashboard-stats">
+            <div class="q-stat"><b id="qd-bank">0</b><span>No banco</span></div>
+            <div class="q-stat"><b id="qd-answered">0</b><span>Respondidas</span></div>
+            <div class="q-stat"><b id="qd-accuracy">0%</b><span>Aproveitamento</span></div>
+            <div class="q-stat"><b id="qd-today">0</b><span>Feitas hoje</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-view" id="qview-banco">
+        <div class="q-grid">
+          <div class="q-card">
+            <h3>Importar prova</h3>
+            <p class="q-muted">Envie PDF, Word (.docx) ou TXT. O site lê o arquivo, converte em questões e mostra uma prévia para você conferir antes de adicionar ao banco.</p>
+            <label class="q-drop" id="q-drop" tabindex="0">
+              <input type="file" id="q-files-input" multiple accept=".pdf,.docx,.doc,.txt,application/pdf,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+              <b>Arraste os arquivos ou toque para escolher</b>
+              <span>PDF · Word (.docx) · TXT — prova e gabarito podem ir juntos</span>
+            </label>
+            <div class="q-files" id="q-files"></div>
+            <div class="q-field"><label>Disciplina</label><select class="q-select" id="qb-disc"></select></div>
+            <div class="q-field"><label>Banca</label><input class="q-input" id="qb-banca" placeholder="Ex: FGV"></div>
+            <div class="q-field"><label>Ou cole o texto da prova</label><textarea class="q-textarea" id="qb-prova" placeholder="1. Enunciado...&#10;A) Alternativa A&#10;B) Alternativa B..."></textarea></div>
+            <div class="q-field"><label>Gabarito (se não estiver no arquivo)</label><textarea class="q-textarea" id="qb-gabarito" style="min-height:70px" placeholder="1-A, 2-C, 3-E"></textarea></div>
+            <p class="q-muted" style="margin-top:8px">O gabarito também é reconhecido quando vem no fim da prova ou em um arquivo com “gabarito” no nome. PDFs de duas colunas podem misturar o texto — confira na prévia.</p>
+            <div class="q-actions"><button class="q-btn primary" id="q-convert-btn" onclick="importQuestionBatch()">Converter em questões</button></div>
+            <div class="q-status" id="q-status" role="status" aria-live="polite"></div>
+          </div>
+          <div class="q-card">
+            <h3>Inserção manual</h3>
+            <p class="q-muted">Cadastre uma questão por vez e escolha a resposta correta.</p>
+            <div class="q-field"><label>Disciplina / assunto</label><input class="q-input" id="qm-assunto" placeholder="Ex: Língua Portuguesa"></div>
+            <div class="q-field"><label>Banca</label><input class="q-input" id="qm-banca" placeholder="Ex: FGV"></div>
+            <div class="q-field"><label>Enunciado</label><textarea class="q-textarea" id="qm-texto"></textarea></div>
+            <div id="qm-options"></div>
+            <div class="q-field"><label>Resposta correta</label><select class="q-select" id="qm-correta"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option><option value="4">E</option></select></div>
+            <div class="q-actions"><button class="q-btn rust" onclick="addManualQuestion()">Salvar questão</button></div>
+          </div>
+        </div>
+        <div class="q-card" id="q-preview" style="margin-top:16px;display:none"></div>
+        <div class="q-card" style="margin-top:16px"><div class="qp-head"><h3>Questões salvas <span class="rt-count" id="q-bank-count">0</span></h3><select class="q-select" id="q-bank-filter" style="width:auto;min-width:200px" onchange="setBankFilter(this.value)" aria-label="Filtrar por disciplina"></select></div><div class="q-list" id="q-bank-list"></div></div>
+      </div>
+
+      <div class="q-view" id="qview-resolver">
+        <div id="quiz-empty" class="q-card q-empty"><div style="font-size:38px">📭</div><strong>Nenhuma questão disponível</strong><span>Adicione questões no banco para iniciar um simulado.</span><div class="q-actions" style="justify-content:center"><button class="q-btn primary" onclick="switchQuestView('banco')">Adicionar questões</button></div></div>
+        <div id="quiz-active" class="q-card" style="display:none">
+          <div class="quiz-head"><div><span class="q-muted">QUESTÃO</span><div class="quiz-count" id="quiz-counter">1 / 1</div></div><div class="quiz-clock" id="quiz-timer">00:00</div></div>
+          <div><span class="q-tag" id="quiz-banca">Banca</span><span class="q-tag" id="quiz-assunto">Assunto</span></div>
+          <div class="quiz-question" id="quiz-text"></div><div class="quiz-options" id="quiz-options"></div>
+          <div class="q-actions" style="justify-content:flex-end"><button class="q-btn primary" id="quiz-confirm" onclick="confirmQuizAnswer()" disabled>Confirmar resposta</button><button class="q-btn rust" id="quiz-next" onclick="nextQuizQuestion()" style="display:none">Próxima questão →</button></div>
+        </div>
+        <div id="quiz-finish" class="q-card q-empty" style="display:none"><div style="font-size:44px">🏆</div><strong>Simulado concluído!</strong><span id="quiz-finish-copy"></span><div class="q-actions" style="justify-content:center"><button class="q-btn primary" onclick="restartQuiz()">Resolver novamente</button><button class="q-btn soft" onclick="switchQuestView('analise')">Ver análise</button></div></div>
+      </div>
+
+      <div class="q-view" id="qview-analise">
+        <div class="q-stats"><div class="q-stat"><b id="qa-total">0</b><span>Respondidas</span></div><div class="q-stat"><b id="qa-accuracy">0%</b><span>Aproveitamento</span></div><div class="q-stat"><b id="qa-errors">0</b><span>Erros</span></div><div class="q-stat"><b id="qa-time">0s</b><span>Tempo médio</span></div></div>
+        <div class="q-analysis"><h3>🧠 Análise do seu desempenho</h3><p id="qa-feedback">Resolva algumas questões para receber uma análise do seu desempenho.</p></div>
+        <div class="q-card" style="margin-top:14px"><h3>Desempenho por assunto</h3><div class="q-subjects" id="qa-subjects"></div></div>
+      </div>
     </div>
   </div>
 
@@ -1391,20 +1514,30 @@ function populateDiscSelects() {
   document.getElementById('modal-disc').innerHTML = opts;
 }
 
-function switchTab(tab) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-' + tab).classList.add('active');
-  document.querySelectorAll('.tab-btn').forEach(b => {
-    const t = b.textContent.toLowerCase();
-    if ((tab==='estudos'&&t.includes('estudo'))||(tab==='edital'&&t.includes('edital'))||(tab==='revisoes'&&t.includes('revis'))||(tab==='historico'&&t.includes('hist'))||(tab==='rotina'&&t.includes('rotina'))) b.classList.add('active');
+const TAB_TITLES = { estudos:'Estudos', rotina:'Rotina', edital:'Edital verticalizado', revisoes:'Revisões', historico:'Histórico', questoes:'Questões e simulados' };
+let activeTab = 'estudos', activeQView = 'dashboard';
+
+function syncNav() {
+  document.querySelectorAll('.nav-item[data-tab]').forEach(a => {
+    const on = a.dataset.tab === activeTab && (activeTab !== 'questoes' || a.dataset.qview === activeQView);
+    a.classList.toggle('active', on);
   });
+  const t = document.getElementById('page-title');
+  if (t) t.textContent = TAB_TITLES[activeTab] || 'RotinIA';
+}
+
+function switchTab(tab, qview) {
+  const pg = document.getElementById('page-' + tab); if (!pg) return;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  pg.classList.add('active');
+  activeTab = tab;
   document.getElementById('btn-expand').style.display  = tab==='edital' ? '' : 'none';
   document.getElementById('btn-collapse').style.display = tab==='edital' ? '' : 'none';
   if (tab==='historico') renderHistorico();
   if (tab==='revisoes')  renderRevisoes();
   if (tab==='estudos')   renderCharts();
   if (tab==='rotina')    renderRotina();
+  if (tab==='questoes')  switchQuestView(qview || activeQView); else syncNav();
 
   // Fecha o menu lateral no celular ao trocar de aba
   if (window.innerWidth <= 900) {
@@ -1415,6 +1548,7 @@ function switchTab(tab) {
       ov.classList.remove('open');
     }
   }
+  window.scrollTo({ top: 0 });
 }
 
 function scrollToId(id) {
@@ -1422,19 +1556,14 @@ function scrollToId(id) {
 }
 
 function renderSidebar() {
-  const info = document.getElementById('sb-info');
-  const rows = [{l:'Concurso',v:CONCURSO_INFO.concurso},{l:'Cargo',v:CONCURSO_INFO.cargo},{l:'Banca',v:CONCURSO_INFO.banca}];
-  info.innerHTML = rows.map((r,i) => `${i>0?'<div class="si-div"></div>':''}<div class="si-row"><div class="si-lbl">${r.l}</div><div class="si-val${r.v?'':' empty'}">${r.v||'—'}</div></div>`).join('');
-  const cd = document.getElementById('cd-date'), cn = document.getElementById('cd-num');
-  if (CONCURSO_INFO.dataProva) {
-    const p = new Date(CONCURSO_INFO.dataProva + 'T00:00:00'), h = new Date(); h.setHours(0,0,0,0);
-    const diff = Math.ceil((p-h)/86400000);
-    cd.textContent = p.toLocaleDateString('pt-BR');
-    cn.textContent = diff > 0 ? diff : diff === 0 ? 'Hoje!' : 'Passou';
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set('si-concurso', CONCURSO_INFO.concurso); set('si-cargo', CONCURSO_INFO.cargo); set('si-banca', CONCURSO_INFO.banca);
+  const d = new Date(CONCURSO_INFO.dataProva + 'T00:00:00');
+  if (!isNaN(d)) {
+    set('cd-date', d.toLocaleDateString('pt-BR'));
+    const days = Math.ceil((d - new Date(new Date().toDateString())) / 86400000);
+    set('cd-num', days > 0 ? days : days === 0 ? 'Hoje' : '—');
   }
-  document.getElementById('nav-discs').innerHTML = EDITAL.map((d,i) =>
-    `<a class="nav-item" href="#" onclick="switchTab('edital');goDisc('${d.id}');return false;" style="gap:8px"><div class="nav-dot" style="background:${DISC_CORES[i%DISC_CORES.length]}"></div><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px">${d.nome}</span></a>`
-  ).join('');
 }
 
 function goDisc(id) {
@@ -1662,7 +1791,7 @@ function setSyncBadge() {
 }
 
 function buildSnapshot() {
-  const data = { state, historico, revisoes, pomo, rotina, agenda, contas };
+  const data = { state, historico, revisoes, pomo, rotina, agenda, contas, quizDB };
   ['meta-horas','meta-questoes','meta-conclusao','meta-aprov'].forEach(id => {
     const el = document.getElementById(id); if (el) data[id] = el.value;
   });
@@ -1678,6 +1807,7 @@ function applySnapshot(s) {
   if (s.rotina) rotina = Object.assign(rotina, s.rotina);
   agenda = s.agenda || [];
   contas = s.contas || [];
+  quizDB = s.quizDB || quizDB;
   ['meta-horas','meta-questoes','meta-conclusao','meta-aprov'].forEach(id => {
     if (s[id] !== undefined) { const el = document.getElementById(id); if (el) el.value = s[id]; }
   });
@@ -1739,7 +1869,7 @@ function closeBackupModal(e) {
 }
 function exportBackup() {
   try {
-    const data = { state, historico, revisoes, pomo, rotina, agenda, contas, exportedAt: new Date().toISOString() };
+    const data = { state, historico, revisoes, pomo, rotina, agenda, contas, quizDB, exportedAt: new Date().toISOString() };
     try { data.concurso = CONCURSO_INFO.concurso; } catch(e) {}
     ['meta-horas','meta-questoes','meta-conclusao','meta-aprov'].forEach(function(id) {
       var el = document.getElementById(id); if (el) data[id] = el.value;
@@ -1781,6 +1911,7 @@ async function importBackup(input) {
       if (data.rotina) rotina = Object.assign(rotina, data.rotina);
       agenda = data.agenda || [];
       contas = data.contas || [];
+      quizDB = data.quizDB || quizDB;
       ['meta-horas','meta-questoes','meta-conclusao','meta-aprov'].forEach(id => {
         if (data[id] !== undefined) { const el = document.getElementById(id); if (el) el.value = data[id]; }
       });
@@ -2167,6 +2298,496 @@ function initRotina(){
   pomoSetMode('foco'); renderRotina();
 }
 
+
+// ── QUESTÕES & SIMULADOS ───────────────────────────────
+let quizDB = { questions: [], results: [] };
+let quizIndex = 0, quizSelected = null, quizAnswered = false, quizSeconds = 0, quizTimerInt = null;
+
+function initQuestions(){
+  const manual = document.getElementById('qm-options');
+  if (manual && !manual.children.length) manual.innerHTML = ['A','B','C','D','E'].map(l => `<div class="q-field"><label>Alternativa ${l}</label><input class="q-input" id="qm-${l.toLowerCase()}"></div>`).join('');
+  const disc = document.getElementById('qb-disc');
+  if (disc) disc.innerHTML = '<option value="Geral">— escolha a disciplina —</option>' + EDITAL.map(d=>`<option value="${d.nome}">${d.nome}</option>`).join('');
+  initImportUI(); populateBankFilter(); renderQuestionBank(); renderQuestionAnalysis(); renderQuestionDashboard();
+}
+function switchQuestView(view){
+  activeQView=view; syncNav();
+  document.querySelectorAll('.q-view').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.q-tab').forEach(el=>el.classList.remove('active'));
+  const page=document.getElementById('qview-'+view), tab=document.getElementById('qtab-'+view);
+  if(page) page.classList.add('active'); if(tab) tab.classList.add('active');
+  if(view==='resolver') initQuizView(); if(view==='analise') renderQuestionAnalysis(); if(view==='dashboard') renderQuestionDashboard();
+}
+// ── IMPORTAÇÃO DE QUESTÕES (PDF · Word · TXT) ─────────────────────────
+// Lê o arquivo no próprio navegador, converte em questões e mostra uma prévia
+// para conferir o gabarito antes de adicionar ao banco.
+let importFiles = [];
+let pendingQ = [];
+const QP_LETTERS = ['A','B','C','D','E'];
+
+const QP_LIBS = {
+  pdfjs: {
+    ready: () => window.pdfjsLib,
+    urls: [
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
+      'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js'
+    ],
+    workers: [
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js',
+      'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'
+    ]
+  },
+  mammoth: {
+    ready: () => window.mammoth,
+    urls: [
+      'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js',
+      'https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js'
+    ]
+  }
+};
+
+function qpLoadScript(url) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = url; s.async = true;
+    s.onload = () => resolve();
+    s.onerror = () => { s.remove(); reject(new Error('falha ao carregar ' + url)); };
+    document.head.appendChild(s);
+  });
+}
+
+async function qpLoadLib(name) {
+  const lib = QP_LIBS[name];
+  if (lib.ready()) return;
+  for (let i = 0; i < lib.urls.length; i++) {
+    try {
+      await qpLoadScript(lib.urls[i]);
+      if (lib.ready()) {
+        if (name === 'pdfjs') window.pdfjsLib.GlobalWorkerOptions.workerSrc = lib.workers[i];
+        return;
+      }
+    } catch (e) { /* tenta o próximo endereço */ }
+  }
+  throw new Error('Não consegui carregar o leitor de ' + (name === 'pdfjs' ? 'PDF' : 'Word') + '. Verifique a conexão com a internet e tente de novo.');
+}
+
+// ── Leitura de arquivos ──────────────────────────────────────────────
+function qpExt(name) { const m = String(name).toLowerCase().match(/\.([a-z0-9]+)$/); return m ? m[1] : ''; }
+
+async function qpReadTxt(file) {
+  const buf = await file.arrayBuffer();
+  try { return new TextDecoder('utf-8', { fatal: true }).decode(buf); }
+  catch (e) { return new TextDecoder('windows-1252').decode(buf); }
+}
+
+async function qpReadPdf(file, onProgress) {
+  await qpLoadLib('pdfjs');
+  const buf = await file.arrayBuffer();
+  const pdf = await window.pdfjsLib.getDocument({ data: buf }).promise;
+  const pages = [];
+  for (let p = 1; p <= pdf.numPages; p++) {
+    if (onProgress) onProgress(p, pdf.numPages);
+    const page = await pdf.getPage(p);
+    const tc = await page.getTextContent();
+    const lines = []; let line = '', lastY = null, lastEnd = null;
+    tc.items.forEach(it => {
+      if (typeof it.str !== 'string') return;
+      const x = it.transform[4], y = it.transform[5];
+      const tol = Math.max(2, (it.height || 10) * 0.5);
+      if (lastY !== null && Math.abs(y - lastY) > tol) { lines.push(line); line = ''; lastEnd = null; }
+      if (line && lastEnd !== null && !/\s$/.test(line) && !/^\s/.test(it.str) && x - lastEnd > 1.2) line += ' ';
+      line += it.str;
+      lastY = y; lastEnd = x + (it.width || 0);
+      if (it.hasEOL) { lines.push(line); line = ''; lastY = null; lastEnd = null; }
+    });
+    if (line) lines.push(line);
+    pages.push(lines.join('\n'));
+  }
+  const text = pages.join('\n');
+  if (text.replace(/\s/g, '').length < 40 * Math.max(1, pdf.numPages) / 4) {
+    throw new Error('Este PDF parece ser digitalizado (só imagem) e ainda não faz leitura de imagem. Use um PDF com texto selecionável ou cole o texto.');
+  }
+  return text;
+}
+
+function qpDocxHtmlToText(html) {
+  const doc = new DOMParser().parseFromString('<div id="r">' + html + '</div>', 'text/html');
+  const out = [];
+  const textOf = el => { el.querySelectorAll('br').forEach(b => b.replaceWith('\n')); return el.textContent.replace(/[ \t]+/g, ' ').trim(); };
+  const ownText = li => {
+    const clone = li.cloneNode(true);
+    clone.querySelectorAll('ol,ul').forEach(x => x.remove());
+    return textOf(clone);
+  };
+  const handleList = (list, depth) => {
+    const items = [...list.children].filter(c => c.tagName && c.tagName.toLowerCase() === 'li');
+    const texts = items.map(ownText);
+    // lista curta de itens curtos logo após um parágrafo = provável conjunto de alternativas
+    const looksLikeOptions = list.tagName.toLowerCase() === 'ol' && items.length >= 2 && items.length <= 5
+      && texts.every(t => t.length < 220) && list.previousElementSibling
+      && (list.previousElementSibling.tagName.toLowerCase() === 'p' || (list.previousElementSibling.tagName.toLowerCase() === 'ol' && list.previousElementSibling.children.length === 1));
+    items.forEach((li, i) => {
+      const t = texts[i];
+      const typed = /^(?:\(?[A-Ea-e]\)|\d{1,3}\s*[.)\-–]|quest[aã]o)/i.test(t);
+      let mark = '';
+      if (!typed && list.tagName.toLowerCase() === 'ol') mark = (looksLikeOptions || depth > 0) ? QP_LETTERS[i] + ') ' : (i + 1) + '. ';
+      if (t) out.push(mark + t);
+      [...li.children].forEach(c => { if (/^(ol|ul)$/i.test(c.tagName)) handleList(c, depth + 1); });
+    });
+  };
+  const walk = node => {
+    [...node.children].forEach(ch => {
+      const tag = ch.tagName.toLowerCase();
+      if (tag === 'ol' || tag === 'ul') handleList(ch, 0);
+      else if (tag === 'table') ch.querySelectorAll('tr').forEach(tr => { const cells = [...tr.children].map(td => textOf(td)).filter(Boolean); if (cells.length) out.push(cells.join(' ')); });
+      else if (tag === 'div' || tag === 'blockquote') walk(ch);
+      else { const t = textOf(ch); if (t) t.split('\n').forEach(x => x.trim() && out.push(x.trim())); }
+    });
+  };
+  walk(doc.getElementById('r'));
+  return out.join('\n');
+}
+
+async function qpReadDocx(file) {
+  await qpLoadLib('mammoth');
+  const arrayBuffer = await file.arrayBuffer();
+  const raw = (await window.mammoth.extractRawText({ arrayBuffer })).value || '';
+  // Se a numeração foi digitada (1., A)), o texto puro já serve.
+  const lines = raw.split('\n').map(l => l.trim());
+  const altCount = lines.filter(l => qpAltMatch(l)).length;
+  const qCount = lines.filter(l => qpQStart(l)).length;
+  if (altCount >= 4 && qCount >= 2) return raw;
+  // Numeração automática do Word não vem no texto puro: reconstrói pela estrutura das listas.
+  try {
+    const html = (await window.mammoth.convertToHtml({ arrayBuffer })).value;
+    const t = qpDocxHtmlToText(html);
+    if (t.trim()) return t;
+  } catch (e) { /* usa o texto puro */ }
+  return raw;
+}
+
+async function qpExtractText(file, onProgress) {
+  const ext = qpExt(file.name);
+  if (ext === 'txt' || ext === 'md' || ext === 'csv') return qpReadTxt(file);
+  if (ext === 'pdf') return qpReadPdf(file, onProgress);
+  if (ext === 'docx') return qpReadDocx(file);
+  if (ext === 'doc') throw new Error('Arquivos .doc (Word antigo) não são lidos. Abra no Word, salve como .docx e envie de novo.');
+  throw new Error('Formato não suportado. Envie PDF, Word (.docx) ou TXT.');
+}
+
+// ── Conversão do texto em questões ───────────────────────────────────
+function qpAltMatch(line) {
+  let m = line.match(/^\(?([A-Ea-e])\)\s*(.*)$/);
+  if (m) return { L: m[1].toUpperCase(), t: m[2].trim() };
+  m = line.match(/^([A-E])\s*[.\-–:]\s+(.*)$/);
+  if (m) return { L: m[1], t: m[2].trim() };
+  return null;
+}
+function qpQStart(line) {
+  let m = line.match(/^quest[aã]o\s*(?:n[º°.]?\s*)?(\d{1,3})\s*[.)\-–:]?\s*(.*)$/i);
+  if (m) return { n: Number(m[1]), t: m[2].trim() };
+  m = line.match(/^(\d{1,3})(?:\s*\)\s*|\s*:\s+|\.\s+|\.(?=[A-Za-zÀ-ÿ])|\s*[\-–]\s+)(\S.*)$/);
+  if (m) return { n: Number(m[1]), t: m[2].trim() };
+  return null;
+}
+function qpHasNextB(lines, i) {
+  if (/\s\(?[Bb]\)\s/.test(lines[i])) return true;
+  for (let j = i + 1; j < Math.min(lines.length, i + 16); j++) {
+    const b = qpAltMatch(lines[j]); if (b && b.L === 'B') return true;
+  }
+  return false;
+}
+function qpSplitInline(line) {
+  const re = /(?:^|\s)\(?([A-Ea-e])\)\s+/g; const marks = []; let m;
+  while ((m = re.exec(line))) marks.push({ L: m[1].toUpperCase(), s: m.index, e: m.index + m[0].length });
+  if (marks.length < 3) return null;
+  for (let i = 0; i < marks.length; i++) if (marks[i].L !== QP_LETTERS[i]) return null;
+  return marks.map((mk, i) => line.slice(mk.e, i + 1 < marks.length ? marks[i + 1].s : line.length).trim());
+}
+function qpSmartJoin(lines) {
+  let out = '';
+  lines.forEach((l, i) => {
+    if (!i) { out = l; return; }
+    out += (/[.:;?!»”"]$/.test(out) || /^(?:[IVX]{1,4}\s*[-–.)]|\(?[a-e]\)|[-•●])/.test(l) ? '\n' : ' ') + l;
+  });
+  return out.trim();
+}
+
+function parseAnswerKey(text) {
+  const answers = {};
+  [...String(text).matchAll(/(?:^|[\s,;(])(?:q(?:uest[aã]o)?\s*)?(\d{1,3})\s*[-–:.)]?\s*\(?([A-Ea-e])\)?(?![A-Za-zÀ-ÿ])/gim)]
+    .forEach(m => { if (answers[Number(m[1])] === undefined) answers[Number(m[1])] = m[2].toUpperCase().charCodeAt(0) - 65; });
+  return answers;
+}
+
+function qpParseExam(raw) {
+  let lines = String(raw).replace(/\r/g, '').replace(/[\u00a0\u2007\u202f]/g, ' ').replace(/[\u200b\u00ad\ufeff]/g, '').replace(/\f/g, '\n')
+    .split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim()).filter(Boolean);
+  const freq = {}; lines.forEach(l => { freq[l] = (freq[l] || 0) + 1; });
+  lines = lines.filter(l => {
+    if (/^(?:p[aá]gina|p[aá]g\.?)\s*\d+(?:\s*(?:de|\/)\s*\d+)?$/i.test(l)) return false;
+    if (/^[-–—]?\s*\d{1,3}\s*[-–—]?$/.test(l)) return false;
+    if (l.length > 12 && freq[l] >= 3 && !qpAltMatch(l) && !qpQStart(l)) return false;
+    return true;
+  });
+
+  // gabarito no fim do mesmo arquivo
+  let embedded = '';
+  const firstAlt = lines.findIndex(l => qpAltMatch(l));
+  for (let i = lines.length - 1; i > Math.max(firstAlt, 0); i--) {
+    const l = lines[i];
+    const only = /^(?:gabarito(?:\s+(?:oficial|preliminar|definitivo))?|respostas?(?:\s+oficiais?)?|folha de respostas)\s*:?$/i.test(l);
+    const same = /^(?:gabarito|respostas?)\s*:?\s*(?=\(?\d)/i.test(l);
+    if (only || same) {
+      const key = (same ? l.replace(/^[^\d(]*/, '') : '') + '\n' + lines.slice(i + 1).join('\n');
+      if (Object.keys(parseAnswerKey(key)).length >= 2) { embedded = key; lines = lines.slice(0, i); break; }
+    }
+  }
+
+  // gabarito solto no fim (sem título): linhas só com pares "1 B", "2-C"…
+  if (!embedded) {
+    const pairs = /^(?:\d{1,3}\s*[-–:.)]?\s*[A-Ea-e](?![A-Za-zÀ-ÿ])[\s,;]*)+$/;
+    let k = lines.length;
+    while (k > 0 && pairs.test(lines[k - 1])) k--;
+    const tail = lines.slice(k);
+    if (tail.length && k > Math.max(firstAlt, 0) && Object.keys(parseAnswerKey(tail.join('\n'))).length >= 2) { embedded = tail.join('\n'); lines = lines.slice(0, k); }
+  }
+
+  const found = [];
+  let cur = { stem: [], opts: [], inline: null, n: null };
+  const flush = () => { if (cur.opts.length >= 2) found.push(cur); cur = { stem: [], opts: [], inline: null, n: null }; };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const inl = line.match(/^(?:gabarito|resposta(?:\s+correta)?|alternativa\s+correta|letra)\s*[:\-–]\s*\(?([A-Ea-e])\)?\s*\.?$/i);
+    if (inl && cur.opts.length) { cur.inline = inl[1].toUpperCase().charCodeAt(0) - 65; continue; }
+
+    const a = qpAltMatch(line);
+    const want = QP_LETTERS[cur.opts.length];
+    if (a && want && a.L === want && (cur.opts.length > 0 || qpHasNextB(lines, i))) {
+      if (a.L === 'A') { const inlineOpts = qpSplitInline(line); if (inlineOpts) { cur.opts.push(...inlineOpts.map(t => [t])); continue; } }
+      cur.opts.push([a.t]);
+      continue;
+    }
+    if (cur.opts.length) {
+      const qs = qpQStart(line);
+      const last = cur.opts[cur.opts.length - 1].join(' ');
+      const newQ = cur.opts.length >= 2 && (qs || (cur.opts.length >= 4 && /[.;!?]$/.test(last) && /^[A-ZÁÉÍÓÚÂÊÔÃÕÇ"“(]/.test(line)));
+      if (newQ) { flush(); cur.stem.push(line); continue; }
+      cur.opts[cur.opts.length - 1].push(line);
+      continue;
+    }
+    cur.stem.push(line);
+  }
+  flush();
+
+  // número, enunciado e alternativas limpos
+  const qs = found.map(q => {
+    let stem = q.stem.slice(); let n = null;
+    // o número da questão fica na primeira linha "N." do enunciado; o que vem antes é cabeçalho
+    for (let k = 0; k < stem.length; k++) {
+      const s = qpQStart(stem[k]);
+      if (s) { n = s.n; stem = stem.slice(k); stem[0] = s.t; if (!stem[0]) stem.shift(); break; }
+    }
+    return { n, text: qpSmartJoin(stem), options: q.opts.map(o => qpSmartJoin(o)), inline: q.inline };
+  }).filter(q => q.text && q.options.length >= 2);
+
+  // usa a numeração do arquivo só se ela for coerente; senão, ordem de aparição
+  const detected = qs.map(q => q.n).filter(n => n !== null);
+  let coherent = detected.length >= Math.max(1, 0.8 * qs.length);
+  for (let i = 1; i < detected.length && coherent; i++) if (detected[i] <= detected[i - 1]) coherent = false;
+  let prev = 0;
+  qs.forEach((q, i) => {
+    if (coherent) { q.n = q.n !== null ? q.n : prev + 1; prev = q.n; } else q.n = i + 1;
+  });
+  return { questions: qs, embeddedKey: embedded };
+}
+
+// ── Interface ────────────────────────────────────────────────────────
+function qpStatus(msg, isErr) {
+  const el = document.getElementById('q-status'); if (!el) return;
+  el.textContent = msg || ''; el.classList.toggle('err', !!isErr);
+}
+
+function qpAddFiles(list) {
+  const okExt = ['pdf', 'docx', 'doc', 'txt', 'md', 'csv'];
+  const skipped = [];
+  [...list].forEach(f => {
+    if (!okExt.includes(qpExt(f.name))) { skipped.push(f.name); return; }
+    if (!importFiles.some(x => x.name === f.name && x.size === f.size)) importFiles.push(f);
+  });
+  renderImportFiles();
+  qpStatus(skipped.length ? 'Ignorei ' + skipped.join(', ') + ' — envie PDF, Word (.docx) ou TXT.' : '', !!skipped.length);
+}
+function qpRemoveFile(i) { importFiles.splice(i, 1); renderImportFiles(); }
+function renderImportFiles() {
+  const box = document.getElementById('q-files'); if (!box) return;
+  box.innerHTML = importFiles.map((f, i) => `<span class="q-file"><span>${escapeQuiz(f.name)}</span><em>${escapeQuiz(qpExt(f.name).toUpperCase())}</em><button type="button" onclick="qpRemoveFile(${i})" aria-label="Remover ${escapeQuiz(f.name)}">×</button></span>`).join('');
+}
+function initImportUI() {
+  const drop = document.getElementById('q-drop'), input = document.getElementById('q-files-input');
+  if (!drop || !input || drop.dataset.ready) return; drop.dataset.ready = '1';
+  input.addEventListener('change', () => { qpAddFiles(input.files); input.value = ''; });
+  ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => { if (e.dataTransfer && e.dataTransfer.files) qpAddFiles(e.dataTransfer.files); });
+  drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); } });
+}
+
+function qpNorm(s) { return String(s).toLowerCase().replace(/\s+/g, ' ').trim().slice(0, 140); }
+
+async function importQuestionBatch() {
+  const btn = document.getElementById('q-convert-btn');
+  const pasted = document.getElementById('qb-prova').value.trim();
+  const keyPasted = document.getElementById('qb-gabarito').value.trim();
+  if (!importFiles.length && !pasted) { qpStatus('Envie um arquivo ou cole o texto da prova.', true); return; }
+  btn.disabled = true; pendingQ = []; renderPreview();
+  try {
+    const docs = []; let fileKey = '';
+    for (const f of importFiles) {
+      qpStatus('Lendo ' + f.name + '…');
+      const text = await qpExtractText(f, (p, t) => qpStatus('Lendo ' + f.name + ' — página ' + p + ' de ' + t + '…'));
+      const isKey = /gabarito|respostas?/i.test(f.name) && !/prova|caderno|quest[oõ]es/i.test(f.name);
+      if (isKey) fileKey += '\n' + text; else docs.push({ name: f.name, text });
+    }
+    if (pasted) docs.push({ name: 'Texto colado', text: pasted });
+    if (!docs.length) throw new Error('Só encontrei um gabarito. Envie também o arquivo com as questões.');
+
+    qpStatus('Convertendo em questões…');
+    const explicit = parseAnswerKey(keyPasted + '\n' + fileKey);
+    const banca = document.getElementById('qb-banca').value.trim() || 'Não informada';
+    const assunto = document.getElementById('qb-disc').value || 'Geral';
+    const existing = new Set(quizDB.questions.map(q => qpNorm(q.text)));
+    const seen = new Set();
+
+    docs.forEach(d => {
+      const res = qpParseExam(d.text);
+      const embedded = parseAnswerKey(res.embeddedKey);
+      res.questions.forEach(q => {
+        let correct = explicit[q.n] !== undefined ? explicit[q.n] : embedded[q.n] !== undefined ? embedded[q.n] : q.inline;
+        if (correct === undefined || correct === null || correct >= q.options.length) correct = null;
+        const key = qpNorm(q.text);
+        const dup = existing.has(key) || seen.has(key); seen.add(key);
+        pendingQ.push({ n: q.n, text: q.text, options: q.options.slice(0, 5), correct, banca, assunto, source: d.name, dup, include: correct !== null && !dup });
+      });
+    });
+
+    if (!pendingQ.length) throw new Error('Não encontrei questões nesse formato. Confira se as alternativas começam com A), B), C)… e se o PDF tem texto selecionável.');
+    const miss = pendingQ.filter(q => q.correct === null).length;
+    qpStatus(pendingQ.length + ' questões encontradas' + (miss ? ' — ' + miss + ' sem gabarito.' : '.'));
+    renderPreview();
+    const box = document.getElementById('q-preview'); if (box) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e) {
+    qpStatus(e.message || 'Não consegui ler o arquivo.', true);
+  } finally { btn.disabled = false; }
+}
+
+function renderPreview() {
+  const box = document.getElementById('q-preview'); if (!box) return;
+  if (!pendingQ.length) { box.style.display = 'none'; box.innerHTML = ''; return; }
+  const oldList = box.querySelector('.q-list'); const scroll = oldList ? oldList.scrollTop : 0;
+  const sel = pendingQ.filter(q => q.include).length, miss = pendingQ.filter(q => q.correct === null).length, dups = pendingQ.filter(q => q.dup).length;
+  const notes = [];
+  if (miss) notes.push(miss + ' sem gabarito — escolha a resposta para incluir');
+  if (dups) notes.push(dups + ' já no banco (desmarcadas)');
+  box.style.display = 'block';
+  box.innerHTML = `<div class="qp-head"><div><h3>Confira antes de adicionar</h3><p class="q-muted">${pendingQ.length} questões encontradas${notes.length ? ' · ' + notes.join(' · ') : ''}.</p></div>
+    <div class="q-actions" style="margin:0"><button class="q-btn soft" onclick="discardPreview()">Descartar</button><button class="q-btn rust" onclick="commitPreview()" ${sel ? '' : 'disabled'}>Adicionar ${sel} ao banco</button></div></div>
+    <div class="q-list" style="max-height:560px">${pendingQ.map((q, i) => `<div class="qp-item${q.correct === null ? ' miss' : ''}">
+      <input type="checkbox" class="qp-ck" ${q.include ? 'checked' : ''} ${q.correct === null ? 'disabled' : ''} onchange="togglePending(${i},this.checked)" aria-label="Incluir questão ${q.n}">
+      <div class="qp-body"><div class="qp-text qp-clamp" onclick="this.classList.toggle('qp-clamp')" title="Clique para ver o enunciado completo">${escapeQuiz(q.text)}</div>
+        <div class="qp-opts">${q.options.map((o, k) => `<div class="${q.correct === k ? 'ok' : ''}"><b>${QP_LETTERS[k]}</b><span>${escapeQuiz(o)}</span></div>`).join('')}</div>
+        <div class="qp-src">${escapeQuiz(q.source)} · questão ${q.n}${q.dup ? ' · <strong>já está no banco</strong>' : ''}</div></div>
+      <div class="qp-side"><label>Resposta correta</label><select class="q-select" onchange="setPendingAnswer(${i},this.value)"><option value="">Sem gabarito</option>${q.options.map((_, k) => `<option value="${k}" ${q.correct === k ? 'selected' : ''}>${QP_LETTERS[k]}</option>`).join('')}</select></div>
+    </div>`).join('')}</div>`;
+  const nl = box.querySelector('.q-list'); if (nl) nl.scrollTop = scroll;
+}
+function togglePending(i, on) { if (pendingQ[i]) { pendingQ[i].include = !!on && pendingQ[i].correct !== null; renderPreview(); } }
+function setPendingAnswer(i, v) {
+  const q = pendingQ[i]; if (!q) return;
+  q.correct = v === '' ? null : Number(v);
+  q.include = q.correct !== null;
+  renderPreview();
+}
+function discardPreview() { pendingQ = []; renderPreview(); qpStatus(''); }
+function commitPreview() {
+  const chosen = pendingQ.filter(q => q.include && q.correct !== null);
+  if (!chosen.length) return;
+  chosen.forEach(q => quizDB.questions.push({ id: Date.now() + Math.random(), banca: q.banca, assunto: q.assunto, text: q.text, options: q.options, correct: q.correct, origem: q.source }));
+  pendingQ = []; importFiles = [];
+  ['qb-prova', 'qb-gabarito'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  renderImportFiles(); renderPreview(); qpStatus('');
+  populateBankFilter(); renderQuestionBank(); renderQuestionDashboard(); debouncedSave();
+  showToast('✅', chosen.length + ' questão(ões) adicionada(s) ao banco!');
+}
+
+// filtro do banco por disciplina
+let bankFilter = '';
+function populateBankFilter() {
+  const sel = document.getElementById('q-bank-filter'); if (!sel) return;
+  const names = [...new Set(quizDB.questions.map(q => q.assunto))].sort();
+  if (bankFilter && !names.includes(bankFilter)) bankFilter = '';
+  sel.innerHTML = '<option value="">Todas as disciplinas</option>' + names.map(n => `<option value="${escapeQuiz(n)}" ${n === bankFilter ? 'selected' : ''}>${escapeQuiz(n)}</option>`).join('');
+}
+function setBankFilter(v) { bankFilter = v; renderQuestionBank(); }
+
+
+function addManualQuestion(){
+  const text=document.getElementById('qm-texto').value.trim(), assunto=document.getElementById('qm-assunto').value.trim(), options=['a','b','c','d','e'].map(l=>document.getElementById('qm-'+l).value.trim());
+  if(!text||!assunto||options.some(x=>!x)){showToast('⚠️','Preencha o enunciado, assunto e as cinco alternativas.');return;}
+  quizDB.questions.push({id:Date.now()+Math.random(),banca:document.getElementById('qm-banca').value.trim()||'Não informada',assunto,text,options,correct:Number(document.getElementById('qm-correta').value)});
+  ['qm-texto','qm-assunto','qm-banca','qm-a','qm-b','qm-c','qm-d','qm-e'].forEach(id=>document.getElementById(id).value=''); populateBankFilter(); renderQuestionBank(); renderQuestionDashboard(); debouncedSave(); showToast('✅','Questão salva!');
+}
+function deleteQuestion(id){quizDB.questions=quizDB.questions.filter(q=>String(q.id)!==String(id));quizIndex=Math.min(quizIndex,Math.max(0,quizDB.questions.length-1));populateBankFilter();renderQuestionBank();renderQuestionDashboard();debouncedSave();}
+function renderQuestionBank(){
+  const count=document.getElementById('q-bank-count'), list=document.getElementById('q-bank-list'); if(!count||!list)return;
+  const shown=quizDB.questions.map((q,i)=>({q,i})).filter(x=>!bankFilter||x.q.assunto===bankFilter);
+  count.textContent=bankFilter?shown.length+' de '+quizDB.questions.length:quizDB.questions.length;
+  if(!quizDB.questions.length){list.innerHTML='<div class="q-empty" style="padding:25px"><strong>Banco vazio</strong><span>Envie uma prova em PDF, Word ou TXT, ou cadastre uma questão.</span></div>';return;}
+  list.innerHTML=shown.map(({q,i})=>`<div class="q-list-item"><div class="quiz-letter">${i+1}</div><div class="q-list-body"><div><span class="q-tag">${escapeQuiz(q.banca)}</span><span class="q-tag">${escapeQuiz(q.assunto)}</span>${q.origem?`<span class="q-tag">${escapeQuiz(q.origem)}</span>`:''}</div><div class="q-list-title">${escapeQuiz(q.text)}</div></div><button class="btn-del" onclick="deleteQuestion('${q.id}')" title="Remover">🗑</button></div>`).join('');
+}
+function escapeQuiz(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function initQuizView(){
+  clearInterval(quizTimerInt); const empty=document.getElementById('quiz-empty'), active=document.getElementById('quiz-active'), finish=document.getElementById('quiz-finish');
+  if(!quizDB.questions.length){empty.style.display='block';active.style.display='none';finish.style.display='none';return;}
+  if(quizIndex>=quizDB.questions.length){empty.style.display='none';active.style.display='none';finish.style.display='block'; const recent=quizDB.results.slice(-quizDB.questions.length), ok=recent.filter(r=>r.correct).length;document.getElementById('quiz-finish-copy').textContent=`Você acertou ${ok} de ${recent.length} questões.`;return;}
+  empty.style.display='none';active.style.display='block';finish.style.display='none'; renderQuizQuestion();
+}
+function renderQuizQuestion(){
+  const q=quizDB.questions[quizIndex]; if(!q)return; quizSelected=null;quizAnswered=false;quizSeconds=0;
+  document.getElementById('quiz-counter').textContent=`${quizIndex+1} / ${quizDB.questions.length}`;document.getElementById('quiz-banca').textContent=q.banca;document.getElementById('quiz-assunto').textContent=q.assunto;document.getElementById('quiz-text').textContent=q.text;
+  document.getElementById('quiz-options').innerHTML=q.options.map((o,i)=>`<button class="quiz-option" onclick="selectQuizOption(${i},this)"><span class="quiz-letter">${String.fromCharCode(65+i)}</span><span>${escapeQuiz(o)}</span></button>`).join('');
+  const confirm=document.getElementById('quiz-confirm');confirm.disabled=true;confirm.style.display='';document.getElementById('quiz-next').style.display='none';document.getElementById('quiz-timer').textContent='00:00';clearInterval(quizTimerInt);quizTimerInt=setInterval(()=>{quizSeconds++;document.getElementById('quiz-timer').textContent=formatQuizTime(quizSeconds)},1000);
+}
+function formatQuizTime(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+function selectQuizOption(idx,el){if(quizAnswered)return;quizSelected=idx;document.querySelectorAll('.quiz-option').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');document.getElementById('quiz-confirm').disabled=false;}
+function confirmQuizAnswer(){
+  if(quizSelected===null||quizAnswered)return;quizAnswered=true;clearInterval(quizTimerInt);const q=quizDB.questions[quizIndex],correct=quizSelected===q.correct;
+  document.querySelectorAll('.quiz-option').forEach((el,i)=>{el.disabled=true;if(i===q.correct)el.classList.add('correct');else if(i===quizSelected)el.classList.add('wrong')});
+  quizDB.results.push({id:Date.now()+Math.random(),questionId:q.id,assunto:q.assunto,correct,seconds:quizSeconds,date:todayKey()});
+  if(typeof addRegistro==='function')addRegistro({date:todayKey(),disc:q.assunto,topic:q.text.slice(0,90),tipo:'Simulado',horas:quizSeconds/3600,questoes:1,acertos:correct?1:0,erros:correct?0:1,obs:`Questão ${correct?'correta':'incorreta'} — ${q.banca}`,origem:'simulado'});
+  document.getElementById('quiz-confirm').style.display='none';document.getElementById('quiz-next').style.display='';renderQuestionDashboard();debouncedSave();
+}
+function nextQuizQuestion(){quizIndex++;initQuizView()}
+function restartQuiz(){quizIndex=0;initQuizView()}
+function renderQuestionAnalysis(){
+  const rs=quizDB.results,total=rs.length,correct=rs.filter(r=>r.correct).length,accuracy=total?Math.round(correct/total*100):0,avg=total?Math.round(rs.reduce((s,r)=>s+(r.seconds||0),0)/total):0;
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v};set('qa-total',total);set('qa-accuracy',accuracy+'%');set('qa-errors',total-correct);set('qa-time',avg+'s');
+  let feedback='Resolva algumas questões para receber uma análise do seu desempenho.';if(total)feedback=accuracy>=80?`Excelente: ${accuracy}% de aproveitamento. Mantenha o ritmo e priorize revisões espaçadas.`:accuracy>=60?`Você está em evolução, com ${accuracy}% de aproveitamento. Revise os assuntos abaixo de 70% antes do próximo simulado.`:`Seu aproveitamento está em ${accuracy}%. Reforce a teoria dos assuntos mais fracos e faça blocos menores de questões.`;set('qa-feedback',feedback);
+  const by={};rs.forEach(r=>{if(!by[r.assunto])by[r.assunto]={n:0,c:0};by[r.assunto].n++;if(r.correct)by[r.assunto].c++});const box=document.getElementById('qa-subjects');if(box)box.innerHTML=Object.keys(by).length?Object.entries(by).map(([name,d])=>{const p=Math.round(d.c/d.n*100);return `<div class="q-sub-row"><span>${escapeQuiz(name)}</span><div class="q-sub-bar"><div class="q-sub-fill" style="width:${p}%"></div></div><span>${d.c}/${d.n} · ${p}%</span></div>`}).join(''):'<div class="q-empty" style="padding:24px">Nenhum resultado registrado.</div>';
+}
+function renderQuestionDashboard(){
+  const rs=quizDB.results,total=rs.length,correct=rs.filter(r=>r.correct).length,accuracy=total?Math.round(correct/total*100):0,today=todayKey(),todayCount=rs.filter(r=>r.date===today).length;
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v};
+  set('qd-bank',quizDB.questions.length);set('qd-answered',total);set('qd-accuracy',accuracy+'%');set('qd-today',todayCount);
+  let title='Vamos avançar hoje?',message='Cada questão respondida revela exatamente onde você pode melhorar. Comece com um bloco curto e mantenha a constância.',focus='Responder primeiro bloco',goal='10 questões';
+  if(!quizDB.questions.length){title='Prepare seu primeiro treino';message='Adicione questões ao banco. Depois, eu acompanho seus acertos e indico onde concentrar seus esforços.';focus='Adicionar questões';goal='Criar o primeiro bloco';}
+  else if(total&&accuracy<60){title='Você já encontrou onde crescer';message=`Seu aproveitamento está em ${accuracy}%. Isso não é um limite, é um mapa. Refaça os temas com mais erros e avance em blocos curtos.`;focus='Revisar assuntos frágeis';goal='5 questões com atenção';}
+  else if(total&&accuracy<80){title='Seu ritmo está construindo resultado';message=`Você chegou a ${accuracy}% de aproveitamento. Mais um bloco focado pode transformar os pontos de dúvida em segurança.`;focus='Consolidar pontos médios';goal='10 questões focadas';}
+  else if(total){title='Excelente desempenho';message=`Você alcançou ${accuracy}% de aproveitamento. Mantenha a consistência e procure variar os assuntos para chegar preparado.`;focus='Manter e diversificar';goal='15 questões variadas';}
+  set('qd-title',title);set('qd-message',message);set('qd-focus',focus);set('qd-goal',goal);set('qd-streak',todayCount?`${todayCount} feitas hoje`:'Comece hoje');
+}
+
 async function init() {
   await loadStorage();
   renderSidebar();
@@ -2179,9 +2800,10 @@ async function init() {
   renderCharts();
   renderRevisoes();
   initRotina();
+  initQuestions();
   updateAll();
 }
-bootWithAuth();
+init();
 </script>
 </body>
 </html>
