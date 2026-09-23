@@ -1843,7 +1843,7 @@ async function saveData() {
   try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e) {}
   if (firebaseAvailable && fbUser) {
     try {
-      await fbDB.collection('victor').doc(fbUser.uid).set(data);
+      await fbDB.collection('victor').doc(fbUser.uid).set(data, { mergeFields: Object.keys(data) });
       showToast('🔥', 'Sincronizado no Firebase!');
       setSyncBadge();
       return;
@@ -2803,7 +2803,7 @@ async function init() {
   initQuestions();
   updateAll();
 }
-init();
+bootWithAuth();
 </script>
 </body>
 </html>
