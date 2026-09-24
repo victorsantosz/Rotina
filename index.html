@@ -502,6 +502,28 @@ select{min-width:0;max-width:100%;}
 .quiz-question{white-space:pre-line}
 @media(max-width:760px){.qp-item{grid-template-columns:auto minmax(0,1fr)}.qp-side{grid-column:2}}
 .sb-ver{margin-top:10px;text-align:center;font-size:9.5px;letter-spacing:.4px;color:rgba(255,255,255,.35)}
+
+/* ── AGENDA DE DATAS (menu lateral) ── */
+.sb-ag{margin:14px 14px 0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 6px 8px 12px}
+.ag-head{display:flex;align-items:center;justify-content:space-between;padding-right:8px;margin-bottom:8px;font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.ag-add{width:22px;height:22px;border:0;border-radius:6px;background:var(--mint);color:var(--navy);font-weight:900;font-size:14px;line-height:1;cursor:pointer}
+.ag-add:hover{background:var(--mint-d)}
+.ag-list{max-height:212px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;padding-right:6px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.28) transparent}
+.ag-list::-webkit-scrollbar{width:5px}.ag-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25);border-radius:9px}
+.ag-item{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-radius:9px;padding:7px 9px;background:rgba(255,255,255,.07);color:white;cursor:pointer;font-family:'Inter',sans-serif;flex-shrink:0}
+.ag-item:hover{background:rgba(255,255,255,.13)}
+.ag-item:focus-visible,.ag-add:focus-visible{outline:2px solid var(--mint);outline-offset:1px}
+.ag-days{flex:0 0 38px;display:flex;flex-direction:column;align-items:center;line-height:1}
+.ag-days b{font:900 19px Nunito,sans-serif}
+.ag-days i{font-style:normal;font-size:8.5px;color:rgba(255,255,255,.6);margin-top:2px}
+.ag-txt{min-width:0;display:flex;flex-direction:column;gap:2px}
+.ag-txt strong{font-size:11.5px;font-weight:700;line-height:1.25}
+.ag-txt em{font-style:normal;font-size:10px;color:rgba(255,255,255,.55);line-height:1.3}
+.ag-item.next{background:linear-gradient(135deg,var(--rust),var(--rust-dark))}
+.ag-item.next .ag-txt em,.ag-item.next .ag-days i{color:rgba(255,255,255,.82)}
+.ag-item.soon .ag-days b{color:var(--amber)}
+.ag-item.past{opacity:.45}
+.ag-empty{font-size:11px;line-height:1.5;color:rgba(255,255,255,.5);padding:2px 2px 6px}
 </style>
 </head>
 <body>
@@ -514,14 +536,10 @@ select{min-width:0;max-width:100%;}
   <div class="sb-logo"><div class="sb-badge" aria-label="VS"><span style="font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;letter-spacing:0">VS</span></div><div class="sb-words">RotinIA<span>Painel de estudos</span></div></div>
   <div id="sync-badge" class="sync-badge" onclick="showFbDiag()" style="cursor:pointer" title="Toque para ver o diagnóstico da conexão">☁️ Conectando…</div>
   <div id="sb-user" class="sb-user" style="display:none"><b id="sb-user-email"></b><button class="sb-logout" onclick="doLogout()">Sair</button></div>
-  <div class="sb-info">
-    <div class="si-row"><div class="si-lbl">Concurso</div><div class="si-val" id="si-concurso">—</div></div>
-    <div class="si-div"></div>
-    <div class="si-row"><div class="si-lbl">Cargos</div><div class="si-val" id="si-cargo">—</div></div>
-    <div class="si-div"></div>
-    <div class="si-row"><div class="si-lbl">Bancas</div><div class="si-val" id="si-banca">—</div></div>
+  <div class="sb-ag" id="sb-ag">
+    <div class="ag-head"><span>Datas dos concursos</span><button type="button" class="ag-add" onclick="openEvento()" aria-label="Adicionar data" title="Adicionar data">＋</button></div>
+    <div class="ag-list" id="dt-list" tabindex="0" aria-label="Lista de datas dos concursos"></div>
   </div>
-  <div class="sb-cd"><div><div class="cd-lbl">Dias para a prova</div><div class="cd-date" id="cd-date">—</div></div><div><div class="cd-num" id="cd-num">—</div><div class="cd-dias">dias</div></div></div>
   <nav class="sb-nav">
     <div class="sb-nav-lbl">RotinIA</div>
     <a class="nav-item active" data-tab="estudos" href="#" onclick="switchTab('estudos');return false;">📊 &nbsp;Estudos</a>
@@ -542,7 +560,7 @@ select{min-width:0;max-width:100%;}
       <button class="btn-backup" onclick="triggerImport()" style="flex:1">⬇️ Restaurar</button>
     </div>
     <input type="file" id="import-file" accept=".json" style="display:none" onchange="importBackup(this)">
-    <div class="sb-ver" id="sb-ver">Versão 4 · diagnóstico</div>
+    <div class="sb-ver" id="sb-ver">Versão 5 · agenda de datas</div>
   </div>
 </aside>
 
@@ -1062,6 +1080,23 @@ select{min-width:0;max-width:100%;}
   </div>
 </div>
 
+<!-- MODAL DATA DO CONCURSO -->
+<div class="modal-overlay" id="ev-overlay" onclick="closeEvento(event)">
+  <div class="modal-box">
+    <div class="modal-title" id="ev-title">Nova data</div>
+    <div class="modal-field"><label for="ev-concurso">Concurso</label><input class="modal-inp" id="ev-concurso" list="ev-concursos" placeholder="Ex: GCM Salvador" autocomplete="off"></div>
+    <div class="modal-field"><label for="ev-evento">O que acontece nessa data</label><input class="modal-inp" id="ev-evento" list="ev-eventos" placeholder="Ex: Fim das inscrições" autocomplete="off"></div>
+    <div class="modal-field"><label for="ev-data">Data</label><input type="date" class="modal-inp" id="ev-data"></div>
+    <datalist id="ev-concursos"><option value="GCM Salvador"><option value="PMBA"><option value="PMPE"><option value="Transpetro"></datalist>
+    <datalist id="ev-eventos"><option value="Pedido de isenção da taxa"><option value="Início das inscrições"><option value="Fim das inscrições"><option value="Pagamento da taxa"><option value="Divulgação dos locais de prova"><option value="Prova objetiva"><option value="Resultado provisório"><option value="Prazo de recursos"></datalist>
+    <div class="modal-actions">
+      <button class="modal-btn-cancel" id="ev-del" onclick="delEvento()" style="display:none">Excluir</button>
+      <button class="modal-btn-cancel" onclick="closeEvento()">Cancelar</button>
+      <button class="modal-btn-save" onclick="saveEvento()">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <!-- BACKUP MODAL -->
 <div class="backup-modal" id="backup-modal" onclick="closeBackupModal(event)">
   <div class="backup-box">
@@ -1110,6 +1145,8 @@ let state={};
 let historico=[];
 let revisoes=[];
 let calOffset=0;
+let datas=[];
+let eventoEditId=null;
 let modalDay=null;
 let curFilter="todos";
 
@@ -1558,16 +1595,66 @@ function scrollToId(id) {
   setTimeout(() => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
 }
 
-function renderSidebar() {
-  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
-  set('si-concurso', CONCURSO_INFO.concurso); set('si-cargo', CONCURSO_INFO.cargo); set('si-banca', CONCURSO_INFO.banca);
-  const d = new Date(CONCURSO_INFO.dataProva + 'T00:00:00');
-  if (!isNaN(d)) {
-    set('cd-date', d.toLocaleDateString('pt-BR'));
-    const days = Math.ceil((d - new Date(new Date().toDateString())) / 86400000);
-    set('cd-num', days > 0 ? days : days === 0 ? 'Hoje' : '—');
-  }
+function renderSidebar() { renderDatas(); }
+
+// ── AGENDA DE DATAS DOS CONCURSOS ─────────────────────
+function daysUntil(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  const n = new Date(), today = new Date(n.getFullYear(), n.getMonth(), n.getDate());
+  return Math.round((new Date(y, m - 1, d) - today) / 86400000);
 }
+function fmtBR(iso) { const [y, m, d] = iso.split('-'); return d + '/' + m + '/' + y; }
+function renderDatas() {
+  const box = document.getElementById('dt-list'); if (!box) return;
+  if (!datas.length) { box.innerHTML = '<div class="ag-empty">Nenhuma data ainda.<br>Toque em ＋ para cadastrar isenção, inscrição, pagamento, prova…</div>'; return; }
+  const items = datas.map(e => ({ e, dias: daysUntil(e.data) })).sort((a, b) => {
+    const ap = a.dias < 0, bp = b.dias < 0;
+    if (ap !== bp) return ap ? 1 : -1;
+    return ap ? b.dias - a.dias : a.dias - b.dias;
+  });
+  const first = items.find(x => x.dias >= 0), nextId = first ? first.e.id : null;
+  box.innerHTML = items.map(({ e, dias }) => {
+    const cls = dias < 0 ? 'past' : e.id === nextId ? 'next' : dias <= 7 ? 'soon' : '';
+    const num = dias < 0 ? '✓' : dias === 0 ? 'Hoje' : dias;
+    const lbl = dias < 0 ? 'passou' : dias === 0 ? '' : dias === 1 ? 'dia' : 'dias';
+    return `<button type="button" class="ag-item ${cls}" onclick="openEvento('${e.id}')"><span class="ag-days"><b>${num}</b>${lbl ? '<i>' + lbl + '</i>' : ''}</span><span class="ag-txt"><strong>${escapeQuiz(e.evento)}</strong><em>${escapeQuiz(e.concurso || 'Geral')} · ${fmtBR(e.data)}</em></span></button>`;
+  }).join('');
+}
+function openEvento(id) {
+  eventoEditId = id || null;
+  const e = id ? datas.find(x => x.id === id) : null;
+  document.getElementById('ev-title').textContent = e ? 'Editar data' : 'Nova data';
+  document.getElementById('ev-concurso').value = e ? (e.concurso || '') : '';
+  document.getElementById('ev-evento').value = e ? e.evento : '';
+  document.getElementById('ev-data').value = e ? e.data : '';
+  document.getElementById('ev-del').style.display = e ? '' : 'none';
+  document.getElementById('ev-overlay').classList.add('open');
+  document.getElementById(e ? 'ev-evento' : 'ev-concurso').focus();
+}
+function closeEvento(ev) {
+  if (!ev || ev.target === document.getElementById('ev-overlay')) document.getElementById('ev-overlay').classList.remove('open');
+}
+function saveEvento() {
+  const concurso = document.getElementById('ev-concurso').value.trim();
+  const evento = document.getElementById('ev-evento').value.trim();
+  const data = document.getElementById('ev-data').value;
+  if (!evento || !data) { showToast('⚠️', 'Preencha o que acontece e a data.'); return; }
+  if (eventoEditId) {
+    const e = datas.find(x => x.id === eventoEditId);
+    if (e) { e.concurso = concurso; e.evento = evento; e.data = data; }
+  } else {
+    datas.push({ id: 'ev' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), concurso, evento, data });
+  }
+  document.getElementById('ev-overlay').classList.remove('open');
+  renderDatas(); debouncedSave(); showToast('📅', 'Data salva!');
+}
+function delEvento() {
+  if (!eventoEditId || !confirm('Excluir esta data?')) return;
+  datas = datas.filter(x => x.id !== eventoEditId);
+  document.getElementById('ev-overlay').classList.remove('open');
+  renderDatas(); debouncedSave(); showToast('🗑', 'Data excluída.');
+}
+setInterval(renderDatas, 60000);
 
 function goDisc(id) {
   const el = document.getElementById('disc-' + id);
@@ -1829,7 +1916,7 @@ function setSyncBadge() {
 }
 
 function buildSnapshot() {
-  const data = { state, historico, revisoes, pomo, rotina, agenda, contas, quizDB };
+  const data = { state, historico, revisoes, pomo, rotina, agenda, contas, quizDB, datas };
   ['meta-horas','meta-questoes','meta-conclusao','meta-aprov'].forEach(id => {
     const el = document.getElementById(id); if (el) data[id] = el.value;
   });
@@ -1846,6 +1933,7 @@ function applySnapshot(s) {
   agenda = s.agenda || [];
   contas = s.contas || [];
   quizDB = s.quizDB || quizDB;
+  datas = s.datas || [];
   ['meta-horas','meta-questoes','meta-conclusao','meta-aprov'].forEach(id => {
     if (s[id] !== undefined) { const el = document.getElementById(id); if (el) el.value = s[id]; }
   });
@@ -1909,7 +1997,7 @@ function closeBackupModal(e) {
 }
 function exportBackup() {
   try {
-    const data = { state, historico, revisoes, pomo, rotina, agenda, contas, quizDB, exportedAt: new Date().toISOString() };
+    const data = { state, historico, revisoes, pomo, rotina, agenda, contas, quizDB, datas, exportedAt: new Date().toISOString() };
     try { data.concurso = CONCURSO_INFO.concurso; } catch(e) {}
     ['meta-horas','meta-questoes','meta-conclusao','meta-aprov'].forEach(function(id) {
       var el = document.getElementById(id); if (el) data[id] = el.value;
@@ -1952,6 +2040,7 @@ async function importBackup(input) {
       agenda = data.agenda || [];
       contas = data.contas || [];
       quizDB = data.quizDB || quizDB;
+      datas = data.datas || [];
       ['meta-horas','meta-questoes','meta-conclusao','meta-aprov'].forEach(id => {
         if (data[id] !== undefined) { const el = document.getElementById(id); if (el) el.value = data[id]; }
       });
@@ -1962,6 +2051,7 @@ async function importBackup(input) {
       renderCharts();
       renderRevisoes();
       renderHistorico();
+      renderDatas();
       updateAll();
       showToast('✅', 'Backup restaurado e sincronizado!');
     } catch(err) {
@@ -2843,7 +2933,7 @@ async function init() {
   initQuestions();
   updateAll();
 }
-console.info('RotinIA versão 4 — diagnóstico Firebase');
+console.info('RotinIA versão 5 — agenda de datas');
 bootWithAuth();
 </script>
 </body>
