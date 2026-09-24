@@ -501,6 +501,7 @@ select{min-width:0;max-width:100%;}
 .qp-side label{font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--text-soft)}
 .quiz-question{white-space:pre-line}
 @media(max-width:760px){.qp-item{grid-template-columns:auto minmax(0,1fr)}.qp-side{grid-column:2}}
+.sb-ver{margin-top:10px;text-align:center;font-size:9.5px;letter-spacing:.4px;color:rgba(255,255,255,.35)}
 </style>
 </head>
 <body>
@@ -511,7 +512,7 @@ select{min-width:0;max-width:100%;}
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sb-logo"><div class="sb-badge" aria-label="VS"><span style="font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;letter-spacing:0">VS</span></div><div class="sb-words">RotinIA<span>Painel de estudos</span></div></div>
-  <div id="sync-badge" class="sync-badge">☁️ Conectando…</div>
+  <div id="sync-badge" class="sync-badge" onclick="showFbDiag()" style="cursor:pointer" title="Toque para ver o diagnóstico da conexão">☁️ Conectando…</div>
   <div id="sb-user" class="sb-user" style="display:none"><b id="sb-user-email"></b><button class="sb-logout" onclick="doLogout()">Sair</button></div>
   <div class="sb-info">
     <div class="si-row"><div class="si-lbl">Concurso</div><div class="si-val" id="si-concurso">—</div></div>
@@ -541,6 +542,7 @@ select{min-width:0;max-width:100%;}
       <button class="btn-backup" onclick="triggerImport()" style="flex:1">⬇️ Restaurar</button>
     </div>
     <input type="file" id="import-file" accept=".json" style="display:none" onchange="importBackup(this)">
+    <div class="sb-ver" id="sb-ver">Versão 4 · diagnóstico</div>
   </div>
 </aside>
 
@@ -1083,6 +1085,7 @@ select{min-width:0;max-width:100%;}
     <input type="password" id="login-pass" class="rt-inp" placeholder="Senha" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="rt-btn" onclick="doLogin()">Entrar</button>
     <div class="login-err" id="login-err"></div>
+    <a href="#" onclick="showFbDiag();return false;" style="display:inline-block;margin-top:8px;font-size:11px;color:var(--text-soft)">Ver diagnóstico da conexão</a>
   </div>
 </div>
 
@@ -1702,17 +1705,41 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "710454580472",
   appId: "1:710454580472:web:335be81d5fea05c98cd70d"
 };
-let fbAuth = null, fbDB = null, fbUser = null, firebaseAvailable = false;
+let fbAuth = null, fbDB = null, fbUser = null, firebaseAvailable = false, fbError = '';
+const fbLog = [];
+function fbLogAdd(msg) { fbLog.push(new Date().toLocaleTimeString('pt-BR') + '  ' + msg); }
+function showFbDiag() {
+  const lines = ['Endereço: ' + location.host + location.pathname, 'Online: ' + navigator.onLine,
+    'SDK Firebase: ' + (typeof firebase !== 'undefined' ? 'carregado' : 'NÃO carregado'),
+    'Usuário: ' + (fbUser ? fbUser.email : 'nenhum'), 'Erro atual: ' + (fbError || 'nenhum'), ''].concat(fbLog);
+  let m = document.getElementById('diag-modal');
+  if (!m) {
+    m = document.createElement('div'); m.id = 'diag-modal'; m.className = 'backup-modal'; m.style.zIndex = 1000;
+    m.onclick = e => { if (e.target === m) m.classList.remove('open'); };
+    m.innerHTML = '<div class="backup-box" style="width:min(460px,92vw)"><div class="backup-title">Diagnóstico da conexão</div><textarea id="diag-text" readonly style="width:100%;height:220px;font:11px monospace;border:1px solid var(--border);border-radius:8px;padding:8px"></textarea><button class="backup-btn-imp" onclick="document.getElementById(\'diag-text\').select();document.execCommand(\'copy\')">Copiar</button><button class="backup-btn-close" onclick="document.getElementById(\'diag-modal\').classList.remove(\'open\')">Fechar</button></div>';
+    document.body.appendChild(m);
+  }
+  document.getElementById('diag-text').value = lines.join('\n'); m.classList.add('open');
+}
+function fbErrText(e) {
+  const c = (e && e.code) || '';
+  if (c.indexOf('permission-denied') >= 0) return 'Regras do Firestore negaram o acesso (permission-denied)';
+  if (c.indexOf('unavailable') >= 0) return 'Firestore sem conexão (unavailable)';
+  if (c.indexOf('unauthenticated') >= 0) return 'Sessão não autenticada (unauthenticated)';
+  return c || (e && e.message) || 'erro desconhecido';
+}
 
 function initFirebase() {
-  if (typeof firebase === 'undefined') { firebaseAvailable = false; return false; }
+  if (typeof firebase === 'undefined') { firebaseAvailable = false; fbError = 'Firebase não carregou (internet ou bloqueador de anúncios)'; fbLogAdd(fbError); return false; }
   try {
     firebase.initializeApp(FIREBASE_CONFIG);
     fbAuth = firebase.auth();
     fbDB   = firebase.firestore();
+    try { if (fbDB.settings) fbDB.settings({ experimentalAutoDetectLongPolling: true, merge: true }); } catch (e) { fbLogAdd('settings: ' + fbErrText(e)); }
+    fbLogAdd('Firebase iniciado (projeto ' + FIREBASE_CONFIG.projectId + ')');
     firebaseAvailable = true;
     return true;
-  } catch(e) { firebaseAvailable = false; return false; }
+  } catch(e) { firebaseAvailable = false; fbError = 'Falha ao iniciar Firebase: ' + fbErrText(e); return false; }
 }
 
 function showLogin(msg) {
@@ -1728,7 +1755,10 @@ function loginErrMsg(err) {
   if (c.indexOf('invalid-email') >= 0) return 'E-mail inválido.';
   if (c.indexOf('too-many-requests') >= 0) return 'Muitas tentativas — aguarde um pouco e tente de novo.';
   if (c.indexOf('network-request-failed') >= 0) return 'Sem conexão com a internet.';
-  return 'Não foi possível entrar. Confira e-mail e senha.';
+  if (c.indexOf('unauthorized-domain') >= 0) return 'Este domínio não está autorizado no Firebase (Authentication → Settings → Authorized domains).';
+  if (c.indexOf('operation-not-allowed') >= 0) return 'Login por e-mail/senha está desativado no Firebase.';
+  if (c.indexOf('api-key') >= 0) return 'Chave de API do Firebase inválida (' + c + ').';
+  return 'Não foi possível entrar' + (c ? ' (' + c + ')' : '') + '. Confira e-mail e senha.';
 }
 function doLogin() {
   const email = document.getElementById('login-email').value.trim();
@@ -1743,7 +1773,13 @@ function doLogout() {
 
 async function bootWithAuth() {
   if (!initFirebase()) { init(); return; }
+  const authTimer = setTimeout(() => {
+    fbError = 'Autenticação não respondeu em 8s (conexão ou bloqueador)'; fbLogAdd(fbError); setSyncBadge();
+    showLogin('O Firebase não respondeu. Confira a internet e toque em “Ver diagnóstico” abaixo.');
+  }, 8000);
   fbAuth.onAuthStateChanged(async user => {
+    clearTimeout(authTimer);
+    fbLogAdd('Autenticação: ' + (user ? 'logado como ' + user.email : 'nenhum usuário logado'));
     if (user) {
       fbUser = user;
       hideLogin();
@@ -1759,6 +1795,7 @@ async function bootWithAuth() {
           showToast('👤', 'Acesso de Usuário Padrão.');
         }
       } catch (error) {
+        fbError = fbErrText(error); fbLogAdd('Leitura do perfil falhou: ' + fbError);
         showToast('👤', 'Acesso de Usuário Padrão.');
       }
 
@@ -1768,7 +1805,7 @@ async function bootWithAuth() {
       document.getElementById('sb-user').style.display = 'none';
       showLogin();
     }
-  });
+  }, err => { clearTimeout(authTimer); fbLogAdd('Erro de autenticação: ' + fbErrText(err)); showLogin('Erro de autenticação: ' + fbErrText(err)); });
 }
 
 const DB_PATH = 'victor/estado-principal';
@@ -1785,7 +1822,8 @@ async function initDB() {
 function setSyncBadge() {
   const b = document.getElementById('sync-badge');
   if (!b) return;
-  if (firebaseAvailable && fbUser) { b.textContent = '🔥 Firebase — sincronizado'; b.className = 'sync-badge on'; }
+  if (fbError)                     { b.textContent = '⚠️ ' + fbError; b.className = 'sync-badge off'; b.style.whiteSpace = 'normal'; }
+  else if (firebaseAvailable && fbUser) { b.textContent = '🔥 Firebase — sincronizado'; b.className = 'sync-badge on'; }
   else if (syncOn)                 { b.textContent = '☁️ Sincronizado (Claude)';   b.className = 'sync-badge on'; }
   else                              { b.textContent = '💾 Somente local';          b.className = 'sync-badge off'; }
 }
@@ -1817,9 +1855,10 @@ async function loadStorage() {
   if (firebaseAvailable && fbUser) {
     try {
       const snap = await fbDB.collection('victor').doc(fbUser.uid).get();
+      fbError = ''; fbLogAdd('Leitura de victor/' + fbUser.uid + ': ok, documento ' + (snap.exists ? 'existe' : 'não existe'));
       if (snap.exists) { applySnapshot(snap.data()); setSyncBadge(); return; }
       setSyncBadge();
-    } catch(e) { showToast('⚠️', 'Não consegui puxar da nuvem — usando dados locais.'); }
+    } catch(e) { fbError = fbErrText(e); fbLogAdd('Leitura falhou: ' + fbError); setSyncBadge(); showToast('⚠️', 'Não consegui puxar da nuvem — usando dados locais.'); }
   }
   await initDB();
   if (syncOn) {
@@ -1843,11 +1882,12 @@ async function saveData() {
   try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e) {}
   if (firebaseAvailable && fbUser) {
     try {
-      await fbDB.collection('victor').doc(fbUser.uid).set(data);
+      await fbDB.collection('victor').doc(fbUser.uid).set(data, { mergeFields: Object.keys(data) });
+      fbError = ''; fbLogAdd('Gravação: ok');
       showToast('🔥', 'Sincronizado no Firebase!');
       setSyncBadge();
       return;
-    } catch(e) { showToast('⚠️', 'Erro ao sincronizar — salvo só neste aparelho.'); return; }
+    } catch(e) { fbError = fbErrText(e); fbLogAdd('Gravação falhou: ' + fbError); setSyncBadge(); showToast('⚠️', 'Erro ao sincronizar — salvo só neste aparelho.'); return; }
   }
   if (syncOn) {
     try {
@@ -2803,7 +2843,8 @@ async function init() {
   initQuestions();
   updateAll();
 }
-init();
+console.info('RotinIA versão 4 — diagnóstico Firebase');
+bootWithAuth();
 </script>
 </body>
 </html>
